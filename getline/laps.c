@@ -63,7 +63,7 @@ void race_state(int *id, size_t size)
                 laps[j]++;
                 found = 1;
                 break;
-            }
+                }
         }
 
         /* if car not found, add it */
