@@ -16,7 +16,6 @@ char *_getline(const int fd)
 
 	if (READ_SIZE <= 0 || fd < 0) /* check for invalid input */
 		return (NULL);
-
 	while (1) /* valid input */
 	{
 		if (i >= (size_t)buff_bytes) /* check if buffer is empty */
@@ -35,7 +34,6 @@ char *_getline(const int fd)
 				return (line); /* once no more data, return line */
 			}
 		}
-
 		while (i < (size_t)buff_bytes) /* loop through buffer */
 		{
 			char current_char = buff[i++]; /* iterate current character */
@@ -48,12 +46,10 @@ char *_getline(const int fd)
 				line[line_len] = '\0'; /* null-terminate line */
 				return (line);		   /* return line */
 			}
-
 			line = realloc(line, line_len + 1); /* reallocate memory */
 			if (!line)							/* if realloc fails */
 				return (NULL);
-			line[line_len] = current_char; /* add character to line */
-			line_len++;					   /* increment line length */
+			line[line_len++] = current_char; /* add character to line */
 		}
 	}
 }
