@@ -43,7 +43,7 @@ void race_state(int *id, size_t size)
 {
 	static int car_ids[10] = {0}; /* list of cars in race */
 	static int laps[10] = {0};	  /* lap counters for each car */
-	static int count = 0;		  /* current number of cars */
+	static int count;		  /* current number of cars */
 	int i, j, found;
 
 	if (size == 0)
