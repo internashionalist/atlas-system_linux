@@ -18,19 +18,30 @@ if (READ_SIZE <= 0 || fd < 0) /* check for invalid input */
     return (NULL);
 
 while (1) /* valid input */
-{
-    if (i >= (size_t)buff_bytes) /* check if buffer is empty */
     {
-        i = 0;
-        buff_bytes = read(fd, buff, READ_SIZE); /* read into buffer */
-        if (buff_bytes <= 0) /* check for EOF or error */
-            return (line); /* once no more data, return line */
+        if (i >= (size_t)buff_bytes) /* check if buffer is empty */
+        {
+            i = 0;
+            buff_bytes = read(fd, buff, READ_SIZE); /* read into buffer */
+            if (buff_bytes <= 0) /* check for EOF or error */
+                return (line); /* once no more data, return line */
+        }
+
+        while (i < (size_t)buff_bytes) /* loop through buffer */
+        {
+            char current_char = buff[i]; /* current character */
+            i++; /* move to next character */
+
+            if (current_char == '\n') /* check for newline */
+            {
+                line = realloc(line, line_len + 1); /* reallocate memory */
+                line[line_len] = '\0'; /* null-terminate line */
+                return (line); /* return line */
+            }
+
+            line = realloc(line, line_len + 1); /* reallocate memory */
+            line[line_len] = current_char; /* add character to line */
+            line_len++; /* increment line length */
+        }
     }
-
-    while (i < (size_t)buff_bytes) /* loop through buffer */
-    {
-        char current_char = buff[i]; /* current character */
-        i++; /* move to next character */
-
-        if (current_char == '\n') /* check for newline */
-            return (line);
+}
