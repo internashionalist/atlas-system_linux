@@ -81,3 +81,4 @@ void race_state(int *id, size_t size)
         printf("Car %d [%d laps]\n", car_ids[j], laps[j]);
     }
 }
+
