@@ -9,8 +9,8 @@
 char *_getline(const int fd)
 {
 	static char buff[READ_SIZE];   /* buffer to store read data */
-	static size_t i = 0;		   /* current index in buffer */
-	static ssize_t buff_bytes = 0; /* bytes read into buffer */
+	static size_t i;		   /* current index in buffer */
+	static ssize_t buff_bytes; /* bytes read into buffer */
 	char *line = NULL;			   /* string allocated for line */
 	size_t line_len = 0;		   /* length of line being read */
 
@@ -38,8 +38,7 @@ char *_getline(const int fd)
 
 		while (i < (size_t)buff_bytes) /* loop through buffer */
 		{
-			char current_char = buff[i]; /* current character */
-			i++;						 /* move to next character */
+			char current_char = buff[i++]; /* iterate current character */
 
 			if (current_char == '\n') /* check for newline */
 			{
