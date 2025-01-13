@@ -27,8 +27,6 @@ char *_getline(const int fd)
 				if (line) /* if line has data before EOF */
 				{
 					line = realloc(line, line_len + 1); /* reallocate memory */
-					if (!line)							/* if realloc fails */
-						return (NULL);
 					line[line_len] = '\0'; /* null-terminate line */
 				}
 				return (line); /* once no more data, return line */
@@ -41,14 +39,10 @@ char *_getline(const int fd)
 			if (current_char == '\n') /* check for newline */
 			{
 				line = realloc(line, line_len + 1); /* reallocate memory */
-				if (!line)							/* if realloc fails */
-					return (NULL);
 				line[line_len] = '\0'; /* null-terminate line */
 				return (line);		   /* return line */
 			}
 			line = realloc(line, line_len + 1); /* reallocate memory */
-			if (!line)							/* if realloc fails */
-				return (NULL);
 			line[line_len++] = current_char; /* add character to line */
 		}
 	}
