@@ -24,7 +24,16 @@ while (1) /* valid input */
             i = 0;
             buff_bytes = read(fd, buff, READ_SIZE); /* read into buffer */
             if (buff_bytes <= 0) /* check for EOF or error */
+            {
+                if (line) /* if line has data before EOF */
+                {
+                    line = realloc(line, line_len + 1); /* reallocate memory */
+                    if (!line) /* if realloc fails */
+                        return (NULL);
+                    line[line_len] = '\0'; /* null-terminate line */
+                }
                 return (line); /* once no more data, return line */
+            }
         }
 
         while (i < (size_t)buff_bytes) /* loop through buffer */
@@ -35,11 +44,15 @@ while (1) /* valid input */
             if (current_char == '\n') /* check for newline */
             {
                 line = realloc(line, line_len + 1); /* reallocate memory */
+                if (!line) /* if realloc fails */
+                    return (NULL);
                 line[line_len] = '\0'; /* null-terminate line */
                 return (line); /* return line */
             }
 
             line = realloc(line, line_len + 1); /* reallocate memory */
+            if (!line) /* if realloc fails */
+                return (NULL);
             line[line_len] = current_char; /* add character to line */
             line_len++; /* increment line length */
         }
