@@ -1,5 +1,19 @@
 #include "_getline.h"
 
+static file_desc_st_t *fd_list = NULL; /* pointer to head of list */
+
+/**
+ * get_fd_state - finds file descriptor state (or creates it)
+ * @fd: file descriptor to get state for
+ * 
+ * Return: pointer to file descriptor state, or NULL on error
+ */
+file_desc_st_t *get_fd_state(int fd)
+{
+	file_desc_st_t *current = fd_list, *state; /* for traversal */
+
+
+
 /**
  * _getline - reads entire line from file descriptor
  * @fd: file descriptor being read
