@@ -32,16 +32,32 @@ file_desc_st_t *get_fd_state(int fd)
 }
 
 /**
+ * free_states - frees memory for file descriptor states
+ * 
+ * Return: void
+ */
+void free_states(void)
+{
+	file_desc_st_t *current = fd_list, *next; /* for traversal */
+
+	while (current) /* traverse state list */
+	{
+		next = current->next_fd; /* save next state in list */
+		free(current); /* free current state */
+		current = next; /* on to the next one */
+	}
+	fd_list = NULL; /* reset once all states freed */
+}
+
+/**
  * _getline - reads entire line from file descriptor
  * @fd: file descriptor being read
  *
- * Return: null-terminated string (excluding \n) or NULL on EOF or error
+ * Return: null-terminated string (excluding \n) or NULL on EOF, error, or -1
  */
 char *_getline(const int fd)
 {
-	static char buff[READ_SIZE]; /* buffer to store read data */
-	static size_t i;			 /* current index in buffer */
-	static ssize_t buff_bytes;	 /* bytes read into buffer */
+	file_desc_st_t *state; /* file descriptor state */
 	char *line = NULL;			 /* string allocated for line */
 	size_t line_len = 0;		 /* length of line being read */
 

@@ -30,5 +30,6 @@ typedef struct file_desc_st
 
 char *_getline(const int fd);
 file_desc_st_t *get_fd_state(int fd);
+void free_states(void);
 
 #endif
