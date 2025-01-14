@@ -29,5 +29,6 @@ typedef struct file_desc_st
 } file_desc_st_t;
 
 char *_getline(const int fd);
+file_desc_st_t *get_fd_state(int fd);
 
 #endif
