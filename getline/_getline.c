@@ -10,9 +10,26 @@ static file_desc_st_t *fd_list = NULL; /* pointer to head of list */
  */
 file_desc_st_t *get_fd_state(int fd)
 {
-	file_desc_st_t *current = fd_list, *state; /* for traversal */
+	file_desc_st_t *current = fd_list, *new_state; /* for traversal */
 
+	while (current) /* traverse list for existing state */
+	{
+		if (current->fd == fd) /* check for match */
+			return (current); /* return state if found */
+		current = current->next_fd; /* move to next state */
+	}
 
+	new_state = malloc(sizeof(file_desc_st_t)); /* memory for a new state */
+	if (!new_state) /* failure */
+		return (NULL);
+	new_state->fd = fd; /* set file descriptor */
+	new_state->buff_bytes = 0; /* init size of bytes read */
+	new_state->i = 0; /* init index */
+	new_state->next_fd = fd_list; /* set next to current head */
+	fd_list = new_state; /* make new state as head */
+
+	return (new_state); /* shiny new state */
+}
 
 /**
  * _getline - reads entire line from file descriptor
