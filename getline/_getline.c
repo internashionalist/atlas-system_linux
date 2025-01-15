@@ -101,4 +101,4 @@ char *_getline(const int fd)
 			line[line_len++] = current_char; /* append char to line */
 		}
 	}
-}
+} /* IT WORKS */
