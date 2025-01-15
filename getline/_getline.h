@@ -25,7 +25,7 @@ typedef struct file_desc_st
     char buff[READ_SIZE];
     ssize_t buff_bytes;
     size_t i;
-    struct file_desc_state *next_fd;
+    struct file_desc_st *next_fd;
 } file_desc_st_t;
 
 char *_getline(const int fd);
