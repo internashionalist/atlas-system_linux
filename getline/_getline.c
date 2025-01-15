@@ -71,46 +71,34 @@ char *_getline(const int fd)
 
 	while (1) /* valid input */
 	{
-		if (state->i >= (size_t)state->buff_bytes) /* check if buffer refill needed */
+		/* check if buffer refill needed */
+		if (state->i >= (size_t)state->buff_bytes)
 		{
 			state-> i = 0; /* reset index */
-			state->buff_bytes = read(fd, state->buff, READ_SIZE); /* read into buffer */
+			state->buff_bytes = read(fd, state->buff, READ_SIZE); /* read */
 			if (state->buff_bytes <= 0) /* check for EOF or error */
 			{
 				if (line) /* remaining data if any */
 				{
-					line = realloc(line, line_len + 1); /* reallocate memory */
+					line = realloc(line, line_len + 1);
 					line[line_len] = '\0'; /* null-terminate line */
 				}
 				return (line); /* return at EOF */
 			}
 		}
 
+		while (state->i < (size_t)state->buff_bytes) /* loop through */
 		{
-			i = 0;
-			buff_bytes = read(fd, buff, READ_SIZE); /* read into buffer */
-			if (buff_bytes <= 0)					/* check for EOF or error */
-			{
-				if (line) /* if line has data before EOF */
-				{
-					line = realloc(line, line_len + 1); /* reallocate memory */
-					line[line_len] = '\0';				/* null-terminate line */
-				}
-				return (line); /* once no more data, return line */
-			}
-		}
-		while (i < (size_t)buff_bytes) /* loop through buffer */
-		{
-			char current_char = buff[i++]; /* iterate current character */
+			char current_char = state->buff[state->i++]; /* iterate chars */
 
 			if (current_char == '\n') /* check for newline */
 			{
-				line = realloc(line, line_len + 1); /* reallocate memory */
-				line[line_len] = '\0';				/* null-terminate line */
-				return (line);						/* return line */
+				line = realloc(line, line_len + 1);
+				line[line_len] = '\0'; /* null-terminate line */
+				return (line);
 			}
-			line = realloc(line, line_len + 1); /* reallocate memory */
-			line[line_len++] = current_char;	/* add character to line */
+			line = realloc(line, line_len + 1);
+			line[line_len++] = current_char; /* append char to line */
 		}
 	}
 }
