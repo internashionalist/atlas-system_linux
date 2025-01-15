@@ -61,11 +61,31 @@ char *_getline(const int fd)
 	char *line = NULL;			 /* string allocated for line */
 	size_t line_len = 0;		 /* length of line being read */
 
-	if (READ_SIZE <= 0 || fd < 0) /* check for invalid input */
+	if (fd == -1) /* free everything and reset all static variables */
+	{
+		free_states();
 		return (NULL);
+	}
+
+	state = get_fd_state(fd); /* call helper to get fd state */
+
 	while (1) /* valid input */
 	{
-		if (i >= (size_t)buff_bytes) /* check if buffer is empty */
+		if (state->i >= (size_t)state->buff_bytes) /* check if buffer refill needed */
+		{
+			state-> i = 0; /* reset index */
+			state->buff_bytes = read(fd, state->buff, READ_SIZE); /* read into buffer */
+			if (state->buff_bytes <= 0) /* check for EOF or error */
+			{
+				if (line) /* remaining data if any */
+				{
+					line = realloc(line, line_len + 1); /* reallocate memory */
+					line[line_len] = '\0'; /* null-terminate line */
+				}
+				return (line); /* return at EOF */
+			}
+		}
+
 		{
 			i = 0;
 			buff_bytes = read(fd, buff, READ_SIZE); /* read into buffer */
