@@ -199,9 +199,9 @@ int main(int argc, char **argv)
 
 	for (i = 1; i < argc; i++) /* counts number of directories */
 	{
-		sprintf(path, "%s%s", "./", argv[i]);
 		if (argv[i][0] != '-')
 		{
+			sprintf(path, "%s%s", "./", argv[i]);
 			if (is_dir(path))
 				dir_count++;
 			else
