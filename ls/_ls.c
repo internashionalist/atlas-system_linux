@@ -207,7 +207,9 @@ int main(int argc, char **argv)
 		sprintf(path, "./");  /* reset path, memset not allowed */
 	}
 	if (!dir_count && !non_dir_count)  /* default no files nor folders */
+	{
 		print_dir(".", options, argv[0]);
+	}
 	else /* iterate through arguments and print files & directories */
 	{
 		for (i = 1; i < argc; i++)
@@ -215,18 +217,24 @@ int main(int argc, char **argv)
 			if (argv[i][0] != '-')
 			{
 				sprintf(path, "%s%s", "./", argv[i]);
-				/* prints directory if multiple directories */
-				if ((dir_count > 0) && (is_dir(path) && (non_dir_count > 0)))
+
+				/* prints directory name if multiple directories */
+				if (is_dir(path))
 				{
-					if (print_count)
-						printf("\n");
-					printf("%s:\n", argv[i]);
+					if (dir_count > 1)
+					{
+						if (print_count > 0)
+							printf("\n");
+						printf("%s:\n", argv[i]);
+					}
 				}
+
 				print_dir(path, options, argv[0]);
 				sprintf(path, "./");  /* reset path, memset not allowed */
 				print_count++;
 			}
 		}
 	}
+
 	return (0);
 }
