@@ -40,24 +40,38 @@ char *adjust_long_time(char *str)
  * @str_two: string that needs freeing
  *
  */
-void print_error(int msg_num, char* program_name, char *file_path, int errnum,
-char *str_one, char *str_two)
+void print_error(int msg_num, char *program_name, char *file_path, int errnum,
+				 char *str_one, char *str_two)
 {
-    /* figure out which message should be printed */
-    if (errnum == 2) /* file not found */
-        fprintf(stderr, "%s: cannot access %s: ", program_name, file_path);
-    else if (errnum == 13) /* permission denied */
-        fprintf(stderr, "%s: cannot open directory %s: ", program_name, file_path);
+	/* figure out which message should be printed */
+	if (errnum == 2) /* file not found */
+		fprintf(stderr, "%s: cannot access %s: ", program_name, file_path);
+	else if (errnum == 13) /* permission denied */
+		fprintf(stderr, "%s: cannot open directory %s: ", program_name, file_path);
 
-    perror(NULL); /* system error message */
+	perror(NULL); /* system error message */
 
-    /* clean-up for non-fatal */
-    if (str_one)
-        free(str_one);
-    if (str_two)
-        free(str_two);
+	/* clean-up for non-fatal */
+	if (str_one)
+		free(str_one);
+	if (str_two)
+		free(str_two);
 
 	/* fatal errors (exit)*/
-    if (msg_num == 2)
-        exit(errnum);
+	if (msg_num == 2)
+		exit(errnum);
+}
+
+/**
+ * get_month_name - gets and abbreviates month name
+ * @month: month number
+ *
+ * Return: pointer to month abbreviation
+ */
+char *get_month_name(int month)
+{
+	char *months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
+					  "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+	return (months[month]);
 }

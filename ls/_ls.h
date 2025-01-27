@@ -14,19 +14,23 @@
 #include <time.h>
 #include <fcntl.h>
 
-#define MAX_OPTIONS 4  /* currently handles -l, -a, -A, -1 */
+#define MAX_OPTIONS 4 /* currently handles -l, -a, -A, -1 */
 
 int is_file(char *);
 int is_dir(char *);
-char *get_dir_of_path(char *, char*);
+char *get_dir_of_path(char *, char *);
 char *get_file_of_path(char *, char *);
-int _strcmp(char *, char*);
+int _strcmp(char *, char *);
 char *_memcpy(char *, char *, int);
 char *_strcpy(char *, char *);
 char *remove_dot_slash(char *, char *);
 void get_perms(struct stat, char *);
 void char_replacer(char *, char, char);
 char *adjust_long_time(char *);
-void print_error(int, char*, char *, int, char *, char *);
+void print_error(int, char *, char *, int, char *, char *);
+void long_print(char *);
+void print_dir(char *, int *, char *);
+int *parse_options(int, char **);
+char *get_month_name(int);
 
 #endif
