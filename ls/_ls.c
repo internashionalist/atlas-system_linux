@@ -95,25 +95,24 @@ void print_dir(char *path, int *options, char *program_name)
 		return;
 	}
 
+	/* consider refactoring this next section to another function */
 	while ((entry = readdir(dir)) != NULL)
+	{
+		if (!op_all && entry->d_name[0] == '.') /* skip hidden files unless -a */
+			continue;
 
-		/* consider refactoring this next section to another function */
-		while ((entry = readdir(dir)) != NULL)
-		{
-			if (!op_all && entry->d_name[0] == '.') /* skip hidden files unless -a */
-				continue;
+		if (op_almost &&
+			((entry->d_name[0] != '.' && entry->d_name[1] != '\0') ||
+			 (entry->d_name[0] != '.' && entry->d_name[1] != '.' &&
+			  entry->d_name[2] != '\0')))
+			continue;
 
-			if (op_almost &&
-				((entry->d_name[0] != '.') || (entry->d_name[1] != '\0') ||
-				 (entry->d_name[0] != '.') || (entry->d_name[1] != '.') && (entry->d_name[2] != '\0')))
-				continue;
-
-			sprintf(long_path, "%s/%s", path, entry->d_name);
-			if (op_long)
-				long_print(long_path);
-			else
-				printf("%s\n", entry->d_name);
-		}
+		sprintf(long_path, "%s/%s", path, entry->d_name);
+		if (op_long)
+			long_print(long_path);
+		else
+			printf("%s\n", entry->d_name);
+	}
 
 	closedir(dir);
 }
