@@ -64,7 +64,7 @@ void long_print(char *path)
 				mod_time->tm_year + 1900);
 	}
 
-	printf("%s %lu %s %s %5ld %s %s\n",
+	printf("%s %2lu %-8s %-8s %5ld %s %s\n",
 		   perms, buf.st_nlink, uname, gname, buf.st_size, time_str, file_name);
 }
 
