@@ -34,7 +34,7 @@ void long_print(char *path)
 
 	get_perms(buf, perms);
 
-	pwd = getpwuid(buf.st_uid); /* get user name from pwd struct */
+	pwd = getpwuid(buf.st_uid);	  /* get user name from pwd struct */
 	group = getgrgid(buf.st_gid); /* get group name from group struct */
 	sprintf(uname, "%s", pwd ? pwd->pw_name : "unknown");
 	sprintf(gname, "%s", group ? group->gr_name : "unknown");
@@ -57,8 +57,14 @@ void long_print(char *path)
 				mod_time->tm_year + 1900);
 	}
 
-	printf("%s %2lu %-8s %-8s %5ld %s %s\n",
-		   perms, buf.st_nlink, uname, gname, buf.st_size, time_str, file_name);
+	printf("%s %2lu %-8s %-8s %5lld %s %s\n",
+		   perms,
+		   (unsigned long)buf.st_nlink,
+		   uname,
+		   gname,
+		   (long long)buf.st_size,
+		   time_str,
+		   file_name);
 }
 
 /**
