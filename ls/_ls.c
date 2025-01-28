@@ -27,7 +27,7 @@ void long_print(char *path)
 	if (lstat(path, &buf) == -1) /* check for lstat failure */
 	{
 		/* buffer for error message */
-		sprintf(error_message, "ls: cannot access %s", clean_path);
+		sprintf(error_message, "ls: cannot access %s", file_name);
 		perror(error_message);
 		return;
 	}
@@ -65,7 +65,7 @@ void long_print(char *path)
 	}
 
 	printf("%s %lu %s %s %5ld %s %s\n",
-			perms, buf.st_nlink, uname, gname, buf.st_size, time_str, clean_path);
+		   perms, buf.st_nlink, uname, gname, buf.st_size, time_str, file_name);
 }
 
 /**
@@ -97,20 +97,20 @@ void print_dir(char *path, int *options, char *program_name)
 
 	while ((entry = readdir(dir)) != NULL)
 
-	/* consider refactoring this next section to another function */
-	while ((entry = readdir(dir)) != NULL)
-	{
-		if (!op_all && entry->d_name[0] == '.') /* skip hidden files unless -a */
-			continue;
-		if ((op_almost && (!_strcmp(entry->d_name, "."))) || (!_strcmp(entry->d_name, "..")))
-			continue;
+		/* consider refactoring this next section to another function */
+		while ((entry = readdir(dir)) != NULL)
+		{
+			if (!op_all && entry->d_name[0] == '.') /* skip hidden files unless -a */
+				continue;
+			if ((op_almost && (!_strcmp(entry->d_name, "."))) || (!_strcmp(entry->d_name, "..")))
+				continue;
 
-		sprintf(long_path, "%s/%s", path, entry->d_name);
-		if (op_long)
-			long_print(long_path);
-		else
-			printf("%s\n", entry->d_name);
-	}
+			sprintf(long_path, "%s/%s", path, entry->d_name);
+			if (op_long)
+				long_print(long_path);
+			else
+				printf("%s\n", entry->d_name);
+		}
 
 	closedir(dir);
 }
