@@ -16,10 +16,13 @@ void long_print(char *path)
 	char error_message[256];
 	time_t current_time = time(NULL);
 	struct tm *mod_time = NULL, *curr_time = localtime(&current_time);
-	char *clean_path = path;
+	char *file_name = path;
 
-	if (path[0] == '.' && path[1] == '/') /* if string starts with ./ */
-		clean_path = path + 2;
+	for (char *p = path; *p; p++)
+	{
+		if (*p == '/')
+			file_name = p + 1;
+	}
 
 	if (lstat(path, &buf) == -1) /* check for lstat failure */
 	{
@@ -62,7 +65,7 @@ void long_print(char *path)
 	}
 
 	printf("%s %lu %s %s %5ld %s %s\n",
-		   perms, buf.st_nlink, uname, gname, buf.st_size, time_str, clean_path);
+			perms, buf.st_nlink, uname, gname, buf.st_size, time_str, clean_path);
 }
 
 /**
@@ -94,20 +97,20 @@ void print_dir(char *path, int *options, char *program_name)
 
 	while ((entry = readdir(dir)) != NULL)
 
-		/* consider refactoring this next section to another function */
-		while ((entry = readdir(dir)) != NULL)
-		{
-			if (!op_all && entry->d_name[0] == '.') /* skip hidden files unless -a */
-				continue;
-			if ((op_almost && (!_strcmp(entry->d_name, "."))) || (!_strcmp(entry->d_name, "..")))
-				continue;
+	/* consider refactoring this next section to another function */
+	while ((entry = readdir(dir)) != NULL)
+	{
+		if (!op_all && entry->d_name[0] == '.') /* skip hidden files unless -a */
+			continue;
+		if ((op_almost && (!_strcmp(entry->d_name, "."))) || (!_strcmp(entry->d_name, "..")))
+			continue;
 
-			sprintf(long_path, "%s/%s", path, entry->d_name);
-			if (op_long)
-				long_print(long_path);
-			else
-				printf("%s\n", entry->d_name);
-		}
+		sprintf(long_path, "%s/%s", path, entry->d_name);
+		if (op_long)
+			long_print(long_path);
+		else
+			printf("%s\n", entry->d_name);
+	}
 
 	closedir(dir);
 }
