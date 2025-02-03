@@ -31,26 +31,26 @@ char *_strcpy(char *dest, char *src)
  */
 char *remove_dot_slash(char *dest, char *src)
 {
-    int i;
+	int i;
 
-    if (!dest || !src)
-        return (NULL);
+	if (!dest || !src)
+		return (NULL);
 
-    if (src[0] == '.' && src[1] == '/') /* if string starts with ./ */
+	if (src[0] == '.' && src[1] == '/') /* if string starts with ./ */
 	{
-        for (i = 0; src[i + 2] != '\0'; i++) /* copy without ./ */
+		for (i = 0; src[i + 2] != '\0'; i++) /* copy without ./ */
 		{
-            dest[i] = src[i + 2];
-        }
-        dest[i] = '\0';
-    }
+			dest[i] = src[i + 2];
+		}
+		dest[i] = '\0';
+	}
 
-	else 
+	else
 	{ /* otherwise, just copy string */
-        _strcpy(dest, src);
-    }
+		_strcpy(dest, src);
+	}
 
-    return (dest);
+	return (dest);
 }
 
 /**
@@ -60,7 +60,7 @@ char *remove_dot_slash(char *dest, char *src)
  * @n: number of bytes copied
  *
  * Return: pointer to memory area
-*/
+ */
 char *_memcpy(char *dest, char *src, int n)
 {
 	int i;
@@ -77,7 +77,7 @@ char *_memcpy(char *dest, char *src, int n)
  * @s2: 2nd string
  *
  * Return: 0 if equal, < 0 if s1 < s2, > 0 otherwise
-*/
+ */
 int _strcmp(char *s1, char *s2)
 {
 	int diff = 0;

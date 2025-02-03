@@ -87,7 +87,7 @@ void print_dir(char *path, int *options, char *program_name)
 	if (path[0] == '.' && path[1] == '/') /* if string starts with ./ */
 		clean_path = path + 2;
 
-	n = scandir(path, &entry_list, NULL, alphasort);
+	n = scandir(path, &entry_list, NULL, versionsort);
 	if (n < 0)
 	{
 		print_error(1, program_name, clean_path, errno, NULL, NULL);
@@ -102,7 +102,7 @@ void print_dir(char *path, int *options, char *program_name)
 		{
 			if (!op_almost || /* skip . and .. unless -A */
 				(entry->d_name[1] == '\0' ||
-				(entry->d_name[1] == '.' && entry->d_name[2] == '\0')))
+				 (entry->d_name[1] == '.' && entry->d_name[2] == '\0')))
 			{
 				free(entry);
 				continue;
