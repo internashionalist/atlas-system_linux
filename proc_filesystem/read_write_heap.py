@@ -6,13 +6,14 @@ import os
 import sys
 import ctypes
 
+
 def heap_region(pid):
     """
     Finds the start and end of a process's heap.
-    
+
     Args:
         pid (str): process id
-    
+
     Returns:
         tuple: start and end of heap as integers
     """
@@ -31,16 +32,17 @@ def heap_region(pid):
                 end = int(addr_range[1], 16)
                 return start, end
 
-    print(f"Error: You have no heap. You are heapless. {pid}.")  # heap not found
+    print(f"Error: You have no heap. You are heapless. {pid}.")
     sys.exit(1)
+
 
 def read_heap(pid, start, end):
     """
     Reads the heap of a process.
-    
+
     Args:
         pid (str): process id
-    
+
     Returns:
         None
     """
@@ -57,15 +59,16 @@ def read_heap(pid, start, end):
 
     return memory
 
+
 def write_heap(pid, address, data):
     """
     Writes to the heap of a process.
-    
+
     Args:
         pid (str): process id
         address (int): address to overwrite in heap
         data (bytes): replacement data
-    
+
     Returns:
         None
     """
@@ -80,13 +83,14 @@ def write_heap(pid, address, data):
     mem_file.write(data)
     mem_file.close()
 
+
 def main():
     """
     Puts it all together: parsing, memory search, and write/replacement
-    
+
     Args:
         None
-    
+
     Returns:
         None
     """
@@ -100,11 +104,11 @@ def main():
         print("Error: Gotta be a number, kid.")
         sys.exit(1)
 
-    search_string = sys.argv[2].encode("ascii")  # Convert search string to ASCII bytes
+    search_string = sys.argv[2].encode("ascii")  # Convert to ASCII bytes
     replace_string = sys.argv[3].encode("ascii")
 
     start, end = heap_region(pid)  # get heap region/range
-    memory = read_heap(pid, start, end) # read heap
+    memory = read_heap(pid, start, end)  # read heap
 
     if search_string not in memory:
         print(f"Error: Search string {search_string} is nowhere to be found.")
@@ -117,6 +121,7 @@ def main():
     write_heap(pid, address, replace_string)  # write replacement
 
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()
