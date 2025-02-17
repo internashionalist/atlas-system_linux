@@ -116,7 +116,7 @@ def main():
 
     address = start + memory.find(search_string)  # address of search string
     # pad the replacement string with null bytes
-    replace_string = replace_string.ljust(len(search_string), b'\x00') 
+    replace_string = replace_string.ljust(len(search_string), b'\x00')
 
     write_heap(pid, address, replace_string)  # write replacement
 
