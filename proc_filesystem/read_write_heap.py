@@ -1,4 +1,4 @@
-#!usr/bin/python3
+#!/usr/bin/python3
 """
 This script uses the /proc filesystem to read and write to the heap of a pid.
 """
