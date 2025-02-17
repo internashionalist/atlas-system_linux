@@ -100,34 +100,7 @@ def main():
         print("Error: Gotta be a number, kid.")
         sys.exit(1)
 
-    search_string = sys.argv[2].encode(ascii)
-    replace_string = sys.argv[3].encode(ascii)
-
-    if len(search_string) > len(replace_string):
-        print("Error: It's gotta be at least THIS long to ride the ride.")
-        sys.exit(1)
-
-def main():
-    """
-    Puts it all together: parsing, memory search, and write/replacement
-    
-    Args:
-        None
-    
-    Returns:
-        None
-    """
-    if len(sys.argv) != 4:  # if arg count wrong
-        print(f"Usage: {sys.argv[0]} pid search_string replace_string. Idiot.")
-        sys.exit(1)
-
-    pid = sys.argv[1]
-
-    if not pid.isdigit():
-        print("Error: Gotta be a number, kid.")
-        sys.exit(1)
-
-    search_string = sys.argv[2].encode("ascii")  # convert to ascii
+    search_string = sys.argv[2].encode("ascii")  # Convert search string to ASCII bytes
     replace_string = sys.argv[3].encode("ascii")
 
     if len(search_string) > len(replace_string):
