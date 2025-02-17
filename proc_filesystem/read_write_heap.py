@@ -120,5 +120,7 @@ def main():
 
     write_heap(pid, address, replace_string)  # write replacement
 
+    sys.exit(0)
+
 if __name__ == "__main__":
     main()
