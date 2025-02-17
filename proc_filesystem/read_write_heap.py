@@ -103,10 +103,6 @@ def main():
     search_string = sys.argv[2].encode("ascii")  # Convert search string to ASCII bytes
     replace_string = sys.argv[3].encode("ascii")
 
-    if len(search_string) > len(replace_string):
-        print("Error: It's gotta be at least THIS long to ride the ride.")
-        sys.exit(1)
-
     start, end = heap_region(pid)  # get heap region/range
     memory = read_heap(pid, start, end) # read heap
 
