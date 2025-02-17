@@ -120,7 +120,5 @@ def main():
 
     write_heap(pid, address, replace_string)  # write replacement
 
-    print(f"SUCCESS!")
-
 if __name__ == "__main__":
     main()
