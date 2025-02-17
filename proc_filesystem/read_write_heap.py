@@ -34,3 +34,25 @@ def heap_region(pid):
     print(f"Error: Heap not found for process {pid}.")  # heap not found
     sys.exit(1)
 
+def read_heap(pid, start, end):
+    """
+    Reads the heap of a process.
+    
+    Args:
+        pid (str): process id
+    
+    Returns:
+        None
+    """
+    mem_path = f"/proc/{pid}/mem"  # path to mem file
+
+    if not os.path.exists(mem_path):
+        print(f"Error: Process {pid} memory not found.")
+        sys.exit(1)
+
+    mem_file = open(mem_path, "rb")
+    mem_file.seek(start)
+    memory = mem_file.read(end - start)  # read heap
+    mem_file.close()
+
+    return memory
