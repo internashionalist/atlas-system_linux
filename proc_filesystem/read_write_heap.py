@@ -142,10 +142,8 @@ def main():
         sys.exit(1)
 
     address = start + memory.find(search_string)  # find address of search string
-    print(f"FOUND IT at address {hex(address)}")
 
     write_heap(pid, address, replace_string)  # write replacement
-    print(f"Replaced it. Like it was never there.")
 
 if __name__ == "__main__":
     main()
