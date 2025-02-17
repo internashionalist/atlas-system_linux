@@ -31,7 +31,7 @@ def heap_region(pid):
                 end = int(addr_range[1], 16)
                 return start, end
 
-    print(f"Error: Heap not found for process {pid}.")  # heap not found
+    print(f"Error: You have no heap. You are heapless. {pid}.")  # heap not found
     sys.exit(1)
 
 def read_heap(pid, start, end):
@@ -47,7 +47,7 @@ def read_heap(pid, start, end):
     mem_path = f"/proc/{pid}/mem"  # path to mem file
 
     if not os.path.exists(mem_path):
-        print(f"Error: Process {pid} memory not found.")
+        print(f"Error: Your process {pid} has been forgotten.")
         sys.exit(1)
 
     mem_file = open(mem_path, "rb")
@@ -56,3 +56,96 @@ def read_heap(pid, start, end):
     mem_file.close()
 
     return memory
+
+def write_heap(pid, address, data):
+    """
+    Writes to the heap of a process.
+    
+    Args:
+        pid (str): process id
+        address (int): address to overwrite in heap
+        data (bytes): replacement data
+    
+    Returns:
+        None
+    """
+    mem_path = f"/proc/{pid}/mem"
+
+    if not os.path.exists(mem_path):
+        print(f"Error: Your process {pid} has been forgotten.")
+        sys.exit(1)
+
+    mem_file = open(mem_path, "r+b")
+    mem_file.seek(address)
+    mem_file.write(data)
+    mem_file.close()
+
+def main():
+    """
+    Puts it all together: parsing, memory search, and write/replacement
+    
+    Args:
+        None
+    
+    Returns:
+        None
+    """
+    if len(sys.argv) != 4:  # if arg count wrong
+        print(f"Usage: {sys.argv[0]} pid search_string replace_string. Idiot.")
+        sys.exit(1)
+
+    pid = sys.argv[1]
+
+    if not pid.isdigit():
+        print("Error: Gotta be a number, kid.")
+        sys.exit(1)
+
+    search_string = sys.argv[2].encode(ascii)
+    replace_string = sys.argv[3].encode(ascii)
+
+    if len(search_string) > len(replace_string):
+        print("Error: It's gotta be at least THIS long to ride the ride.")
+        sys.exit(1)
+
+def main():
+    """
+    Puts it all together: parsing, memory search, and write/replacement
+    
+    Args:
+        None
+    
+    Returns:
+        None
+    """
+    if len(sys.argv) != 4:  # if arg count wrong
+        print(f"Usage: {sys.argv[0]} pid search_string replace_string. Idiot.")
+        sys.exit(1)
+
+    pid = sys.argv[1]
+
+    if not pid.isdigit():
+        print("Error: Gotta be a number, kid.")
+        sys.exit(1)
+
+    search_string = sys.argv[2].encode("ascii")  # convert to ascii
+    replace_string = sys.argv[3].encode("ascii")
+
+    if len(search_string) > len(replace_string):
+        print("Error: It's gotta be at least THIS long to ride the ride.")
+        sys.exit(1)
+
+    start, end = heap_region(pid)  # get heap region/range
+    memory = read_heap(pid, start, end) # read heap
+
+    if search_string not in memory:
+        print(f"Error: Search string {search_string} is nowhere to be found.")
+        sys.exit(1)
+
+    address = start + memory.find(search_string)  # find address of search string
+    print(f"FOUND IT at address {hex(address)}")
+
+    write_heap(pid, address, replace_string)  # write replacement
+    print(f"Replaced it. Like it was never there.")
+
+if __name__ == "__main__":
+    main()
