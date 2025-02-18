@@ -52,7 +52,7 @@ def read_heap(pid, start, end):
         print(f"Error: Your process {pid} has been forgotten.")
         sys.exit(1)
 
-    mem_file = open(mem_path, "rb")
+    mem_file = open(mem_path, "rb")  # open/read in binary
     mem_file.seek(start)
     memory = mem_file.read(end - start)  # read heap
     mem_file.close()
@@ -78,9 +78,9 @@ def write_heap(pid, address, data):
         print(f"Error: Your process {pid} has been forgotten.")
         sys.exit(1)
 
-    mem_file = open(mem_path, "r+b")
+    mem_file = open(mem_path, "r+b")  # open/read/write in binary mode
     mem_file.seek(address)
-    mem_file.write(data)
+    mem_file.write(data)  # write replacement
     mem_file.close()
 
 
@@ -95,7 +95,7 @@ def main():
         None
     """
     if len(sys.argv) != 4:  # if arg count wrong
-        print(f"Usage: {sys.argv[0]} pid search_string replace_string. Idiot.")
+        print(f"Usage: {sys.argv[0]} pid search_string replace_string.")
         sys.exit(1)
 
     pid = sys.argv[1]

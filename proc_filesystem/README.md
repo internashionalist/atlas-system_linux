@@ -38,7 +38,7 @@ Read or watch:
 
 ## Tasks
 
-0. Hack the VM
+0 - Hack the VM
 
   Write a script that finds a string in the heap of a running process, and replaces it.
 
@@ -49,7 +49,7 @@ Read or watch:
     - Output: you can print whatever you think is interesting
     - On usage error, print an error message on `stdout` and exit with status code `1`
 
-1. Blog post #1
+1 - Blog post #1
 
   Write a blog post about the `/proc filesystem` and the `/proc/maps` and `/proc/mem files`.
 
