@@ -104,7 +104,7 @@ def main():
         print("Error: Gotta be a number, kid.")
         sys.exit(1)
 
-    search_string = sys.argv[2].encode("ascii")  # Convert to ASCII bytes
+    search_string = sys.argv[2].encode("ascii")  # convert to ASCII bytes
     replace_string = sys.argv[3].encode("ascii")
 
     start, end = heap_region(pid)  # get heap region/range
