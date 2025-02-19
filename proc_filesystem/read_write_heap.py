@@ -4,7 +4,6 @@ This script uses the /proc filesystem to read and write to the heap of a pid.
 """
 import os
 import sys
-import ctypes
 
 
 def heap_region(pid):
@@ -28,7 +27,7 @@ def heap_region(pid):
             if "heap" in line:  # find heap
                 parsed = line.split()  # split line
                 addr_range = parsed[0].split('-')  # split address range
-                start = int(addr_range[0], 16)
+                start = int(addr_range[0], 16)  # convert to int
                 end = int(addr_range[1], 16)
                 return start, end
 
@@ -48,7 +47,7 @@ def read_heap(pid, start, end):
     """
     mem_path = f"/proc/{pid}/mem"  # path to mem file
 
-    if not os.path.exists(mem_path):
+    if not os.path.exists(mem_path):  # check if process exists
         print(f"Error: Your process {pid} has been forgotten.")
         sys.exit(1)
 
@@ -79,7 +78,7 @@ def write_heap(pid, address, data):
         sys.exit(1)
 
     mem_file = open(mem_path, "r+b")  # open/read/write in binary mode
-    mem_file.seek(address)
+    mem_file.seek(address)  # seek to address
     mem_file.write(data)  # write replacement
     mem_file.close()
 
