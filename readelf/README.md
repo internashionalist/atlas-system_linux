@@ -16,8 +16,6 @@
 
 At the end of this project, you are expected to be able to [explain to anyone](https://fs.blog/feynman-learning-technique/), **without the help of Google**:
 
-### General
-
 - What is the ELF format
 - What kind of files are in the ELF format
 - What are the different parts that constitute an ELF file
@@ -27,8 +25,6 @@ At the end of this project, you are expected to be able to [explain to anyone](h
 - How to parse an ELF file using C structures
 
 ## Requirements
-
-### General
 
 - Allowed editors: `vi`, `vim`, `emacs`
 - All your files will be compiled on Ubuntu 14.04 LTS
