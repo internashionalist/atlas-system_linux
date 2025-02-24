@@ -73,11 +73,14 @@ void magic_(unsigned char *ident)
  */
 void class_(unsigned char clas)
 {
-    printf("  Class:                             ");
     if (clas == ELFCLASS32)
         printf("ELF32\n");
     else if (clas == ELFCLASS64)
         printf("ELF64\n");
+    else if (clas == ELFCLASSNONE)
+        printf("None\n");
+    else
+        printf("Unknown\n");
 }
 
 /**
@@ -86,11 +89,14 @@ void class_(unsigned char clas)
  */
 void data_(unsigned char dat)
 {
-    printf("  Data:                              ");
     if (dat == ELFDATA2LSB)
         printf("2's complement, little endian\n");
     else if (dat == ELFDATA2MSB)
         printf("2's complement, big endian\n");
+    else if (dat == ELFDATANONE)
+        printf("None\n");
+    else
+        printf("Unknown\n");
 }
 
 /**
@@ -99,7 +105,12 @@ void data_(unsigned char dat)
  */
 void version_(unsigned char version)
 {
-    printf("  Version:                           %d (current)\n", version);
+    if (version == EV_CURRENT)
+        printf("%d (current)\n", version);
+    if (version == EV_NONE)
+        printf("None\n");
+    else
+        printf("Unknown\n");
 }
 
 /**
@@ -111,7 +122,7 @@ void osabi_(unsigned char osabi)
     printf("  OS/ABI:                            ");
     switch (osabi)
     {
-        case ELFOSABI_SYSV: printf("UNIX - System V\n"); break;
+        case ELFOSABI_SYSV:printf("UNIX - System V\n"); break;
         case ELFOSABI_HPUX: printf("HP-UX\n"); break;
         case ELFOSABI_NETBSD: printf("NetBSD\n"); break;
         case ELFOSABI_LINUX: printf("Linux\n"); break;
@@ -127,21 +138,11 @@ void osabi_(unsigned char osabi)
 }
 
 /**
- * abi_version_ - prints the ELF ABI version
- * @abi_version: ELF ABI version
- */
-void abi_version_(unsigned char abi_version)
-{
-    printf("  ABI Version:                       %d\n", abi_version);
-}
-
-/**
  * type_ - prints the ELF type (e.g., executable, shared object)
  * @type: ELF file type
  */
 void type_(uint16_t type)
 {
-    printf("  Type:                              ");
     switch (type)
     {
         case ET_NONE: printf("None\n"); break;
@@ -159,7 +160,6 @@ void type_(uint16_t type)
  */
 void machine_(uint16_t machine)
 {
-    printf("  Machine:                           ");
     switch (machine)
     {
         case EM_NONE: printf("None\n"); break;
@@ -174,108 +174,4 @@ void machine_(uint16_t machine)
         case EM_ARM: printf("ARM\n"); break;
         default: printf("Unknown\n"); break;
     }
-}
-
-/**
- * void file_version_ - prints the ELF file version
- * @version: ELF file version
- */
-void file_version_(uint32_t version)
-{
-    printf("  Version:                           0x%x\n", version);
-}
-
-/**
- * entry_point_ - prints the ELF entry point address
- * @entry: ELF entry point address
- */
-void entry_point_(uint64_t entry)
-{
-    printf("  Entry point address:               0x%lx\n", entry);
-}
-
-/**
- * program_offset_ - prints the ELF program header offset
- * @offset: ELF program header offset
- */
-void program_offset_(uint64_t offset)
-{
-    printf(
-        "  Start of program headers:          %lu (bytes into file)\n", offset);
-}
-
-/**
- * section_offset_ - prints the ELF section header offset
- * @offset: ELF section header offset
- */
-void section_offset_(uint64_t offset)
-{
-    printf(
-        "  Start of section headers:          %lu (bytes into file)\n", offset);
-}
-
-/**
- * flags_ - prints the ELF flags
- * @flags: ELF flags
- */
-void flags_(uint32_t flags)
-{
-    if (flags == 0)
-        printf("  Flags:                             0x0\n");
-    else
-        printf("  Flags:                             0x%x\n", flags);
-}
-
-/**
- * header_size_ - prints the ELF header size
- * @size: ELF header size
- */
-void header_size_(uint16_t size)
-{
-    printf("  Size of this header:               %u (bytes)\n", size);
-}
-
-/**
- * program_header_size_ - prints the size of the program headers
- * @size: ELF program header size
- */
-void program_header_size_(uint16_t size)
-{
-    printf("  Size of program headers:           %u (bytes)\n", size);
-}
-
-/**
- * program_header_count_ - prints the number of program headers
- * @count: number of program headers
- */
-void program_header_count_(uint16_t count)
-{
-    printf("  Number of program headers:         %u\n", count);
-}
-
-/**
- * section_header_size_ - prints the size of section headers
- * @size: ELF section header size
- */
-void section_header_size_(uint16_t size)
-{
-    printf("  Size of section headers:           %u (bytes)\n", size);
-}
-
-/**
- * section_header_count_ - prints the number of section headers
- * @count: number of section headers
- */
-void section_header_count_(uint16_t count)
-{
-    printf("  Number of section headers:         %u\n", count);
-}
-
-/**
- * section_header_str_index_ - prints the section header string table index
- * @index: section header string table index
- */
-void section_header_str_index_(uint16_t index)
-{
-    printf("  Section header string table index: %u\n", index);
 }
