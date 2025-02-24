@@ -126,7 +126,7 @@ void osabi_(unsigned char osabi)
     {
         case ELFOSABI_SYSV:printf("UNIX - System V\n"); break;
         case ELFOSABI_HPUX: printf("HP-UX\n"); break;
-        case ELFOSABI_NETBSD: printf("NetBSD\n"); break;
+        case ELFOSABI_NETBSD: printf("UNIX - NetBSD\n"); break;
         case ELFOSABI_LINUX: printf("Linux\n"); break;
         case ELFOSABI_SOLARIS: printf("UNIX - Solaris\n"); break;
         case ELFOSABI_AIX: printf("AIX\n"); break;
