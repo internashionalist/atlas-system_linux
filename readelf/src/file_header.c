@@ -150,7 +150,7 @@ void type_(uint16_t type)
         case ET_NONE: printf("None\n"); break;
         case ET_REL: printf("REL (Relocatable file)\n"); break;
         case ET_EXEC: printf("EXEC (Executable file)\n"); break;
-        case ET_DYN: printf("Shared object file\n"); break;
+        case ET_DYN: printf("DYN (Shared object file)\n"); break;
         case ET_CORE: printf("Core file\n"); break;
         default: printf("<unknown: %x>\n", type); break;
     }
