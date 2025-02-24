@@ -3,8 +3,6 @@
 #include "func0.h"
 #include "hreadelf.h"
 
-prog_info prog;
-
 /**
  * main - entry point of the program
  * @argc: number of arguments
@@ -16,6 +14,7 @@ int main(int argc, char **argv)
 {
 	size_t bytes_read = 0;
 	elf_dt elf_header;
+	prog_info prog;
 
 	memset(&elf_header, 0, sizeof(elf_header));
 	prog.program_name = argv[0];
