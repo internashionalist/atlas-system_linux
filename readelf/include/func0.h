@@ -16,5 +16,7 @@
 
 /* prototypes for Task 0 */
 int print_file_header(elf_info *elf_data)
+void set_endianness(unsigned char ELF_end);
+void set_class(unsigned char ELF_class);
 
 #endif /* _FUNC0_H_ */

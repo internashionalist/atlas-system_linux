@@ -1,5 +1,6 @@
-#include "hreadelf.h"
+#include "common.h"
 #include "func0.h"
+#include "hreadelf.h"
 
 /**
  * print_file_header - prints the ELF file header
@@ -36,4 +37,40 @@ int print_file_header(elf_info *elf_data)
     }
 
     return (1);
+}
+
+/**
+ * set_endianness - sets ELF file endianness in program info struct
+ * @ELF_end: endianness of ELF file
+ *
+ * Return: void
+ */
+void set_endianness(unsigned char ELF_end)
+{
+    if (ELF_end == ELFDATA2LSB)
+    {
+        prog.endianness = LITTLE_ENDIAN;
+    }
+    else if (ELF_end == ELFDATA2MSB)
+    {
+        prog.endianness = BIG_ENDIAN;
+    }
+}
+
+/**
+ * set_class - sets ELF file class in program info struct
+ * @ELF_cls: file class of ELF file
+ *
+ * Return: void
+ */
+void set_class(unsigned char ELF_cls)
+{
+    if (ELF_cls == ELFCLASS32)
+    {
+        prog.file_class = ELFCLASS32;
+    }
+    else if (ELF_cls == ELFCLASS64)
+    {
+        prog.file_class = ELFCLASS64;
+    }
 }
