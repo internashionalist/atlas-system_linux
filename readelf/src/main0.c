@@ -19,7 +19,6 @@ int main(int argc, char **argv)
 	memset(&elf_header, 0, sizeof(elf_header));
 	prog.program_name = argv[0];
 	prog.input_name = argv[1];
-
 	if (argc == 2)
 	{
 		prog.file_desc = open(argv[1], O_RDONLY);
