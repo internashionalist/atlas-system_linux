@@ -15,8 +15,8 @@ void display_hdr_details_32(Elf32_Ehdr *map_32)
     printf("  %-35s%d\n", HDR_ABI_VER, map_32->e_ident[EI_ABIVERSION]);
     printf("  %-35s", HDR_TYPE); type_(map_32->e_type);
     printf("  %-35s", HDR_MACHINE); machine_(map_32->e_machine);
-    printf("  %-35s%#x\n", HDR_FILE_VER, map_32->e_version);
-    printf("  %-35s0x%x\n", HDR_ENT_PT, map_32->e_entry);
+    printf("  %-35s0#%x\n", HDR_FILE_VER, map_32->e_version);
+    printf("  %-35s0xl%x\n", HDR_ENT_PT, map_32->e_entry);
     printf("  %-35s0x%x\n", HDR_FLAGS, map_32->e_flags);
     printf("  %-35s%d (bytes)\n", HDR_SIZE, map_32->e_ehsize);
     printf("  %-35s%d (bytes)\n", HDR_PHENTSIZ, map_32->e_phentsize);
@@ -40,12 +40,12 @@ void display_hdr_details_64(Elf64_Ehdr *map_64)
     printf("  %-35s%d\n", HDR_ABI_VER, map_64->e_ident[EI_ABIVERSION]);
     printf("  %-35s", HDR_TYPE), type_(map_64->e_type);
     printf("  %-35s", HDR_MACHINE), machine_(map_64->e_machine);
-    printf("  %-35s%#x\n", HDR_FILE_VER, map_64->e_version);
+    printf("  %-35s0x%x\n", HDR_FILE_VER, map_64->e_version);
     printf("  %-35s0x%lx\n", HDR_ENT_PT, map_64->e_entry);
     printf("  %-35s0x%x\n", HDR_FLAGS, map_64->e_flags);
     printf("  %-35s%d (bytes)\n", HDR_SIZE, map_64->e_ehsize);
-    printf("  %-35s%d\n", HDR_PHNUM, map_64->e_phnum);
     printf("  %-35s%d (bytes)\n", HDR_PHENTSIZ, map_64->e_phentsize);
+    printf("  %-35s%d\n", HDR_PHNUM, map_64->e_phnum);
     printf("  %-35s%d (bytes)\n", HDR_SHENTSIZ, map_64->e_shentsize);
     printf("  %-35s%d\n", HDR_SHNUM, map_64->e_shnum);
     printf("  %-35s%d\n", HDR_SHSTRNDX, map_64->e_shstrndx);
@@ -61,7 +61,7 @@ void magic_(unsigned char *ident)
 
     for (i = 0; i < 16; i++)
     {
-        printf("%.2x ", ident[i]);
+        printf("%02x ", ident[i]);
     }
     printf("\n");
 }
