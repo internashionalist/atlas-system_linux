@@ -67,8 +67,8 @@ typedef struct program_info
  */
 typedef struct elf_info
 {
-    Elf32_Ehdr hdr32;   /* 32-bit ELF header */
-    Elf64_Ehdr hdr64;   /* 64-bit ELF header */
+    Elf32_Ehdr hdr32; /* 32-bit ELF header */
+    Elf64_Ehdr hdr64; /* 64-bit ELF header */
 } elf_dt;
 
 /* reference to program_info */
