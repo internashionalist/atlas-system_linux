@@ -133,7 +133,7 @@ void osabi_(unsigned char osabi)
         case ELFOSABI_TRU64: printf("TRU64 UNIX\n"); break;
         case ELFOSABI_ARM: printf("ARM\n"); break;
         case ELFOSABI_STANDALONE: printf("Standalone\n"); break;
-        default: printf("Unknown\n"); break;
+        default: printf("unknown: %x\n", osabi); break;
     }
 }
 
