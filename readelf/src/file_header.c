@@ -99,7 +99,7 @@ void data_(unsigned char dat)
  */
 void version_(unsigned char version)
 {
-    printf("  Version:                           %d (current)\n", version);
+    printf("  Version:                           0x%x (current)\n", version);
 }
 
 /**
@@ -115,7 +115,7 @@ void osabi_(unsigned char osabi)
         case ELFOSABI_HPUX: printf("HP-UX\n"); break;
         case ELFOSABI_NETBSD: printf("NetBSD\n"); break;
         case ELFOSABI_LINUX: printf("Linux\n"); break;
-        case ELFOSABI_SOLARIS: printf("Solaris\n"); break;
+        case ELFOSABI_SOLARIS: printf("Unix - Solaris\n"); break;
         case ELFOSABI_AIX: printf("AIX\n"); break;
         case ELFOSABI_IRIX: printf("IRIX\n"); break;
         case ELFOSABI_FREEBSD: printf("FreeBSD\n"); break;
