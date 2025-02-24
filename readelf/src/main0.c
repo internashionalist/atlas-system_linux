@@ -53,25 +53,25 @@ int main(int argc, char **argv)
             set_endianness(elf_header.hdr64.e_ident[EI_DATA]);
 
             printf("ELF Header:\n");
-            magic_(elf_header.hdr64.e_ident);
-            class_(elf_header.hdr64.e_ident[EI_CLASS]);
-            data_(elf_header.hdr64.e_ident[EI_DATA]);
-            version_(elf_header.hdr64.e_ident[EI_VERSION]);
-            osabi_(elf_header.hdr64.e_ident[EI_OSABI]);
-            abi_version_(elf_header.hdr64.e_ident[EI_ABIVERSION]);
-            type_(elf_header.hdr64.e_type);
-            machine_(elf_header.hdr64.e_machine);
-            file_version_(elf_header.hdr64.e_version);
-            entry_point_(elf_header.hdr64.e_entry);
-            program_offset_(elf_header.hdr64.e_phoff);
-            section_offset_(elf_header.hdr64.e_shoff);
-            flags_(elf_header.hdr64.e_flags);
-            header_size_(elf_header.hdr64.e_ehsize);
-            program_header_size_(elf_header.hdr64.e_phentsize);
-            program_header_count_(elf_header.hdr64.e_phnum);
-            section_header_size_(elf_header.hdr64.e_shentsize);
-            section_header_count_(elf_header.hdr64.e_shnum);
-            section_header_str_index_(elf_header.hdr64.e_shstrndx);
+magic_(elf_header.hdr64.e_ident);
+class_(elf_header.hdr64.e_ident[EI_CLASS]);
+data_(elf_header.hdr64.e_ident[EI_DATA]);
+version_(elf_header.hdr64.e_ident[EI_VERSION]);
+osabi_(elf_header.hdr64.e_ident[EI_OSABI]);
+abi_version_(elf_header.hdr64.e_ident[EI_ABIVERSION]);
+type_(elf_header.hdr64.e_type);
+machine_(elf_header.hdr64.e_machine);
+file_version_(elf_header.hdr64.e_version);
+entry_point_(elf_header.hdr64.e_entry);
+program_offset_(elf_header.hdr64.e_phoff);
+section_offset_(elf_header.hdr64.e_shoff);
+flags_(elf_header.hdr64.e_flags);
+header_size_(elf_header.hdr64.e_ehsize);
+program_header_count_(elf_header.hdr64.e_phnum);
+program_header_size_(elf_header.hdr64.e_phentsize);
+section_header_size_(elf_header.hdr64.e_shentsize);
+section_header_count_(elf_header.hdr64.e_shnum);
+section_header_str_index_(elf_header.hdr64.e_shstrndx);
         }
     }
     else
