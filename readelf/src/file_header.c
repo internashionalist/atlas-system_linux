@@ -81,7 +81,7 @@ void class_(unsigned char clas)
     else if (clas == ELFCLASSNONE)
         printf("None\n");
     else
-        printf("Unknown\n");
+        printf("unknown: %x\n", clas);
 }
 
 /**
@@ -97,7 +97,7 @@ void data_(unsigned char dat)
     else if (dat == ELFDATANONE)
         printf("None\n");
     else
-        printf("<unknown: %x>\n");
+        printf("<unknown: %x>\n", dat);
 }
 
 /**
@@ -111,7 +111,7 @@ void version_(unsigned char version)
     if (version == EV_NONE)
         printf("None\n");
     else if (!version)
-        printf("<unknown: %x>\n");
+        printf("<unknown: %x>\n", version);
 }
 
 /**
