@@ -44,6 +44,8 @@ void display_hdr_details_64(Elf64_Ehdr *map_64)
     printf("  %-35s", HDR_MACHINE), machine_(map_64->e_machine);
     printf("  %-35s0x%x\n", HDR_FILE_VER, map_64->e_version);
     printf("  %-35s0x%lx\n", HDR_ENT_PT, map_64->e_entry);
+    printf("  %-35s%d (bytes into file)\n", HDR_PHOFF, map_64->e_phoff);
+    printf("  %-35s%d (bytes into file)\n", HDR_SHOFF, map_64->e_shoff);
     printf("  %-35s0x%x\n", HDR_FLAGS, map_64->e_flags);
     printf("  %-35s%d (bytes)\n", HDR_SIZE, map_64->e_ehsize);
     printf("  %-35s%d (bytes)\n", HDR_PHENTSIZ, map_64->e_phentsize);
@@ -150,7 +152,7 @@ void type_(uint16_t type)
         case ET_EXEC: printf("EXEC (Executable file)\n"); break;
         case ET_DYN: printf("Shared object file\n"); break;
         case ET_CORE: printf("Core file\n"); break;
-        default: printf("Unknown\n"); break;
+        default: printf("<unknown: %x>\n", type); break;
     }
 }
 
@@ -172,6 +174,6 @@ void machine_(uint16_t machine)
         case EM_MIPS: printf("MIPS R3000\n"); break;
         case EM_PPC: printf("PowerPC\n"); break;
         case EM_ARM: printf("ARM\n"); break;
-        default: printf("Unknown\n"); break;
+        default: printf("<unknown: %x>\n", machine); break;
     }
 }
