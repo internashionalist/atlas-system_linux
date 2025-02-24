@@ -61,7 +61,7 @@ void magic_(unsigned char *ident)
 
     for (i = 0; i < 16; i++)
     {
-        printf("%.2x \n", ident[i]);
+        printf("%.2x ", ident[i]);
     }
     printf("\n");
 }
@@ -108,7 +108,7 @@ void version_(unsigned char version)
         printf("%d (current)\n", version);
     if (version == EV_NONE)
         printf("None\n");
-    else
+    else if (!version)
         printf("Unknown\n");
 }
 
@@ -118,7 +118,6 @@ void version_(unsigned char version)
  */
 void osabi_(unsigned char osabi)
 {
-    printf("  OS/ABI:                            ");
     switch (osabi)
     {
         case ELFOSABI_SYSV:printf("UNIX - System V\n"); break;
