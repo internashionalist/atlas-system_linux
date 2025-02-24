@@ -2,7 +2,9 @@
 #define _HREADELF_H_
 
 #include <elf.h>
+#include <endian.h>
 #include <errno.h>
+#include <error.h>
 #include <fcntl.h>
 #include <stdint.h>
 #include <stdio.h>
