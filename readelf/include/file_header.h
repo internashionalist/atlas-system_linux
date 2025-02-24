@@ -24,6 +24,7 @@ void osabi_(unsigned char osabi);
 void abi_version_(unsigned char abi_version);
 void type_(uint16_t type);
 void machine_(uint16_t machine);
+void file
 void entry_point_(uint64_t entry);
 void program_offset_(uint64_t offset);
 void section_offset_(uint64_t offset);

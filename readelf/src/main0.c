@@ -61,7 +61,7 @@ int main(int argc, char **argv)
             abi_version_(elf_header.hdr64.e_ident[EI_ABIVERSION]);
             type_(elf_header.hdr64.e_type);
             machine_(elf_header.hdr64.e_machine);
-            version_(elf_header.hdr64.e_version);
+            file_version_(elf_header.hdr64.e_version);
             entry_point_(elf_header.hdr64.e_entry);
             program_offset_(elf_header.hdr64.e_phoff);
             section_offset_(elf_header.hdr64.e_shoff);

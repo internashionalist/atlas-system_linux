@@ -7,21 +7,14 @@
  */
 void display_hdr_details_32(Elf32_Ehdr *map_32)
 {
-    printf("%s", HDR_MAGIC);
-    magic_(map_32->e_ident);
-    printf("  %-35s", HDR_CLASS);
-    class_(map_32->e_ident[EI_CLASS]);
-    printf("  %-35s", HDR_DATA);
-    data_(map_32->e_ident[EI_DATA]);
-    printf("  %-35s", HDR_VERSION);
-    version_(map_32->e_ident[EI_VERSION]);
-    printf("  %-35s", HDR_OSABI);
-    osabi_(map_32->e_ident[EI_OSABI]);
+    printf("%s", HDR_MAGIC); magic_(map_32->e_ident);
+    printf("  %-35s", HDR_CLASS); class_(map_32->e_ident[EI_CLASS]);
+    printf("  %-35s", HDR_DATA); data_(map_32->e_ident[EI_DATA]);
+    printf("  %-35s", HDR_VERSION); version_(map_32->e_ident[EI_VERSION]);
+    printf("  %-35s", HDR_OSABI); osabi_(map_32->e_ident[EI_OSABI]);
     printf("  %-35s%d\n", HDR_ABI_VER, map_32->e_ident[EI_ABIVERSION]);
-    printf("  %-35s", HDR_TYPE);
-    type_(map_32->e_type);
-    printf("  %-35s", HDR_MACHINE);
-    machine_(map_32->e_machine);
+    printf("  %-35s", HDR_TYPE); type_(map_32->e_type);
+    printf("  %-35s", HDR_MACHINE); machine_(map_32->e_machine);
     printf("  %-35s0x%x\n", HDR_FILE_VER, map_32->e_version);
     printf("  %-35s0x%x\n", HDR_ENT_PT, map_32->e_entry);
     printf("  %-35s0x%x\n", HDR_FLAGS, map_32->e_flags);
@@ -188,6 +181,15 @@ void machine_(uint16_t machine)
         case EM_ARM: printf("ARM\n"); break;
         default: printf("Unknown\n"); break;
     }
+}
+
+/**
+ * void file_version_ - prints the ELF file version
+ * @version: ELF file version
+ */
+void file_version_(uint32_t version)
+{
+    printf("  Version:                           0x%x\n", version);
 }
 
 /**
