@@ -99,7 +99,7 @@ void data_(unsigned char dat)
  */
 void version_(unsigned char version)
 {
-    printf("  Version:                           0x%x (current)\n", version);
+    printf("  Version:                           %d (current)\n", version);
 }
 
 /**
@@ -220,7 +220,10 @@ void section_offset_(uint64_t offset)
  */
 void flags_(uint32_t flags)
 {
-    printf("  Flags:                             0x%x\n", flags);
+    if (flags == 0)
+        printf("  Flags:                             0x0\n");
+    else
+        printf("  Flags:                             0x%x\n", flags);
 }
 
 /**
