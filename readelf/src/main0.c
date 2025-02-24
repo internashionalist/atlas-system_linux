@@ -10,7 +10,7 @@ prog_info prog;
  * @argc: number of arguments
  * @argv: array of arguments
  *
- * Return: 0 on success, 1 on failure
+ * Return: 0 on success
  */
 int main(int argc, char **argv)
 {
@@ -26,7 +26,6 @@ int main(int argc, char **argv)
 		prog.file_desc = open(argv[1], O_RDONLY);
 		if (prog.file_desc == -1)
 			handle_error(1, 1);
-
 		bytes_read = read(
 			prog.file_desc, &elf_header.hdr64, sizeof(elf_header.hdr64));
 		if (bytes_read != sizeof(
@@ -53,7 +52,6 @@ int main(int argc, char **argv)
 	{
 		fprintf(stderr, "%s: Usage: %s <ELF-file>\n",
 				prog.program_name, prog.program_name);
-		return (1);
 	}
 	return (0);
 }
