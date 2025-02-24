@@ -72,6 +72,15 @@ int main(int argc, char **argv)
             section_header_size_(elf_header.hdr64.e_shentsize);
             section_header_count_(elf_header.hdr64.e_shnum);
             section_header_str_index_(elf_header.hdr64.e_shstrndx);
+
+            if (prog.file_class == ELFCLASS32)
+            {
+                display_hdr_details_32(&elf_header.hdr32);
+            }
+            else if (prog.file_class == ELFCLASS64)
+            {
+                display_hdr_details_64(&elf_header.hdr64);
+            }
         }
     }
     else
