@@ -29,7 +29,7 @@ int print_file_header(elf_dt *elf_data)
     }
     else if (prog.file_class == ELFCLASS64) /* 64-bit ELF */
     {
-        if (prog.endianness == LSB)
+        if (prog.endianness == MSB)
         {
             adjust_fh_endian_64(&elf_data->hdr64);
         }
