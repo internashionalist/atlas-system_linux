@@ -38,7 +38,6 @@ void display_hdr_details_32(Elf32_Ehdr *map_32)
  * @map_64: Elf64_Ehdr info struct for 64-bit input file
  */
 void display_hdr_details_64(Elf64_Ehdr *map_64)
-void display_hdr_details_64(Elf64_Ehdr *map_64)
 {
     printf("%s", HDR_MAGIC);
     magic_(map_64->e_ident);
@@ -57,7 +56,7 @@ void display_hdr_details_64(Elf64_Ehdr *map_64)
     machine_(map_64->e_machine);
     printf("  %-35s0x%x\n", HDR_FILE_VER, map_64->e_version);
     printf("  %-35s0x%lx\n", HDR_ENT_PT, map_64->e_entry);
-    printf("  %-35s0x%lx\n", HDR_FLAGS, map_64->e_flags);
+    printf("  %-35s0x%x\n", HDR_FLAGS, map_64->e_flags);
     printf("  %-35s%d (bytes)\n", HDR_SIZE, map_64->e_ehsize);
     printf("  %-35s%d (bytes)\n", HDR_PHENTSIZ, map_64->e_phentsize);
     printf("  %-35s%d\n", HDR_PHNUM, map_64->e_phnum);
