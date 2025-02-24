@@ -54,11 +54,11 @@ void set_endianness(unsigned char ELF_end)
 {
     if (ELF_end == ELFDATA2LSB)
     {
-        prog.endianness = LITTLE_ENDIAN;
+        prog.endianness = LSB;
     }
     else if (ELF_end == ELFDATA2MSB)
     {
-        prog.endianness = BIG_ENDIAN;
+        prog.endianness = MSB;
     }
 }
 

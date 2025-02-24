@@ -88,11 +88,15 @@ void handle_error(int error_code, int err_num)
  */
 void adjust_fh_endian_32(Elf32_Ehdr *hdr32)
 {
-    hdr32->e_version = byte_swap32(hdr32->e_version);
-    hdr32->e_entry = byte_swap32(hdr32->e_entry);
-    hdr32->e_phoff = byte_swap32(hdr32->e_phoff);
-    hdr32->e_shoff = byte_swap32(hdr32->e_shoff);
-    hdr32->e_flags = byte_swap32(hdr32->e_flags);
+    if (prog.endianness != LSB)
+    {
+        hdr32->e_version = byte_swap32(hdr32->e_version);
+        hdr32->e_entry = byte_swap32(hdr32->e_entry);
+        hdr32->e_phoff = byte_swap32(hdr32->e_phoff);
+        hdr32->e_shoff = byte_swap32(hdr32->e_shoff);
+        hdr32->e_flags = byte_swap32(hdr32->e_flags);
+    }
+
     hdr32->e_ehsize = byte_swap16(hdr32->e_ehsize);
     hdr32->e_phentsize = byte_swap16(hdr32->e_phentsize);
     hdr32->e_phnum = byte_swap16(hdr32->e_phnum);
@@ -109,11 +113,15 @@ void adjust_fh_endian_32(Elf32_Ehdr *hdr32)
  */
 void adjust_fh_endian_64(Elf64_Ehdr *hdr64)
 {
-    hdr64->e_version = byte_swap32(hdr64->e_version);
-    hdr64->e_entry = byte_swap64(hdr64->e_entry);
-    hdr64->e_phoff = byte_swap64(hdr64->e_phoff);
-    hdr64->e_shoff = byte_swap64(hdr64->e_shoff);
-    hdr64->e_flags = byte_swap32(hdr64->e_flags);
+    if (prog.endianness != LSB)
+    {
+        hdr64->e_version = byte_swap32(hdr64->e_version);
+        hdr64->e_entry = byte_swap64(hdr64->e_entry);
+        hdr64->e_phoff = byte_swap64(hdr64->e_phoff);
+        hdr64->e_shoff = byte_swap64(hdr64->e_shoff);
+        hdr64->e_flags = byte_swap32(hdr64->e_flags);
+    }
+
     hdr64->e_ehsize = byte_swap16(hdr64->e_ehsize);
     hdr64->e_phentsize = byte_swap16(hdr64->e_phentsize);
     hdr64->e_phnum = byte_swap16(hdr64->e_phnum);
