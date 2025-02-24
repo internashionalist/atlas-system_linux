@@ -148,7 +148,7 @@ void type_(uint16_t type)
     switch (type)
     {
         case ET_NONE: printf("None\n"); break;
-        case ET_REL: printf("REL Relocatable file\n"); break;
+        case ET_REL: printf("REL (Relocatable file)\n"); break;
         case ET_EXEC: printf("EXEC (Executable file)\n"); break;
         case ET_DYN: printf("Shared object file\n"); break;
         case ET_CORE: printf("Core file\n"); break;
