@@ -39,8 +39,6 @@ int main(int argc, char **argv)
         else
         {
             set_class(elf_header.hdr64.e_ident[EI_CLASS]);
-            set_endianness(elf_header.hdr64.e_ident[EI_DATA]);
-
             if (prog.file_class == ELFCLASS32)
             {
                 lseek(prog.file_desc, 0, SEEK_SET);
@@ -52,6 +50,7 @@ int main(int argc, char **argv)
                     handle_error(2, 1);
                 }
             }
+            set_endianness(elf_header.hdr64.e_ident[EI_DATA]);
             if (!print_file_header(&elf_header))
             {
                 handle_error(0, 1);
