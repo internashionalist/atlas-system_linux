@@ -1,4 +1,5 @@
 #include "hreadelf.h"
+#include "func0.h"
 
 /**
  * print_file_header - prints the ELF file header
