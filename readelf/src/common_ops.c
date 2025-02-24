@@ -113,7 +113,7 @@ void adjust_fh_endian_32(Elf32_Ehdr *hdr32)
  */
 void adjust_fh_endian_64(Elf64_Ehdr *hdr64)
 {
-    if (prog.endianness != LSB)
+    if (prog.endianness != MSB)
     {
         hdr64->e_version = byte_swap32(hdr64->e_version);
         hdr64->e_entry = byte_swap64(hdr64->e_entry);
