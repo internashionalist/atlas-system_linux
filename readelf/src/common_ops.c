@@ -64,6 +64,8 @@ int check_if_elf(char *file_map)
  */
 void handle_error(int error_code, int err_num)
 {
+	prog_info prog = {0};
+
 	if (error_code == 1)
 	{
 		fprintf(stderr, "%s: %s\n", prog.program_name, FILE_NOT_FOUND_MSG);

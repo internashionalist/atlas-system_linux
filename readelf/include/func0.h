@@ -16,8 +16,8 @@
 #include <unistd.h>
 
 /* prototypes for Task 0 */
-int print_file_header(elf_dt *elf_data);
-void set_endianness(unsigned char ELF_end);
-void set_class(unsigned char ELF_class);
+int print_file_header(elf_dt *elf_data, prog_info *prog);
+void set_endianness(unsigned char ELF_end, prog_info *prog);
+void set_class(unsigned char ELF_class, prog_info *prog);
 
 #endif /* _FUNC0_H_ */

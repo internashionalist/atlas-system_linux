@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 {
 	size_t bytes_read = 0;
 	elf_dt elf_header;
-	prog_info prog;
+	prog_info prog = { .file_class = ELFCLASSNONE };
 
 	memset(&elf_header, 0, sizeof(elf_header));
 	prog.program_name = argv[0];
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 			handle_error(2, 1);
 		else
 		{
-			set_class(elf_header.hdr64.e_ident[EI_CLASS]);
+			set_class(elf_header.hdr64.e_ident[EI_CLASS], &prog);
 			if (prog.file_class == ELFCLASS32)
 			{
 				lseek(prog.file_desc, 0, SEEK_SET);
@@ -42,8 +42,8 @@ int main(int argc, char **argv)
 					!check_if_elf((char *)&elf_header.hdr32))
 					handle_error(2, 1);
 			}
-			set_endianness(elf_header.hdr64.e_ident[EI_DATA]);
-			if (!print_file_header(&elf_header))
+			set_endianness(elf_header.hdr64.e_ident[EI_DATA], &prog);
+			if (!print_file_header(&elf_header, &prog))
 				handle_error(0, 1);
 		}
 	}

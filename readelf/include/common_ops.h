@@ -18,8 +18,8 @@
 /* prototypes for common operations */
 int check_if_elf(char *file_map);
 void handle_error(int error_code, int err_num);
-void adjust_fh_endian_32(Elf32_Ehdr *hdr32);
-void adjust_fh_endian_64(Elf64_Ehdr *hdr64);
+void adjust_fh_endian_32(Elf32_Ehdr *hdr32, prog_info *prog);
+void adjust_fh_endian_64(Elf64_Ehdr *hdr64, prog_info *prog);
 
 /* endianness conversions */
 uint16_t byte_swap16(uint16_t num);

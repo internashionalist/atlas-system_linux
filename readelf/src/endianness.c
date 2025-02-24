@@ -1,15 +1,16 @@
 #include "common_ops.h"
 #include "hreadelf.h"
 
+
 /**
  * adjust_fh_endian_32 - adjusts ELF header endianness for 32-bit files
  * @hdr32: pointer to 32-bit ELF header
  *
  * Return: void
  */
-void adjust_fh_endian_32(Elf32_Ehdr *hdr32)
+void adjust_fh_endian_32(Elf32_Ehdr *hdr32, prog_info *prog)
 {
-	if (prog.endianness != LSB)
+	if (prog->endianness != LSB)
 	{
 		hdr32->e_type = byte_swap16(hdr32->e_type);
 		hdr32->e_machine = byte_swap16(hdr32->e_machine);
@@ -34,9 +35,9 @@ void adjust_fh_endian_32(Elf32_Ehdr *hdr32)
  *
  * Return: void
  */
-void adjust_fh_endian_64(Elf64_Ehdr *hdr64)
+void adjust_fh_endian_64(Elf64_Ehdr *hdr64, prog_info *prog)
 {
-	if (prog.endianness != MSB)
+	if (prog->endianness != MSB)
 	{
 		hdr64->e_type = byte_swap16(hdr64->e_type);
 		hdr64->e_machine = byte_swap16(hdr64->e_machine);
