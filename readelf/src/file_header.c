@@ -165,15 +165,9 @@ void machine_(uint16_t machine)
     switch (machine)
     {
         case EM_NONE: printf("None\n"); break;
-        case EM_M32: printf("AT&T WE 32100\n"); break;
         case EM_SPARC: printf("Sparc\n"); break;
         case EM_386: printf("Intel 80386\n"); break;
-        case EM_68K: printf("Motorola 68000\n"); break;
-        case EM_88K: printf("Motorola 88000\n"); break;
-        case EM_860: printf("Intel 80860\n"); break;
-        case EM_MIPS: printf("MIPS R3000\n"); break;
-        case EM_PPC: printf("PowerPC\n"); break;
-        case EM_ARM: printf("ARM\n"); break;
+        case EM_X86_64: printf("Advanced Micro Devices X86-64\n"); break;
         default: printf("<unknown: %x>\n", machine); break;
     }
 }
