@@ -97,7 +97,7 @@ void data_(unsigned char dat)
     else if (dat == ELFDATANONE)
         printf("None\n");
     else
-        printf("Unknown\n");
+        printf("<unknown: %x>\n");
 }
 
 /**
@@ -111,7 +111,7 @@ void version_(unsigned char version)
     if (version == EV_NONE)
         printf("None\n");
     else if (!version)
-        printf("Unknown\n");
+        printf("<unknown: %x>\n");
 }
 
 /**
