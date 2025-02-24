@@ -33,6 +33,8 @@
 #define HDR_MACHINE "Machine:"
 #define HDR_FILE_VER "Version:"
 #define HDR_ENT_PT "Entry point address:"
+#define HDR_PHOFF "Start of program headers:"
+#define HDR_SHOFF "Start of section headers:"
 #define HDR_FLAGS "Flags:"
 #define HDR_SIZE "Size of this header:"
 #define HDR_PHENTSIZ "Size of program headers:"

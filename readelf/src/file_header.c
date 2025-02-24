@@ -17,6 +17,8 @@ void display_hdr_details_32(Elf32_Ehdr *map_32)
     printf("  %-35s", HDR_MACHINE); machine_(map_32->e_machine);
     printf("  %-35s0x%x\n", HDR_FILE_VER, map_32->e_version);
     printf("  %-35s0x%x\n", HDR_ENT_PT, map_32->e_entry);
+    printf("  %-35s%d (bytes into file)\n", HDR_PHOFF, map_32->e_phoff);
+    printf("  %-35s%d (bytes into file)\n", HDR_SHOFF, map_32->e_shoff);
     printf("  %-35s0x%x\n", HDR_FLAGS, map_32->e_flags);
     printf("  %-35s%d (bytes)\n", HDR_SIZE, map_32->e_ehsize);
     printf("  %-35s%d (bytes)\n", HDR_PHENTSIZ, map_32->e_phentsize);
