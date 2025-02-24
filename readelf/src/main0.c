@@ -51,22 +51,16 @@ int main(int argc, char **argv)
                 }
             }
             set_endianness(elf_header.hdr64.e_ident[EI_DATA]);
-
-            printf("ELF Header:\n");
-
-            if (prog.file_class == ELFCLASS32)
+            if (!print_file_header(&elf_header))
             {
-                display_hdr_details_32(&elf_header.hdr32);
-            }
-            else if (prog.file_class == ELFCLASS64)
-            {
-                display_hdr_details_64(&elf_header.hdr64);
+                handle_error(0, 1);
             }
         }
     }
     else
     {
-        fprintf(stderr, "%s: Usage: %s <ELF-file>\n", prog.program_name, prog.program_name);
+        fprintf(stderr, "%s: Usage: %s <ELF-file>\n",
+            prog.program_name, prog.program_name);
         return (1);
     }
 
