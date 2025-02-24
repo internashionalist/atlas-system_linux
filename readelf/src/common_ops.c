@@ -9,7 +9,7 @@
  */
 uint16_t byte_swap16(uint16_t num)
 {
-    return ((num >> 8) & 0xFF) | ((num & 0xFF) << 8);
+	return ((num >> 8) & 0xFF) | ((num & 0xFF) << 8);
 }
 
 /**
@@ -20,8 +20,8 @@ uint16_t byte_swap16(uint16_t num)
  */
 uint32_t byte_swap32(uint32_t num)
 {
-    return ((num >> 24) & 0xFF) | ((num >> 8) & 0xFF00) |
-           ((num << 8) & 0xFF0000) | ((num << 24) & 0xFF000000);
+	return ((num >> 24) & 0xFF) | ((num >> 8) & 0xFF00) |
+		   ((num << 8) & 0xFF0000) | ((num << 24) & 0xFF000000);
 }
 
 /**
@@ -32,11 +32,11 @@ uint32_t byte_swap32(uint32_t num)
  */
 uint64_t byte_swap64(uint64_t num)
 {
-    return ((num >> 56) & 0xFF) | ((num >> 40) & 0xFF00) |
-           ((num >> 24) & 0xFF0000) | ((num >> 8) & 0xFF000000) |
-           ((num << 8) & 0xFF00000000) | ((num << 24) & 0xFF0000000000) |
-           ((num << 40) & 0xFF000000000000) |
-           ((num << 56) & 0xFF00000000000000);
+	return ((num >> 56) & 0xFF) | ((num >> 40) & 0xFF00) |
+		   ((num >> 24) & 0xFF0000) | ((num >> 8) & 0xFF000000) |
+		   ((num << 8) & 0xFF00000000) | ((num << 24) & 0xFF0000000000) |
+		   ((num << 40) & 0xFF000000000000) |
+		   ((num << 56) & 0xFF00000000000000);
 }
 
 /**
@@ -47,12 +47,12 @@ uint64_t byte_swap64(uint64_t num)
  */
 int check_if_elf(char *file_map)
 {
-    if (file_map[0] == 0x7f && file_map[1] == 'E' && file_map[2] == 'L' &&
-        file_map[3] == 'F')
-    {
-        return 1;
-    }
-    return 0;
+	if (file_map[0] == 0x7f && file_map[1] == 'E' && file_map[2] == 'L' &&
+		file_map[3] == 'F')
+	{
+		return 1;
+	}
+	return 0;
 }
 
 /**
@@ -64,20 +64,20 @@ int check_if_elf(char *file_map)
  */
 void handle_error(int error_code, int err_num)
 {
-    if (error_code == 1)
-    {
-        fprintf(stderr, "%s: %s\n", prog.program_name, FILE_NOT_FOUND_MSG);
-    }
-    else if (error_code == 2)
-    {
-        fprintf(stderr, "%s: %s\n", prog.program_name, INVALID_ELF_MSG);
-    }
+	if (error_code == 1)
+	{
+		fprintf(stderr, "%s: %s\n", prog.program_name, FILE_NOT_FOUND_MSG);
+	}
+	else if (error_code == 2)
+	{
+		fprintf(stderr, "%s: %s\n", prog.program_name, INVALID_ELF_MSG);
+	}
 
-    if (err_num)
-    {
-        perror("Error");
-    }
-    exit(EXIT_FAILURE);
+	if (err_num)
+	{
+		perror("Error");
+	}
+	exit(EXIT_FAILURE);
 }
 
 /**
@@ -88,23 +88,23 @@ void handle_error(int error_code, int err_num)
  */
 void adjust_fh_endian_32(Elf32_Ehdr *hdr32)
 {
-    if (prog.endianness != LSB)
-    {
-        hdr32->e_type = byte_swap16(hdr32->e_type);
-        hdr32->e_machine = byte_swap16(hdr32->e_machine);
-        hdr32->e_version = byte_swap32(hdr32->e_version);
-        hdr32->e_entry = byte_swap32(hdr32->e_entry);
-        hdr32->e_phoff = byte_swap32(hdr32->e_phoff);
-        hdr32->e_shoff = byte_swap32(hdr32->e_shoff);
-        hdr32->e_flags = byte_swap32(hdr32->e_flags);
-    }
+	if (prog.endianness != LSB)
+	{
+		hdr32->e_type = byte_swap16(hdr32->e_type);
+		hdr32->e_machine = byte_swap16(hdr32->e_machine);
+		hdr32->e_version = byte_swap32(hdr32->e_version);
+		hdr32->e_entry = byte_swap32(hdr32->e_entry);
+		hdr32->e_phoff = byte_swap32(hdr32->e_phoff);
+		hdr32->e_shoff = byte_swap32(hdr32->e_shoff);
+		hdr32->e_flags = byte_swap32(hdr32->e_flags);
+	}
 
-    hdr32->e_ehsize = byte_swap16(hdr32->e_ehsize);
-    hdr32->e_phentsize = byte_swap16(hdr32->e_phentsize);
-    hdr32->e_phnum = byte_swap16(hdr32->e_phnum);
-    hdr32->e_shentsize = byte_swap16(hdr32->e_shentsize);
-    hdr32->e_shnum = byte_swap16(hdr32->e_shnum);
-    hdr32->e_shstrndx = byte_swap16(hdr32->e_shstrndx);
+	hdr32->e_ehsize = byte_swap16(hdr32->e_ehsize);
+	hdr32->e_phentsize = byte_swap16(hdr32->e_phentsize);
+	hdr32->e_phnum = byte_swap16(hdr32->e_phnum);
+	hdr32->e_shentsize = byte_swap16(hdr32->e_shentsize);
+	hdr32->e_shnum = byte_swap16(hdr32->e_shnum);
+	hdr32->e_shstrndx = byte_swap16(hdr32->e_shstrndx);
 }
 
 /**
@@ -115,21 +115,21 @@ void adjust_fh_endian_32(Elf32_Ehdr *hdr32)
  */
 void adjust_fh_endian_64(Elf64_Ehdr *hdr64)
 {
-    if (prog.endianness != MSB)
-    {
-        hdr64->e_type = byte_swap16(hdr64->e_type);
-        hdr64->e_machine = byte_swap16(hdr64->e_machine);
-        hdr64->e_version = byte_swap32(hdr64->e_version);
-        hdr64->e_entry = byte_swap64(hdr64->e_entry);
-        hdr64->e_phoff = byte_swap64(hdr64->e_phoff);
-        hdr64->e_shoff = byte_swap64(hdr64->e_shoff);
-        hdr64->e_flags = byte_swap32(hdr64->e_flags);
-    }
+	if (prog.endianness != MSB)
+	{
+		hdr64->e_type = byte_swap16(hdr64->e_type);
+		hdr64->e_machine = byte_swap16(hdr64->e_machine);
+		hdr64->e_version = byte_swap32(hdr64->e_version);
+		hdr64->e_entry = byte_swap64(hdr64->e_entry);
+		hdr64->e_phoff = byte_swap64(hdr64->e_phoff);
+		hdr64->e_shoff = byte_swap64(hdr64->e_shoff);
+		hdr64->e_flags = byte_swap32(hdr64->e_flags);
+	}
 
-    hdr64->e_ehsize = byte_swap16(hdr64->e_ehsize);
-    hdr64->e_phentsize = byte_swap16(hdr64->e_phentsize);
-    hdr64->e_phnum = byte_swap16(hdr64->e_phnum);
-    hdr64->e_shentsize = byte_swap16(hdr64->e_shentsize);
-    hdr64->e_shnum = byte_swap16(hdr64->e_shnum);
-    hdr64->e_shstrndx = byte_swap16(hdr64->e_shstrndx);
+	hdr64->e_ehsize = byte_swap16(hdr64->e_ehsize);
+	hdr64->e_phentsize = byte_swap16(hdr64->e_phentsize);
+	hdr64->e_phnum = byte_swap16(hdr64->e_phnum);
+	hdr64->e_shentsize = byte_swap16(hdr64->e_shentsize);
+	hdr64->e_shnum = byte_swap16(hdr64->e_shnum);
+	hdr64->e_shstrndx = byte_swap16(hdr64->e_shstrndx);
 }

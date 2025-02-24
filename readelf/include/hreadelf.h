@@ -53,11 +53,11 @@
  */
 typedef struct program_info
 {
-    char *program_name; /* program name */
-    char *input_name;   /* input ELF file name */
-    int file_desc;      /* ELF file descriptor */
-    int file_class;     /* 1 for 32-bit, 2 for 64-bit */
-    int endianness;     /* 1 for little, 2 for big */
+	char *program_name; /* program name */
+	char *input_name;	/* input ELF file name */
+	int file_desc;		/* ELF file descriptor */
+	int file_class;		/* 1 for 32-bit, 2 for 64-bit */
+	int endianness;		/* 1 for little, 2 for big */
 } prog_info;
 
 /**
@@ -67,8 +67,8 @@ typedef struct program_info
  */
 typedef struct elf_info
 {
-    Elf32_Ehdr hdr32; /* 32-bit ELF header */
-    Elf64_Ehdr hdr64; /* 64-bit ELF header */
+	Elf32_Ehdr hdr32; /* 32-bit ELF header */
+	Elf64_Ehdr hdr64; /* 64-bit ELF header */
 } elf_dt;
 
 /* reference to program_info */

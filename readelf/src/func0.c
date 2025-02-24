@@ -11,37 +11,37 @@
  */
 int print_file_header(elf_dt *elf_data)
 {
-    if (elf_data == NULL) /* if NULL or invalid data */
-    {
-        return (0);
-    }
+	if (elf_data == NULL) /* if NULL or invalid data */
+	{
+		return (0);
+	}
 
-    printf("ELF Header:\n"); /* print header */
+	printf("ELF Header:\n"); /* print header */
 
-    if (prog.file_class == ELFCLASS32) /* 32-bit ELF */
-    {
-        if (prog.endianness == MSB)
-        {
-            adjust_fh_endian_32(&elf_data->hdr32);
-        }
+	if (prog.file_class == ELFCLASS32) /* 32-bit ELF */
+	{
+		if (prog.endianness == MSB)
+		{
+			adjust_fh_endian_32(&elf_data->hdr32);
+		}
 
-        display_hdr_details_32(&elf_data->hdr32);
-    }
-    else if (prog.file_class == ELFCLASS64) /* 64-bit ELF */
-    {
-        if (prog.endianness == MSB)
-        {
-            adjust_fh_endian_64(&elf_data->hdr64);
-        }
+		display_hdr_details_32(&elf_data->hdr32);
+	}
+	else if (prog.file_class == ELFCLASS64) /* 64-bit ELF */
+	{
+		if (prog.endianness == MSB)
+		{
+			adjust_fh_endian_64(&elf_data->hdr64);
+		}
 
-        display_hdr_details_64(&elf_data->hdr64);
-    }
-    else
-    {
-        return (0);
-    }
+		display_hdr_details_64(&elf_data->hdr64);
+	}
+	else
+	{
+		return (0);
+	}
 
-    return (1);
+	return (1);
 }
 
 /**
@@ -52,14 +52,14 @@ int print_file_header(elf_dt *elf_data)
  */
 void set_endianness(unsigned char ELF_end)
 {
-    if (ELF_end == ELFDATA2LSB)
-    {
-        prog.endianness = LSB;
-    }
-    else if (ELF_end == ELFDATA2MSB)
-    {
-        prog.endianness = MSB;
-    }
+	if (ELF_end == ELFDATA2LSB)
+	{
+		prog.endianness = LSB;
+	}
+	else if (ELF_end == ELFDATA2MSB)
+	{
+		prog.endianness = MSB;
+	}
 }
 
 /**
@@ -70,12 +70,12 @@ void set_endianness(unsigned char ELF_end)
  */
 void set_class(unsigned char ELF_cls)
 {
-    if (ELF_cls == ELFCLASS32)
-    {
-        prog.file_class = ELFCLASS32;
-    }
-    else if (ELF_cls == ELFCLASS64)
-    {
-        prog.file_class = ELFCLASS64;
-    }
+	if (ELF_cls == ELFCLASS32)
+	{
+		prog.file_class = ELFCLASS32;
+	}
+	else if (ELF_cls == ELFCLASS64)
+	{
+		prog.file_class = ELFCLASS64;
+	}
 }
