@@ -7,7 +7,7 @@
  */
 void display_hdr_details_32(Elf32_Ehdr *map_32)
 {
-    printf("  %s", HDR_MAGIC); magic_(map_32->e_ident);
+    printf(" %s", HDR_MAGIC); magic_(map_32->e_ident);
     printf("  %-35s", HDR_CLASS); class_(map_32->e_ident[EI_CLASS]);
     printf("  %-35s", HDR_DATA); data_(map_32->e_ident[EI_DATA]);
     printf("  %-35s", HDR_VERSION); version_(map_32->e_ident[EI_VERSION]);
@@ -32,7 +32,7 @@ void display_hdr_details_32(Elf32_Ehdr *map_32)
  */
 void display_hdr_details_64(Elf64_Ehdr *map_64)
 {
-    printf(  "%s", HDR_MAGIC), magic_(map_64->e_ident);
+    printf(" %s", HDR_MAGIC), magic_(map_64->e_ident);
     printf("  %-35s", HDR_CLASS), class_(map_64->e_ident[EI_CLASS]);
     printf("  %-35s", HDR_DATA), data_(map_64->e_ident[EI_DATA]);
     printf("  %-35s", HDR_VERSION), version_(map_64->e_ident[EI_VERSION]);
