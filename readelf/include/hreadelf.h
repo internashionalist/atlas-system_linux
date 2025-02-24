@@ -2,7 +2,6 @@
 #define _HREADELF_H_
 
 #include <elf.h>
-#include <endian.h>
 #include <errno.h>
 #include <error.h>
 #include <fcntl.h>
@@ -15,8 +14,8 @@
 #include <unistd.h>
 
 /* endianness */
-#define LITTLE_ENDIAN 1
-#define BIG_ENDIAN 2
+#define LSB 1
+#define MSB 2
 
 /* error messages */
 #define ERROR_MSG ": Error: "
@@ -36,11 +35,11 @@
 #define HDR_ENT_PT "Entry point address:"
 #define HDR_FLAGS "Flags:"
 #define HDR_SIZE "Size of this header:"
-#define FH_PHENTSIZ "Size of program headers:"
-#define FH_PHNUM "Number of program headers:"
-#define FH_SHENTSIZ "Size of section headers:"
-#define FH_SHNUM "Number of section headers:"
-#define FH_SHSTRNDX "Section header string table index:"
+#define HDR_PHENTSIZ "Size of program headers:"
+#define HDR_PHNUM "Number of program headers:"
+#define HDR_SHENTSIZ "Size of section headers:"
+#define HDR_SHNUM "Number of section headers:"
+#define HDR_SHSTRNDX "Section header string table index:"
 
 /**
  * struct program_info - contains information about the program
@@ -68,13 +67,9 @@ typedef struct elf_info
 {
     Elf32_Ehdr hdr32;   /* 32-bit ELF header */
     Elf64_Ehdr hdr64;   /* 64-bit ELF header */
-} elf_info;
+} elf_dt;
 
 /* reference to program_info */
 extern prog_info prog;
-
-/* header details extraction */
-void display_hdr_details_32(Elf32_Ehdr *hdr32);
-void display_hdr_details_64(Elf64_Ehdr *hdr64);
 
 #endif /* _HREADELF_H_ */

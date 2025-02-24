@@ -1,6 +1,9 @@
-#include "common.h"
+#include "common_ops.h"
+#include "file_header.h"
 #include "func0.h"
 #include "hreadelf.h"
+
+prog_info prog;
 
 /**
  * main - entry point of the program
@@ -12,7 +15,7 @@
 int main(int argc, char **argv)
 {
     size_t bytes_read = 0;
-    elf_info elf_header;
+    elf_dt elf_header;
 
     memset(&elf_header, 0, sizeof(elf_header));
     prog.program_name = argv[0];
@@ -48,15 +51,33 @@ int main(int argc, char **argv)
                 }
             }
             set_endianness(elf_header.hdr64.e_ident[EI_DATA]);
-            if (!print_file_header(&elf_header))
-            {
-                handle_error(0, 1);
-            }
+
+            printf("ELF Header:\n");
+            magic_(elf_header.hdr64.e_ident);
+            class_(elf_header.hdr64.e_ident[EI_CLASS]);
+            data_(elf_header.hdr64.e_ident[EI_DATA]);
+            version_(elf_header.hdr64.e_ident[EI_VERSION]);
+            osabi_(elf_header.hdr64.e_ident[EI_OSABI]);
+            abi_version_(elf_header.hdr64.e_ident[EI_ABIVERSION]);
+            type_(elf_header.hdr64.e_type);
+            machine_(elf_header.hdr64.e_machine);
+            version_(elf_header.hdr64.e_version);
+            entry_point_(elf_header.hdr64.e_entry);
+            program_offset_(elf_header.hdr64.e_phoff);
+            section_offset_(elf_header.hdr64.e_shoff);
+            flags_(elf_header.hdr64.e_flags);
+            header_size_(elf_header.hdr64.e_ehsize);
+            program_header_size_(elf_header.hdr64.e_phentsize);
+            program_header_count_(elf_header.hdr64.e_phnum);
+            section_header_size_(elf_header.hdr64.e_shentsize);
+            section_header_count_(elf_header.hdr64.e_shnum);
+            section_header_str_index_(elf_header.hdr64.e_shstrndx);
         }
     }
     else
     {
         fprintf(stderr, "%s: Usage: %s <ELF-file>\n", prog.program_name, prog.program_name);
+        return (1);
     }
 
     return (0);

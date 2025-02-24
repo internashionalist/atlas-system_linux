@@ -1,4 +1,5 @@
-#include "common.h"
+#include "common_ops.h"
+#include "file_header.h"
 #include "func0.h"
 #include "hreadelf.h"
 
@@ -8,9 +9,9 @@
  *
  * Return: 1 on success, 0 if invalid data
  */
-int print_file_header(elf_info *elf_data)
+int print_file_header(elf_dt *elf_data)
 {
-    if (!elf_data) /* if NULL or invalid data */
+    if (elf_data == NULL) /* if NULL or invalid data */
     {
         return (0);
     }
@@ -34,6 +35,10 @@ int print_file_header(elf_info *elf_data)
         }
 
         display_hdr_details_64(&elf_data->hdr64);
+    }
+    else
+    {
+        return (0);
     }
 
     return (1);

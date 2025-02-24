@@ -1,4 +1,4 @@
-#include "common.h"
+#include "common_ops.h"
 #include "hreadelf.h"
 
 /**
@@ -7,7 +7,7 @@
  *
  * Return: byte-swapped 16-bit number
  */
-static uint16_t byte_swap16(uint16_t num)
+uint16_t byte_swap16(uint16_t num)
 {
     return ((num >> 8) & 0xFF) | ((num & 0xFF) << 8);
 }
@@ -18,7 +18,7 @@ static uint16_t byte_swap16(uint16_t num)
  *
  * Return: byte-swapped 32-bit number
  */
-static uint32_t byte_swap32(uint32_t num)
+uint32_t byte_swap32(uint32_t num)
 {
     return ((num >> 24) & 0xFF) | ((num >> 8) & 0xFF00) |
            ((num << 8) & 0xFF0000) | ((num << 24) & 0xFF000000);
@@ -30,7 +30,7 @@ static uint32_t byte_swap32(uint32_t num)
  *
  * Return: byte-swapped 64-bit number
  */
-static uint64_t byte_swap64(uint64_t num)
+uint64_t byte_swap64(uint64_t num)
 {
     return ((num >> 56) & 0xFF) | ((num >> 40) & 0xFF00) |
            ((num >> 24) & 0xFF0000) | ((num >> 8) & 0xFF000000) |
@@ -66,11 +66,11 @@ void handle_error(int error_code, int err_num)
 {
     if (error_code == 1)
     {
-        fprintf(stderr, "%s: %s\n", prog.program_name, ERR_OPEN);
+        fprintf(stderr, "%s: %s\n", prog.program_name, FILE_NOT_FOUND_MSG);
     }
     else if (error_code == 2)
     {
-        fprintf(stderr, "%s: %s\n", prog.program_name, ERR_ELF);
+        fprintf(stderr, "%s: %s\n", prog.program_name, INVALID_ELF_MSG);
     }
 
     if (err_num)
