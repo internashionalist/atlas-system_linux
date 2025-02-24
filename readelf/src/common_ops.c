@@ -9,7 +9,7 @@
  */
 uint16_t byte_swap16(uint16_t num)
 {
-	return ((num >> 8) & 0xFF) | ((num & 0xFF) << 8);
+	return (((num >> 8) & 0xFF) | ((num & 0xFF) << 8));
 }
 
 /**
@@ -20,8 +20,8 @@ uint16_t byte_swap16(uint16_t num)
  */
 uint32_t byte_swap32(uint32_t num)
 {
-	return ((num >> 24) & 0xFF) | ((num >> 8) & 0xFF00) |
-		   ((num << 8) & 0xFF0000) | ((num << 24) & 0xFF000000);
+	return (((num >> 24) & 0xFF) | ((num >> 8) & 0xFF00) |
+		   ((num << 8) & 0xFF0000) | ((num << 24) & 0xFF000000));
 }
 
 /**
@@ -32,11 +32,11 @@ uint32_t byte_swap32(uint32_t num)
  */
 uint64_t byte_swap64(uint64_t num)
 {
-	return ((num >> 56) & 0xFF) | ((num >> 40) & 0xFF00) |
+	return (((num >> 56) & 0xFF) | ((num >> 40) & 0xFF00) |
 		   ((num >> 24) & 0xFF0000) | ((num >> 8) & 0xFF000000) |
 		   ((num << 8) & 0xFF00000000) | ((num << 24) & 0xFF0000000000) |
 		   ((num << 40) & 0xFF000000000000) |
-		   ((num << 56) & 0xFF00000000000000);
+		   ((num << 56) & 0xFF00000000000000));
 }
 
 /**
@@ -50,9 +50,9 @@ int check_if_elf(char *file_map)
 	if (file_map[0] == 0x7f && file_map[1] == 'E' && file_map[2] == 'L' &&
 		file_map[3] == 'F')
 	{
-		return 1;
+		return (1);
 	}
-	return 0;
+	return (0);
 }
 
 /**
