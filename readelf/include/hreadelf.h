@@ -24,7 +24,7 @@
 #define INVALID_ELF_MSG "Invalid ELF file - magic bytes mismatch"
 
 /* ELF header identifiers */
-#define HDR_MAGIC " Magic:  "
+#define HDR_MAGIC " Magic:   "
 #define HDR_CLASS "Class:"
 #define HDR_DATA "Data:"
 #define HDR_VERSION "Version:"
@@ -32,10 +32,15 @@
 #define HDR_ABI_VER "ABI Version:"
 #define HDR_TYPE "Type:"
 #define HDR_MACHINE "Machine:"
-#define HDR_FILE_VER "File Version:"
-#define HDR_ENT_PT "Entry Point:"
+#define HDR_FILE_VER "Version:"
+#define HDR_ENT_PT "Entry point address:"
 #define HDR_FLAGS "Flags:"
-#define HDR_SIZE "Header Size:"
+#define HDR_SIZE "Size of this header:"
+#define FH_PHENTSIZ "Size of program headers:"
+#define FH_PHNUM "Number of program headers:"
+#define FH_SHENTSIZ "Size of section headers:"
+#define FH_SHNUM "Number of section headers:"
+#define FH_SHSTRNDX "Section header string table index:"
 
 /**
  * struct program_info - contains information about the program
