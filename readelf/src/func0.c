@@ -1,6 +1,6 @@
 #include "common_ops.h"
 #include "file_header.h"
-#include "func0.h"
+#include "elf_details.h"
 #include "hreadelf.h"
 
 /**
@@ -11,14 +11,14 @@
  */
 int print_file_header(elf_dt *elf_data, prog_info *prog)
 {
-	if (elf_data == NULL) /* if NULL or invalid data */
+	if (elf_data == NULL)
 	{
 		return (0);
 	}
 
-	printf("ELF Header:\n"); /* print header */
+	printf("ELF Header:\n");
 
-	if (prog->file_class == ELFCLASS32) /* 32-bit ELF */
+	if (prog->file_class == ELFCLASS32)
 	{
 		if (prog->endianness == MSB)
 		{
@@ -27,7 +27,7 @@ int print_file_header(elf_dt *elf_data, prog_info *prog)
 
 		display_hdr_details_32(&elf_data->hdr32);
 	}
-	else if (prog->file_class == ELFCLASS64) /* 64-bit ELF */
+	else if (prog->file_class == ELFCLASS64)
 	{
 		if (prog->endianness == MSB)
 		{
