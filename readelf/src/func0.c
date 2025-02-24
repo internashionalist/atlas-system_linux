@@ -20,7 +20,7 @@ int print_file_header(elf_dt *elf_data)
 
     if (prog.file_class == ELFCLASS32) /* 32-bit ELF */
     {
-        if (prog.endianness == LSB)
+        if (prog.endianness == MSB)
         {
             adjust_fh_endian_32(&elf_data->hdr32);
         }
