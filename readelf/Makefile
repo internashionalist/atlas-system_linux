@@ -1,28 +1,38 @@
-# Compiler and flags
+# Compiler and Flags
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -pedantic -g -Iinclude -std=gnu99
 
-# Files
-SRC = $(wildcard src/*.c)
-OBJ = $(SRC:src/%.c=%.o)
+# Directories
+SRC_DIR = src
+TASK0_DIR = $(SRC_DIR)/task0
 
-# Output executable
+# Common & Task-Specific Source Files
+COMMON_SRC = $(wildcard $(SRC_DIR)/*.c)
+TASK0_SRC = $(wildcard $(TASK0_DIR)/*.c)
+
+# All Source Files
+0_SRC = $(COMMON_SRC) $(TASK0_SRC)
+
+# Object File
+OBJ = $(patsubst %.c,%.o,$(0_SRC))
+
+# Output Executable
 EXEC = 0-hreadelf
 
-# All target
+# All Target
 all: $(EXEC)
 
-# Build the executable
+# Build Executable
 $(EXEC): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(EXEC)
 
-# Compile source files into object files
-%.o: src/%.c
+# Compile Source Files into Object Files
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@ -MMD -MF $(@:.o=.d)
 
-# Include dependencies
+# Include Dependency Files
 -include $(OBJ:.o=.d)
 
 # Clean object and executable files
 clean:
-	rm -f $(OBJ) $(EXEC) *.d
+	rm -f $(OBJ) $(EXEC) $(OBJ:.o=.d)

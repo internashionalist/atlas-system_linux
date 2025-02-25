@@ -1,5 +1,5 @@
-#ifndef _FUNC0_H_
-#define _FUNC0_H_
+#ifndef _ELF_DETAILS_H_
+#define _ELF_DETAILS_H_
 
 #include "hreadelf.h"
 
@@ -20,4 +20,4 @@ int print_file_header(elf_dt *elf_data, prog_info *prog);
 void set_endianness(unsigned char ELF_end, prog_info *prog);
 void set_class(unsigned char ELF_class, prog_info *prog);
 
-#endif /* _FUNC0_H_ */
+#endif /* _ELF_DETAILS_H_ */

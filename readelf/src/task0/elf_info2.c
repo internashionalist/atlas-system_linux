@@ -60,7 +60,7 @@ void type_(uint16_t type)
 		printf("DYN (Shared object file)\n");
 		break;
 	case ET_CORE:
-		printf("Core file\n");
+		printf("CORE (Core file)\n");
 		break;
 	default:
 		printf("<unknown: %x>\n", type);

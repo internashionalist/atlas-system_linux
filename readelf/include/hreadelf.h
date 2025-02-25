@@ -71,7 +71,4 @@ typedef struct elf_info
 	Elf64_Ehdr hdr64; /* 64-bit ELF header */
 } elf_dt;
 
-/* reference to program_info */
-extern prog_info prog;
-
 #endif /* _HREADELF_H_ */
