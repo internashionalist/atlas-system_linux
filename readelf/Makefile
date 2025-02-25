@@ -33,6 +33,6 @@ $(EXEC): $(OBJ)
 # Include Dependency Files
 -include $(OBJ:.o=.d)
 
-# Clean object and executable files
+# Clean All Object Files and Executables
 clean:
 	rm -f $(OBJ) $(EXEC) $(OBJ:.o=.d)
