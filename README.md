@@ -1,2 +1,9 @@
 # atlas-system_linux
-LAB - Linux
+
+## LAB - Linux
+
+### Static Variables, Getline
+
+### ls
+
+### ELF: readelf
