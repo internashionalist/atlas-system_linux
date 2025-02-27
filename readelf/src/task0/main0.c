@@ -24,11 +24,10 @@ int main(int argc, char **argv)
 		prog.file_desc = open(argv[1], O_RDONLY); /* open file */
 		if (prog.file_desc == -1)
 			handle_error(1, 1); /* open error */
-		bytes_read = read(		/* read (64-bit) */
+		bytes_read = read(
 						  prog.file_desc, &elf_header.hdr64, sizeof(elf_header.hdr64));
-		if (bytes_read != sizeof(
-							  elf_header.hdr64) ||
-			!check_if_elf((char *)&elf_header.hdr64))
+		if (bytes_read != sizeof(elf_header.hdr64) || !check_if_elf(
+			(char *)&elf_header.hdr64))
 			handle_error(2, 1); /* read error */
 		else
 		{
