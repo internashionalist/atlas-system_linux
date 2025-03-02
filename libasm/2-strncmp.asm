@@ -23,32 +23,20 @@ asm_strncmp:
 	mov 			al, [rdi]		; load byte from str1
 	mov 			bl, [rsi]		; load byte from str2
 	cmp 			al, bl			; compare bytes
-	jne 			.different		; if bytes differ, jump to .different
-	test 			al, al			; if same, test if \0 reached
-	je				.equal			; if yes, jump to .equal
-	inc 			rdi				; str1 pointer++
-	inc 			rsi				; str2 pointer++
+	jne 			.difference		; if bytes differ, jump to .different
+	test 			al, al			; test for end of strings (\0)
+	je				.done			; if yes, jump to .equal
+	inc 			rdi				; move to next byte in str1
+	inc 			rsi				; move to next byte in str2
 	dec 			rdx				; n--
-	jnz 			.loop			; repeat loop up to n or difference found
-	jmp				.equal			; no difference found and \0 not reached
+	jnz 			.loop			; continue unless n == 0
 
 .different:
 	movzx 			eax, byte [rdi]	; zero-extend byte from str1
 	movzx 			ebx, byte [rsi]	; zero-extend byte from str2
-	sub 			eax, ebx		; (unsigned char)str1 - (unsigned char)str2
-	cmp 			eax, 0			; check if difference is 0
-	jg 				.positive		; if difference > 0, jump to .positive
-	jl 				.negative		; if difference < 0, jump to .negative
-	jmp 			.equal			; if eax == 0, jump to .equal
-
-.positive:
-	mov 			eax, 1			; set return value to 1
+	sub 			eax, ebx		; return actual integer difference
 	ret
 
-.negative:
-	mov 			eax, -1			; set return value to -1
-	ret
-
-.equal:
-	xor 			eax, eax		; set return value to 0
+.done:
+	xor 			eax, eax		; indicates match up to n or \0
 	ret
