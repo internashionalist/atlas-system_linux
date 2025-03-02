@@ -49,6 +49,18 @@ asm_strcasecmp:
 	movzx		eax, byte [rdi]	; zero-extend byte from str1
 	movzx		ebx, byte [rsi]	; zero-extend byte from str2
 	sub			eax, ebx		; (unsigned char)str1 - (unsigned char)str2
+	cmp			eax, 0			; check if difference is 0
+	jg			.positive		; if difference > 0, jump to .positive
+	jl			.negative		; if difference < 0, jump to .negative
+	xor			eax, eax		; if difference == 0, set return value to 0
+	ret
+
+.positive:
+	mov			eax, 1			; difference > 0, set return value to 1
+	ret
+
+.negative:
+	mov			eax, -1			; difference < 0, set return value to -1
 	ret
 
 .equal:
