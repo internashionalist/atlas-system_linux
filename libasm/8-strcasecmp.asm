@@ -21,20 +21,20 @@ asm_strcasecmp:
 
 	; convert al (str1) to lowercase
 	cmp			al, 'A'			; 'A' = 0x41
-	jb			.not_upper1		; if al < 'A', jump to .not_upper1
+	jb			.skip_s1			; if al < 'A', jump to .skip_s1
 	cmp			al, 'Z'			; 'Z' = 0x5A
-	ja			.not_upper1		; if al > 'Z', jump to .not_upper1
+	ja			.skip_s1			; if al > 'Z', jump to .skip_s1
 	add			al, 0x20		; convert uppercase in str1 to lowercase
 
-.not_upper1:
+.skip_s1:
 	; convert bl (str2) to lowercase
 	cmp			bl, 'A'			; 'A' = 0x41
-	jb			.not_upper2		; if bl < 'A', jump to .not_upper2
+	jb			.skip_s2			; if bl < 'A', jump to .skip_s2
 	cmp			bl, 'Z'			; 'Z' = 0x5A
-	ja			.not_upper2		; if bl > 'Z', jump to .not_upper2
+	ja			.skip_s2			; if bl > 'Z', jump to .skip_s2
 	add			bl, 0x20		; convert uppercase in str2 to lowercase
 
-.not_upper2:
+.skip_s2:
 	; compare lowercase characters in al and bl
 	cmp			al, bl			; compare bytes
 	jne			.different		; if bytes differ, jump to .different
@@ -47,22 +47,26 @@ asm_strcasecmp:
 .different:
 	; find raw difference (al - bl) in eax
 	movzx		eax, byte [rdi]	; zero-extend byte from str1
+	cmp			eax, 'A'		; check if null terminator reached
+	jb			.skip1		; if al < 'A', jump to .notupper1
+	cmp			eax, 'Z'		; check if null terminator reached
+	ja			.skip1		; if al > 'Z', jump to .notupper1
+	add			eax, 0x20		; convert uppercase in str1 to lowercase
+
+.skip1:
+	; find raw difference (al - bl) in ebx
 	movzx		ebx, byte [rsi]	; zero-extend byte from str2
+	cmp			ebx, 'A'		; check if null terminator reached
+	jb			.skip2			; if bl < 'A', jump to .skip2
+	cmp			ebx, 'Z'		; check if null terminator reached
+	ja			.skip2			; if bl > 'Z', jump to .skip2
+	add			ebx, 0x20		; convert uppercase in str2 to lowercase
+
+.skip2:
+	; compute difference
 	sub			eax, ebx		; (unsigned char)str1 - (unsigned char)str2
-	cmp			eax, 0			; check if difference is 0
-	jg			.positive		; if difference > 0, jump to .positive
-	jl			.negative		; if difference < 0, jump to .negative
-	xor			eax, eax		; if difference == 0, set return value to 0
 	ret
-
-.positive:
-	mov			eax, 1			; difference > 0, set return value to 1
-	ret
-
-.negative:
-	mov			eax, -1			; difference < 0, set return value to -1
-	ret
-
+	
 .equal:
 	; set return value to 0 if strings are equal
 	xor			eax, eax		; set return value to 0
