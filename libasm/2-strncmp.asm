@@ -24,12 +24,13 @@ asm_strncmp:
 	mov 			bl, [rsi]		; load byte from str2
 	cmp 			al, bl			; compare bytes
 	jne 			.different		; if bytes differ, jump to .different
-	test 			al, al			; if same, test if null terminator reached
+	test 			al, al			; if same, test if \0 reached
 	je				.equal			; if yes, jump to .equal
 	inc 			rdi				; str1 pointer++
 	inc 			rsi				; str2 pointer++
 	dec 			rdx				; n--
-	jnz 			.loop			; repeat loop until n == 0, then stop
+	jnz 			.loop			; repeat loop up to n or difference found
+	jmp				.equal			; no difference found and \0 not reached
 
 .different:
 	movzx 			eax, byte [rdi]	; zero-extend byte from str1
@@ -38,6 +39,7 @@ asm_strncmp:
 	cmp 			eax, 0			; check if difference is 0
 	jg 				.positive		; if difference > 0, jump to .positive
 	jl 				.negative		; if difference < 0, jump to .negative
+	jmp 			.equal			; if eax == 0, jump to .equal
 
 .positive:
 	mov 			eax, 1			; set return value to 1
