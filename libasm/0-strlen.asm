@@ -14,9 +14,9 @@ asm_strlen:
 
 .loop:
 	cmp byte [rdi + rax], 0 ; compare byte at rdi + rax (str + i) with 0
-	je .done                ; once null terminated, jump to done
+	je .return                ; once null terminated, jump to return
 	inc rax                 ; increment i
 	jmp .loop               ; rinse, repeat
 
-.done:
+.return:
 	ret                     ; return i (rax) at end of string
