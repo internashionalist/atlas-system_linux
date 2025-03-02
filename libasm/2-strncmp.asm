@@ -4,13 +4,14 @@ global asm_strncmp
 
 section .text
 
-; asm_strncmp: 		compares up to n characters of two strings
+; asm_strncmp: 		copies strncmp (3) - compares up to n characters
+;					of two strings
 ; @str1:			rdi
 ; @str2:			rsi
 ; @n:				rdx
 ;
-; Return:			rax (0 if str1 == str2, -1 if str1 < str2,
-;						1 if str1 > str2)
+; Return:			difference between first mismatched bytes
+;					or 0 if strings match up to n or \0
 ;
 ; Prototype:		int asm_strncmp(
 ;						const char *str1, const char *str2, size_t n);
