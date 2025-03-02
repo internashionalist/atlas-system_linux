@@ -18,13 +18,13 @@ section .text
 
 asm_strncmp:
 	test 			rdx, rdx		; test if n == 0
-	je 				.equal			; if n == 0, return 0
+	je 				.done		; if n == 0, return 0
 
 .loop:
 	mov 			al, [rdi]		; load byte from str1
 	mov 			bl, [rsi]		; load byte from str2
 	cmp 			al, bl			; compare bytes
-	jne 			.difference		; if bytes differ, jump to .different
+	jne 			.different		; if bytes differ, jump to .different
 	test 			al, al			; test for end of strings (\0)
 	je				.done			; if yes, jump to .equal
 	inc 			rdi				; move to next byte in str1
