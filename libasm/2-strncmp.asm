@@ -31,6 +31,7 @@ asm_strncmp:
 	inc 			rsi				; move to next byte in str2
 	dec 			rdx				; n--
 	jnz 			.loop			; continue unless n == 0
+	jmp				.done			; if n bytes compared, return 0
 
 .different:
 	movzx 			eax, byte [rdi]	; zero-extend byte from str1
