@@ -2,11 +2,12 @@ global asm_strlen           ; global declaration of function
 
 section .text               ; code section
 
-; int asm_strlen(const char *str);
+; asm_strlen: returns length of string = strlen (3)
 ; @str: rdi
-; Description: returns length of string = strlen (3)
 ;
 ; Return: rax (length of string)
+;
+; Prototype: size_t asm_strlen(const char *str);
 
 asm_strlen:
 	xor rax, rax            ; initialize rax to 0 (i = 0)
