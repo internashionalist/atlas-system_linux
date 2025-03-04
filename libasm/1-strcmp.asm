@@ -7,9 +7,9 @@ section .text
 ; @str1:				rdi
 ; @str2:				rsi
 ;
-; Return:				rax (0 if strings are equal, otherwise 1 if str1 > str2,
-;							-1 if str1 < str2)
-;                       		^^^NOT WHAT strcmp(3) RETURNS^^^
+; Return:				rax (0 if strings are equal, otherwise
+;								1 if str1 > str2, -1 if str1 < str2)
+;                       	^^^NOT WHAT strcmp(3) RETURNS^^^
 ;
 ; Prototype:			int asm_strcmp(const char *str1, const char *str2);
 
