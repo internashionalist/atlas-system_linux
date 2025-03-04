@@ -3,7 +3,7 @@ global asm_strcmp
 
 section .text
 
-; asm_strcmp: compares two strings - strcmp(3)
+; asm_strcmp: 			compares two strings - strcmp(3)
 ; @str1:				rdi
 ; @str2:				rsi
 ;
