@@ -4,7 +4,9 @@ global asm_strstr
 
 section .text
 
-; asm_strstr:		locates first occurrence of needle in haystack - strstr(3)
+; asm_strstr:		copycat strstr(3) - locates first occurrence of needle in
+;                   haystack
+;
 ; @haystack:		rdi (pointer to searched string)
 ; @needle:			rsi (pointer to substring for which to search)
 ;

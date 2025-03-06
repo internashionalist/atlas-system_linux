@@ -4,7 +4,8 @@ global asm_putc
 
 section .text
 
-; asm_putc: 	writes a character to stdout - putc(3)
+; asm_putc: 	copycat putc(3) function - writes a character to stdout
+;
 ; @c:			rdi (character to write)
 ;
 ; Return:		number of bytes written or -1 on error

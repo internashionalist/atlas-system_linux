@@ -4,9 +4,11 @@ global asm_strcasecmp
 
 section .text
 
-; asm_strcasecmp: 	compares two strings, ignoring case - strcasecmp(3)
-; @str1:			rdi
-; @str2:			rsi
+; asm_strcasecmp: 	copycat strcasecmp(3) - compares two strings,
+;                   ignoring case
+;
+; @s1:		    	rdi (pointer to string 1)
+; @s2:		    	rsi (pointer to string 2)
 ;
 ; Return:			rax (0 if strings are equal, otherwise raw difference)
 ;

@@ -3,9 +3,10 @@ global asm_strcmp
 
 section .text
 
-; asm_strcmp: 			compares two strings - strcmp(3)
-; @str1:				rdi
-; @str2:				rsi
+; asm_strcmp: 			copycat strcmp(3) - compares two strings
+;
+; @str1:				rdi (pointer to first string)
+; @str2:				rsi (pointer to second string)
 ;
 ; Return:				rax (0 if strings are equal, otherwise
 ;								1 if str1 > str2, -1 if str1 < str2)

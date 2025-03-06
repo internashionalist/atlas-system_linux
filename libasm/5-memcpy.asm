@@ -4,10 +4,12 @@ global asm_memcpy
 
 section .text
 
-; asm_memcpy: copies n bytes from memory area src => dest - memcpy(3)
-; @dest:		rdi
-; @src:			rsi
-; @n:			rdx
+; asm_memcpy:   copycat memcpy(3) function - copies n bytes from memory area
+;               src => dest - memcpy(3)
+;
+; @dest:		rdi (pointer to destination)
+; @src:			rsi (pointer to source)
+; @n:			rdx (number of bytes to copy)
 ;
 ; Return:		rax (start of dest)
 ;

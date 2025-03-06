@@ -4,8 +4,10 @@ global asm_strspn
 
 section .text
 
-; asm_strspn:		calculate the length of the initial segment of s (str)
-;                   which consists only of characters in 'accept' - strspn(3)
+; asm_strspn:		copycat strspn(3) - calculates the length of the
+;                   initial segment of s (str) which consists only of
+;                   characters in 'accept' - strspn(3)
+;
 ; @s:				rdi (pointer to string to be searched)
 ; @accept:			rsi (pointer to string containing characters to match)
 ;
@@ -46,4 +48,5 @@ asm_strspn:
 	jmp		.done
 
 .done:
+	; return count (rax)
 	ret

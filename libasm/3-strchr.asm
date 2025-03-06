@@ -4,8 +4,10 @@ global asm_strchr
 
 section .text
 
-; asm_strchr:		locates first occurrence of c in str
-; @str:				rdi
+; asm_strchr:		copycat strchr(3) function - locates first occurrence
+;                   of c in str
+;
+; @str:				rdi (pointer to string to be searched)
 ; @c:				esi (char passed as int)
 ;
 ; Return:			rax (pointer first c in str) or NULL if c not found

@@ -4,13 +4,13 @@ global asm_strncmp
 
 section .text
 
-; asm_strncmp: 		copies strncmp (3) - compares up to n characters
-;					of two strings
-; @str1:			rdi
-; @str2:			rsi
-; @n:				rdx
+; asm_strncmp: 		copycat strncmp(3) - compares up to n characters
+;					of two strings, ignoring case
+; @str1:			rdi (pointer to first string)
+; @str2:			rsi (pointer to second string)
+; @n:				rdx (number of bytes to compare)
 ;
-; Return:			difference between first mismatched bytes
+; Return:			raw difference between first mismatched bytes
 ;					or 0 if strings match up to n or \0
 ;
 ; Prototype:		int asm_strncmp(
@@ -18,7 +18,7 @@ section .text
 
 asm_strncmp:
 	test 			rdx, rdx		; test if n == 0
-	je 				.done		; if n == 0, return 0
+	je 				.done		    ; if n == 0, return 0
 
 .loop:
 	mov 			al, [rdi]		; load byte from str1
