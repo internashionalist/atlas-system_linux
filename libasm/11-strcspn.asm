@@ -4,8 +4,8 @@ global asm_strcspn
 
 section .text
 
-; asm_strcspn: 	returns length of the initial segment of s, which has only
-; 					characters not in reject - strcspn(3)
+; asm_strcspn: 	    copycat strcspn(3) - calculate the length of the
+;					initial segment of s (str)
 ; @s:				rdi (pointer to string to be searched)
 ; @reject:			rsi (pointer to string of characters to reject)
 ;
