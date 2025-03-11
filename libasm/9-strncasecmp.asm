@@ -9,7 +9,7 @@ section .text
 ;
 ; @s1:					rdi (pointer to current byte in s1)
 ; @s2:					rsi (pointer to current byte in s2)
-; @n:					rdx
+; @n:					rdx (number of bytes to compare)
 ;
 ; Return:				eax (raw difference between first differing bytes,
 ;						or 0 if s1 == s2 | n == 0)
