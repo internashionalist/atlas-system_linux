@@ -57,26 +57,10 @@ asm_strncasecmp:
 
 .different:
 	; find raw difference (al - bl) in eax
-	movzx	eax, byte [rdi]	; zero-extend byte from s1
-	cmp		eax, 'A'		; check if null terminator reached
-	jb		.final_s1		; if al < 'A', jump to .final_s1
-	cmp		eax, 'Z'		; check if null terminator reached
-	ja		.final_s1		; if al > 'Z', jump to .final_s1
-	add		eax, 0x20		; convert uppercase in s1 to lowercase
-
-.final_s1:
-	; find raw difference (al - bl) in ebx
-	movzx	ebx, byte [rsi]	; zero-extend byte from s2
-	cmp		ebx, 'A'		; check if null terminator reached
-	jb		.final_s2		; if bl < 'A', jump to .final_s2
-	cmp		ebx, 'Z'		; check if null terminator reached
-	ja		.final_s2		; if bl > 'Z', jump to .final_s2
-	add		ebx, 0x20		; convert uppercase in s2 to lowercase
-
-.final_s2:
-	; compute difference
-	sub		eax, ebx		; (unsigned char)s1 - (unsigned char)s2
-	ret
+	movzx	eax, al         ; zero-extend byte from s1
+    movzx	ebx, bl         ; zero-extend byte from s2
+    sub		eax, ebx        ; (unsigned char)str1 - (unsigned char)str2
+    ret                     ; return raw difference
 
 .done:
 	; set return value to 0 if strings match or n == 0
