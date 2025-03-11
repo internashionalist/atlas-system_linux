@@ -11,8 +11,8 @@ section .text
 ; @s2:					rsi (pointer to current byte in s2)
 ; @n:					rdx
 ;
-; Return:				eax (0 if s1 == s2 | n == 0, -1 if s1 < s2,
-;						1 if s1 > s2)
+; Return:				eax (raw difference between first differing bytes,
+;						or 0 if s1 == s2 | n == 0)
 ;
 ; Prototype:			int asm_strncasecmp(
 ;						    const char *s1, const char *s2, size_t n);
