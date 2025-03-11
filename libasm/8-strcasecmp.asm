@@ -47,27 +47,11 @@ asm_strcasecmp:
 
 .different:
 	; find raw difference (al - bl) in eax
-	movzx		eax, byte [rdi]	; zero-extend byte from str1
-	cmp			eax, 'A'		; check if null terminator reached
-	jb			.skip1			; if al < 'A', jump to .skip1
-	cmp			eax, 'Z'		; check if null terminator reached
-	ja			.skip1			; if al > 'Z', jump to .skip1
-	add			eax, 0x20		; convert uppercase in s1 to lowercase
+	movzx		eax, al            ; zero-extend byte from s1
+    movzx       ebx, bl            ; zero-extend byte from s2
+    sub         eax, ebx           ; (unsigned char)str1 - (unsigned char)str2
+    ret
 
-.skip1:
-	; find raw difference (al - bl) in ebx
-	movzx		ebx, byte [rsi]	; zero-extend byte from s2
-	cmp			ebx, 'A'		; check if null terminator reached
-	jb			.skip2			; if bl < 'A', jump to .skip2
-	cmp			ebx, 'Z'		; check if null terminator reached
-	ja			.skip2			; if bl > 'Z', jump to .skip2
-	add			ebx, 0x20		; convert uppercase in s2 to lowercase
-
-.skip2:
-	; compute difference
-	sub			eax, ebx		; (unsigned char)s1 - (unsigned char)s2
-	ret
-	
 .equal:
 	; set return value to 0 if strings are equal
 	xor			eax, eax		; set return value to 0
