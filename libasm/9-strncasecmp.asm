@@ -58,9 +58,9 @@ asm_strncasecmp:
 .different:
 	; find raw difference (al - bl) in eax
 	movzx	eax, al         ; zero-extend byte from s1
-    movzx	ebx, bl         ; zero-extend byte from s2
-    sub		eax, ebx        ; (unsigned char)str1 - (unsigned char)str2
-    ret                     ; return raw difference
+	movzx	ebx, bl         ; zero-extend byte from s2
+	sub		eax, ebx        ; (unsigned char)str1 - (unsigned char)str2
+	ret                     ; return raw difference
 
 .done:
 	; set return value to 0 if strings match or n == 0
