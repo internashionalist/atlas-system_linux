@@ -48,21 +48,22 @@ asm_strncasecmp:
 	jne		.different		; if bytes differ, jump to .different
 	test	al, al			; if bytes match, check if \0 reached
 	je		.done			; if \0 reached && bytes match, return 0
+
+	; otherwise, increment pointers, decrement n, and continue
 	inc		rdi				; s1 pointer++
 	inc		rsi				; s2 pointer++
 	dec		rdx				; n--
 	jnz		.loop			; rinse, repeat until n == 0
 
-	jmp		.done			; if n == 0 and no \0 reached, return 0
+	jmp		.done			; if n is exhausted, return 0
 
 .different:
-	; find raw difference (al - bl) in eax
-	movzx	eax, al			; zero-extend byte from s1
-	movzx	ebx, bl			; zero-extend byte from s2
-	sub		eax, ebx		; (unsigned char)str1 - (unsigned char)str2
-	ret						; return raw difference
+	; reread mismatched bytes from memory
+	movzx	eax, byte [rdi]	; read original byte from s1
+	movzx	ebx, byte [rsi]	; read original byte from s2
+	sub		eax, ebx		; compute difference (s1 - s2)
+	ret						; return raw difference of first differing bytes
 
 .done:
-	; set return value to 0 if strings match or n == 0
-	xor		eax, eax
+	xor     eax, eax         ; return 0
 	ret
