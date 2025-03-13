@@ -65,5 +65,5 @@ asm_strncasecmp:
 	ret						; return raw difference of first differing bytes
 
 .done:
-	xor     eax, eax         ; return 0
+	xor     eax, eax		; return 0
 	ret
