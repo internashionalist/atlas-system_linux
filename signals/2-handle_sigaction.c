@@ -32,6 +32,9 @@ void gotcha_printer(int signum)
  *						to gotcha_printer, and installs new handler for SIGINT
  *						signal using sigaction
  *
+ * struct sigaction:	used by sigaction to define what action is taken
+ *						when a signal is caught
+ *
  * Return:              0 on success, -1 on failure
  */
 int handle_sigaction(void)
