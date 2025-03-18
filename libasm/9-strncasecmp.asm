@@ -18,6 +18,10 @@ section .text
 ;						    const char *s1, const char *s2, size_t n);
 
 asm_strncasecmp:
+	; save rdi and rsi to stack
+	push	rdi
+	push	rsi
+
 	; null check
 	test	rdx, rdx		; if n == 0, no need to compare
 	je		.done
@@ -55,15 +59,22 @@ asm_strncasecmp:
 	dec		rdx				; n--
 	jnz		.loop			; rinse, repeat until n == 0
 
+	; no more n == 0 return
 	jmp		.done			; if n is exhausted, return 0
 
 .different:
 	; reread mismatched bytes from memory
-	movzx	eax, byte [rdi]	; read original byte from s1
-	movzx	ebx, byte [rsi]	; read original byte from s2
+	movzx	eax, al			; zero-extend byte from s1
+	movzx	ebx, bl			; zero-extend byte from s2
 	sub		eax, ebx		; compute difference (s1 - s2)
-	ret						; return raw difference of first differing bytes
+	jmp		.final			; return raw difference of first differing bytes
 
 .done:
+	; return 0 if strings are equal or n == 0
 	xor     eax, eax		; return 0
+
+.final:
+	; restore rdi and rsi from the stack and return 
+	pop		rsi
+	pop		rdi
 	ret
