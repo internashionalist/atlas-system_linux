@@ -29,7 +29,7 @@ void gotcha_printer(int signum)
 int handle_sigaction(void)
 {
 	/**
-	 * struct sigaction - 	struct to call sigaction to change signal handling
+	 * struct sigaction -	struct to call sigaction to change signal handling
 	 *
 	 * Return:				0 on success, -1 on failure
 	 */
