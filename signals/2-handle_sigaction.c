@@ -25,8 +25,9 @@ void gotcha_printer(int signum)
  *						signal
  *
  * struct sigaction:	handler for signal
- * @sa_handler:			pointer to the handler function
- * @sa_mask:			set of signals to block during handler execution
+ *
+ * Description:			structure that calls sigaction to change signal handling
+ *						behavior
  *
  * Return:              0 on success, -1 on failure
  */
