@@ -18,6 +18,7 @@
  * Description: used by the sigaction system call to specify how a signal
  *              should be handled.
  */
+typedef struct sigaction sigaction_t;
 
 int handle_signal(void);
 void (*current_handler_signal(void))(int);
