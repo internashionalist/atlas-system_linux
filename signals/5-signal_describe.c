@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	}
 
 	int signum = atoi(argv[1]);  /* convert arg string to int */
-	printf("%d: %s\n", strsignal(signum));  /* print signal description */
+	printf("%d: %s\n", signum, strsignal(signum));  /* print signal description */
 
 	return (EXIT_SUCCESS);
 }
