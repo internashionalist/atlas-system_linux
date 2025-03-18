@@ -15,7 +15,7 @@
  * @sa_mask:		set of signals to be blocked during execution
  *					of the handler
  *
- * Description: 	used by the sigaction system call to specify how
+ * Description:		used by the sigaction system call to specify how
  *					a signal should be handled
  */
 typedef struct sigaction sigaction_t;
