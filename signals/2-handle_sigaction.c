@@ -20,6 +20,14 @@ void gotcha_printer(int signum)
 /**
  * handle_sigaction -	sets handler for SIGINT signal using sigaction
  *
+ * Description:			initializes struct sigaction variable, sets sa_handler
+ *						to gotcha_printer, and installs new handler for SIGINT
+ *						signal
+ *
+ * struct sigaction:	handler for signal
+ * @sa_handler:			pointer to the handler function
+ * @sa_mask:			set of signals to block during handler execution
+ *
  * Return:              0 on success, -1 on failure
  */
 int handle_sigaction(void)
