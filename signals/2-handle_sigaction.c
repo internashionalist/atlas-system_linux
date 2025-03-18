@@ -5,14 +5,6 @@
 #include "signals.h"
 
 /**
- * struct sigaction -	structure that calls sigaction to change signal
- *						handling behavior
- *
- * Description:			used by sigaction to define what action is taken
- *						when a signal is caught
- */
-
-/**
  * gotcha_printer -		prints "Gotcha!" on receiving a signal
  *						(plus signal number)
  * @signum:				signal number to print
