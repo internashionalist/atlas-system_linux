@@ -22,17 +22,17 @@ void gotcha_printer(int signum)
  *
  * Description:			initializes struct sigaction variable, sets sa_handler
  *						to gotcha_printer, and installs new handler for SIGINT
- *						signal
- *
- * struct sigaction:	handler for signal
- *
- * Description:			structure that calls sigaction to change signal handling
- *						behavior
+ *						signal using sigaction
  *
  * Return:              0 on success, -1 on failure
  */
 int handle_sigaction(void)
 {
+	/**
+	 * struct sigaction - 	struct to call sigaction to change signal handling
+	 *
+	 * Return:				0 on success, -1 on failure
+	 */
 	struct sigaction sa;  /* struct to handle signal actions */
 
 	memset(&sa, 0, sizeof(sa));  /* initialize struct to 0 */
