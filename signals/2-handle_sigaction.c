@@ -5,6 +5,14 @@
 #include "signals.h"
 
 /**
+ * struct sigaction -	structure that calls sigaction to change signal
+ *						handling behavior
+ *
+ * Description:			used by sigaction to define what action is taken
+ *						when a signal is caught
+ */
+
+/**
  * gotcha_printer -		prints "Gotcha!" on receiving a signal
  *						(plus signal number)
  * @signum:				signal number to print
@@ -28,11 +36,6 @@ void gotcha_printer(int signum)
  */
 int handle_sigaction(void)
 {
-	/**
-	 * struct sigaction -	struct to call sigaction to change signal handling
-	 *
-	 * Return:				0 on success, -1 on failure
-	 */
 	struct sigaction sa;  /* struct to handle signal actions */
 
 	memset(&sa, 0, sizeof(sa));  /* initialize struct to 0 */
