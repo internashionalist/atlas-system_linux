@@ -32,6 +32,10 @@ void gotcha_printer(int signum)
 int handle_sigaction(void)
 {
 	struct sigaction sa;  /* struct to handle signal actions */
+	/**
+	 * struct sigaction -	used by sigaction to define what action is taken
+	 *						when a signal is caught
+	 */
 
 	memset(&sa, 0, sizeof(sa));  /* initialize struct to 0 */
 	sa.sa_handler = gotcha_printer;  /* set handler to gotcha_printer */
