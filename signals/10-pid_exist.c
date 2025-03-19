@@ -2,7 +2,7 @@
 #include <sys/types.h>
 
 /**
- * pid_exist - 	checks if a process exists given its PID
+ * pid_exist -	checks if a process exists given its PID
  * @pid:		process ID to check
  *
  * Return:		1 if the process exists, 0 otherwise
