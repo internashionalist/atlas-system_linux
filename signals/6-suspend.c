@@ -30,7 +30,7 @@ int main(void)
 	sigaction(SIGINT, &sa, NULL);		/* update action */
 	pause();							/* wait for signal */
 
-	printf("Signal received\n");		/* print message on signal */	
+	printf("Signal received\n");		/* print message on signal */
 
 	return (EXIT_SUCCESS);
 }
