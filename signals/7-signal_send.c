@@ -13,6 +13,8 @@
  */
 int main(int argc, char *argv[])
 {
+	pid_t pid;  /* process id */
+
 	if (argc != 2)  /* arg count check */
 	{
 		fprintf(stderr, "Usage: %s <pid>\n", argv[0]);
