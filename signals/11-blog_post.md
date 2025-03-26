@@ -1,6 +1,6 @@
 # Signals: Inter-Office Memos for Programs
 
-![signal](https://example.com/image.png)
+![signal](https://github.com/internashionalist/atlas-system_linux/blob/main/signals/signal.jpg)
 
 	Your program is working away at its desk, when there's a ding and a little window in the corner of the screen. Signals are notifications sent to your program to alert it that something needs its attention - whether it’s an error, a user command, or a message from another process. The operating system or another process decides it’s time to break into your program’s routine. 
 
