@@ -1,21 +1,20 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 TARGET = hnm
-OBJS = hnm.o hnm_funcs32.o hnm_funcs64.o
 
 all: $(TARGET)
 
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+$(TARGET): main.o hnm_funcs.o hnm_funcs32.o
+	$(CC) $(CFLAGS) -static -o $(TARGET) main.o hnm_funcs.o hnm_funcs32.o
 
-hnm.o: hnm.c hnm_funcs.h
-	$(CC) $(CFLAGS) -c hnm.c
+main.o: main.c hnm_funcs.h
+	$(CC) $(CFLAGS) -c main.c
+
+hnm_funcs.o: hnm_funcs.c hnm_funcs.h
+	$(CC) $(CFLAGS) -c hnm_funcs.c
 
 hnm_funcs32.o: hnm_funcs32.c hnm_funcs.h
 	$(CC) $(CFLAGS) -c hnm_funcs32.c
-
-hnmfuncs64.o: hnmfuncs64.c hnm_funcs.h
-	$(CC) $(CFLAGS) -c hnm_funcs64.c
 
 clean:
 	rm -f $(TARGET) *.o
