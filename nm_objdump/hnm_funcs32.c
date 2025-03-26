@@ -80,6 +80,8 @@ static char get_symbol_char32(Elf32_Sym *sym, Elf32_Shdr *sections,
 		return ('?');
 	sec_name = sh_strtab + sec->sh_name;
 	if (strcmp(sec_name, ".text") == 0 ||
+		strcmp(sec_name, ".init_array") == 0 ||
+		strcmp(sec_name, ".fini_array") == 0 ||
 		(sec->sh_flags & SHF_EXECINSTR))
 		return ((bind == STB_LOCAL) ? 't' : 'T');
 	if (strcmp(sec_name, ".data") == 0 ||
