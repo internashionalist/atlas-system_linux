@@ -141,10 +141,6 @@ void process_elf64(const char *filename, unsigned char *data, size_t size)
 		fprintf(stderr, "%s: no symbol table found.\n", filename);
 		return;
 	}
-	{
-		fprintf(stderr, "%s: no symbol table found.\n", filename);
-		return;
-	}
 	/* get symbol table and string table */
 	num_symbols = symtab_section->sh_size / sizeof(Elf64_Sym);
 	symtab = (Elf64_Sym *)(data + symtab_section->sh_offset);
