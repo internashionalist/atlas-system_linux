@@ -71,6 +71,8 @@ static char get_symbol_char32(Elf32_Sym *sym, Elf32_Shdr *sections,
 		return ('U');
 	if (sym->st_shndx == SHN_ABS)
 		return ((bind == STB_LOCAL) ? 'a' : 'A');
+	if (sym->st_shndx == SHN_COMMON)
+		return ((bind == STB_LOCAL) ? 'c' : 'C');
 	if (type == STT_FUNC)
 		return ((bind == STB_LOCAL) ? 't' : 'T');
 	sec = &sections[sym->st_shndx];
