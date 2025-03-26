@@ -100,7 +100,7 @@ static void print_symbol32(Elf32_Sym *sym, Elf32_Shdr *sections,
 	const char *name = sym_strtab + sym->st_name;
 	char c = get_symbol_char32(sym, sections, sh_strtab);
 
-	if (type == STT_FILE)	/* skip file symbols */
+	if (ELF32_ST_TYPE(sym->st_info == STT_FILE))	/* skip file symbols */
 		return;
 	if (!name || name[0] == '\0')
 		return;

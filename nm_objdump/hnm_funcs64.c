@@ -102,7 +102,7 @@ static void print_symbol64(Elf64_Sym *sym, Elf64_Shdr *sections,
 	const char *name = sym_strtab + sym->st_name;
 	char c = get_symbol_char64(sym, sections, sh_strtab);
 
-	if (type == STT_FILE)					/* ignore file symbols */
+	if (ELF64_ST_TYPE(sym->st_info == STT_FILE))	/* skip file symbols */
 		return;
 	if (!name || name[0] == '\0')			/* no name = no print */
 		return;
