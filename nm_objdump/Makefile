@@ -4,17 +4,17 @@ TARGET = hnm
 
 all: $(TARGET)
 
-$(TARGET): main.o hnm_funcs.o hnm_funcs32.o
-	$(CC) $(CFLAGS) -static -o $(TARGET) main.o hnm_funcs.o hnm_funcs32.o
+$(TARGET): hnm.o hnm_funcs32.o hnm_funcs64.o
+	$(CC) $(CFLAGS) -static -o $(TARGET) hnm.o hnm_funcs32.o hnm_funcs64.o
 
-main.o: main.c hnm_funcs.h
-	$(CC) $(CFLAGS) -c main.c
-
-hnm_funcs.o: hnm_funcs.c hnm_funcs.h
-	$(CC) $(CFLAGS) -c hnm_funcs.c
+hnm.o: hnm.c hnm_funcs.h
+	$(CC) $(CFLAGS) -c hnm.c
 
 hnm_funcs32.o: hnm_funcs32.c hnm_funcs.h
 	$(CC) $(CFLAGS) -c hnm_funcs32.c
+
+hnm_funcs64.o: hnm_funcs64.c hnm_funcs.h
+	$(CC) $(CFLAGS) -c hnm_funcs64.c
 
 clean:
 	rm -f $(TARGET) *.o
