@@ -60,13 +60,10 @@ static char get_symbol_char32(Elf32_Sym *sym, Elf32_Shdr *sections,
 
 	if (type == STT_FILE)
 		return (0);
-	if (bind == STB_WEAK)
-	{
-		if (sym->st_shndx == SHN_UNDEF)
-			return ((type == STT_OBJECT) ? 'v' : 'w');
-		else
-			return ((type == STT_OBJECT) ? 'V' : 'W');
-	}
+	if (bind == STB_WEAK) /* weak symbol */
+		return (sym->st_shndx == SHN_UNDEF ?
+			((type == STT_OBJECT) ? 'v' : 'w') :
+			((type == STT_OBJECT) ? 'V' : 'W'));
 	if (sym->st_shndx == SHN_UNDEF)
 		return ('U');
 	if (sym->st_shndx == SHN_ABS)

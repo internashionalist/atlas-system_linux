@@ -60,12 +60,9 @@ static char get_symbol_char64(Elf64_Sym *sym, Elf64_Shdr *sections,
 	if (type == STT_FILE)					/* file symbol */
 		return (0);
 	if (bind == STB_WEAK)					/* weak symbol */
-	{
-		if (sym->st_shndx == SHN_UNDEF)
-			return ((type == STT_OBJECT) ? 'v' : 'w');
-		else
-			return ((type == STT_OBJECT) ? 'V' : 'W');
-	}
+		return (sym->st_shndx == SHN_UNDEF ?
+			((type == STT_OBJECT) ? 'v' : 'w') :
+			((type == STT_OBJECT) ? 'V' : 'W'));
 	if (sym->st_shndx == SHN_UNDEF)
 		return ('U');
 	if (sym->st_shndx == SHN_ABS)
@@ -90,8 +87,7 @@ static char get_symbol_char64(Elf64_Sym *sym, Elf64_Shdr *sections,
 		return ((bind == STB_LOCAL) ? 'd' : 'D');
 	if (strcmp(sec_name, ".bss") == 0)		/* explicit .bss check */
 		return ((bind == STB_LOCAL) ? 'b' : 'B');
-	if (strcmp(sec_name, ".rodata") == 0 ||
-		(sec->sh_flags & SHF_ALLOC))
+	if (strcmp(sec_name, ".rodata") == 0 || (sec->sh_flags & SHF_ALLOC))
 		return ((bind == STB_LOCAL) ? 'r' : 'R');
 	return ('?');
 }
