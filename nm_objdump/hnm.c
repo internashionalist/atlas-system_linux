@@ -29,7 +29,6 @@ int main(int argc, char **argv)
 		fd = open(argv[i], O_RDONLY);			/* open each file */
 		if (fd < 0 || fstat(fd, &st) < 0)		/* open or fstat error */
 		{
-			perror(argv[i]);					/* probably don't need */
 			if (fd >= 0)
 				close(fd);
 			continue;
@@ -38,7 +37,6 @@ int main(int argc, char **argv)
 		data = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
 		if (data == MAP_FAILED)					/* mmap error */
 		{
-			perror(argv[i]);					/* (unneeded?) */
 			close(fd);
 			continue;
 		}
@@ -53,7 +51,6 @@ int main(int argc, char **argv)
 			process_elf32(argv[i], data, st.st_size);
 		else										/* unknown */
 			fprintf(stderr, "%s: Unknown ELF class.\n", argv[i]);
-
 		munmap(data, st.st_size);					/* unmap */
 		close(fd);
 	}
