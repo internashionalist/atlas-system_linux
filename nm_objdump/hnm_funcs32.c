@@ -91,8 +91,7 @@ static char get_symbol_char32(Elf32_Sym *sym, Elf32_Shdr *sections,
 		return ((bind == STB_LOCAL) ? 'd' : 'D');
 	if (strcmp(sec_name, ".bss") == 0)
 		return ((bind == STB_LOCAL) ? 'b' : 'B');
-	if (strcmp(sec_name, ".rodata") == 0 ||
-		(sec->sh_flags & SHF_ALLOC))
+	if (strcmp(sec_name, ".rodata") == 0 || (sec->sh_flags & SHF_ALLOC))
 		return ((bind == STB_LOCAL) ? 'r' : 'R');
 	return ('?');
 }
@@ -137,6 +136,8 @@ void process_elf32(const char *filename, unsigned char *data, size_t size)
 
 	(void)size;
 	ehdr = (Elf32_Ehdr *)data;
+	if (ehdr->e_type == ET_DYN)
+		return;
 	sections = (Elf32_Shdr *)(data + ehdr->e_shoff);
 	sh_strtab = (char *)(data + sections[ehdr->e_shstrndx].sh_offset);
 	symtab_section = find_symtab32(ehdr, sections);
