@@ -7,3 +7,11 @@
 ### ls
 
 ### ELF: readelf
+
+### x86 Assembly - libASM
+
+### C - Signals
+
+### C - ELF:nm/objdump
+
+### CPython
