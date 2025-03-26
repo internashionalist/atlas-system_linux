@@ -45,6 +45,8 @@ int main(int argc, char **argv)
 		if ((size_t)st.st_size < sizeof(Elf64_Ehdr) ||
 			memcmp(data, ELFMAG, SELFMAG) != 0)		/* not ELF */
 			fprintf(stderr, "%s: Not an ELF file.\n", argv[i]);
+		else if (data[EI_DATA] != ELFDATA2LSB)		/* not little-endian */
+			fprintf(stderr, "%s: %s: no symbols\n", argv[0], argv[i]);
 		else if (data[EI_CLASS] == ELFCLASS64)		/* 64-bit */
 			process_elf64(argv[i], data, st.st_size);
 		else if (data[EI_CLASS] == ELFCLASS32)		/* 32-bit */
