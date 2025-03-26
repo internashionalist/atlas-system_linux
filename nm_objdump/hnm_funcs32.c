@@ -58,6 +58,8 @@ static char get_symbol_char32(Elf32_Sym *sym, Elf32_Shdr *sections,
 	Elf32_Shdr *sec;
 	const char *sec_name;
 
+	if (type == STT_FILE)
+		return (0);
 	if (bind == STB_WEAK)
 	{
 		if (sym->st_shndx == SHN_UNDEF)
