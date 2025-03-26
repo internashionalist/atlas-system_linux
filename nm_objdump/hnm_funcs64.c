@@ -57,6 +57,8 @@ static char get_symbol_char64(Elf64_Sym *sym, Elf64_Shdr *sections,
 	Elf64_Shdr *sec;
 	const char *sec_name;
 
+	if (type == STT_FILE)					/* file symbol */
+		return (0);
 	if (bind == STB_WEAK)					/* weak symbol */
 	{
 		if (sym->st_shndx == SHN_UNDEF)
@@ -64,29 +66,28 @@ static char get_symbol_char64(Elf64_Sym *sym, Elf64_Shdr *sections,
 		else
 			return ((type == STT_OBJECT) ? 'V' : 'W');
 	}
-	if (sym->st_shndx == SHN_UNDEF)			/* undefined symbol */
+	if (sym->st_shndx == SHN_UNDEF)
 		return ('U');
-	if (sym->st_shndx == SHN_ABS)			/* absolute symbol */
+	if (sym->st_shndx == SHN_ABS)
 		return ((bind == STB_LOCAL) ? 'a' : 'A');
-
-	sec = &sections[sym->st_shndx];			/* get section header */
-	if (!sh_strtab)							/* no table */
+	sec = &sections[sym->st_shndx];
+	if (sec->sh_type == SHT_NOBITS)			/* .bss check*/
+		return ((bind == STB_LOCAL) ? 'b' : 'B');
+	if (!sh_strtab)
 		return ('?');
-
-	sec_name = sh_strtab + sec->sh_name;	/* get section name */
+	sec_name = sh_strtab + sec->sh_name;
 	if (strcmp(sec_name, ".text") == 0 ||
 		(sec->sh_flags & SHF_EXECINSTR))
 		return ((bind == STB_LOCAL) ? 't' : 'T');
 	if (strcmp(sec_name, ".data") == 0 ||
 		((sec->sh_flags & SHF_ALLOC) && (sec->sh_flags & SHF_WRITE)))
 		return ((bind == STB_LOCAL) ? 'd' : 'D');
-	if (strcmp(sec_name, ".bss") == 0)
+	if (strcmp(sec_name, ".bss") == 0)		/* explicit .bss check */
 		return ((bind == STB_LOCAL) ? 'b' : 'B');
 	if (strcmp(sec_name, ".rodata") == 0 ||
 		(sec->sh_flags & SHF_ALLOC))
 		return ((bind == STB_LOCAL) ? 'r' : 'R');
-
-	return ('?');							/* otherwise, unknown */
+	return ('?');
 }
 
 /**

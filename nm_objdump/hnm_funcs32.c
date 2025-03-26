@@ -70,6 +70,8 @@ static char get_symbol_char32(Elf32_Sym *sym, Elf32_Shdr *sections,
 	if (sym->st_shndx == SHN_ABS)
 		return ((bind == STB_LOCAL) ? 'a' : 'A');
 	sec = &sections[sym->st_shndx];
+	if (sec->sh_type == SHT_NOBITS)
+		return ((bind == STB_LOCAL) ? 'b' : 'B');
 	if (!sh_strtab)
 		return ('?');
 	sec_name = sh_strtab + sec->sh_name;
@@ -100,9 +102,7 @@ static void print_symbol32(Elf32_Sym *sym, Elf32_Shdr *sections,
 	const char *name = sym_strtab + sym->st_name;
 	char c = get_symbol_char32(sym, sections, sh_strtab);
 
-	if (ELF32_ST_TYPE(sym->st_info == STT_FILE))	/* skip file symbols */
-		return;
-	if (!name || name[0] == '\0')
+	if (!name || name[0] == '\0' || c == 0)	/* skip empty names, files */
 		return;
 	if (sym->st_shndx == SHN_UNDEF)
 		printf("%8s %c %s\n", "", c, name);
