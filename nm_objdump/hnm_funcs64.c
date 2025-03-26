@@ -139,7 +139,10 @@ void process_elf64(const char *filename, unsigned char *data, size_t size)
 	(void)size;								/* unused */
 	ehdr = (Elf64_Ehdr *)data;
 	if (ehdr->e_type == ET_DYN)
+	{
+		fprintf(stderr, "%s: %s: no symbols\n", "./hnm", filename);
 		return;
+	}
 	sections = (Elf64_Shdr *)(data + ehdr->e_shoff);
 	sh_strtab = (char *)(data +
 						 sections[ehdr->e_shstrndx].sh_offset);

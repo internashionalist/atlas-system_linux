@@ -137,7 +137,10 @@ void process_elf32(const char *filename, unsigned char *data, size_t size)
 	(void)size;
 	ehdr = (Elf32_Ehdr *)data;
 	if (ehdr->e_type == ET_DYN)
+	{
+		fprintf(stderr, "%s: %s: no symbols\n", "./hnm", filename);
 		return;
+	}
 	sections = (Elf32_Shdr *)(data + ehdr->e_shoff);
 	sh_strtab = (char *)(data + sections[ehdr->e_shstrndx].sh_offset);
 	symtab_section = find_symtab32(ehdr, sections);
