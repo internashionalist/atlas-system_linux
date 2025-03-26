@@ -17,8 +17,7 @@
  */
 int main(int argc, char **argv)
 {
-	int i;
-	int fd;
+	int i, fd;
 	struct stat st;
 	unsigned char *data;						/* mmap'd data */
 
@@ -35,16 +34,16 @@ int main(int argc, char **argv)
 		}
 												/* mmap the file */
 		data = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-		if (data == MAP_FAILED)					/* mmap error */
-		{
-			close(fd);
-			continue;
-		}
 		if ((size_t)st.st_size < sizeof(Elf64_Ehdr) ||
 			memcmp(data, ELFMAG, SELFMAG) != 0)		/* not ELF */
 			fprintf(stderr, "%s: Not an ELF file.\n", argv[i]);
 		else if (data[EI_DATA] != ELFDATA2LSB)		/* not little-endian */
+		{
 			fprintf(stderr, "%s: %s: no symbols\n", argv[0], argv[i]);
+			munmap(data, st.st_size);
+			close(fd);
+			continue;
+		}
 		else if (data[EI_CLASS] == ELFCLASS64)		/* 64-bit */
 			process_elf64(argv[i], data, st.st_size);
 		else if (data[EI_CLASS] == ELFCLASS32)		/* 32-bit */
