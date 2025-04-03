@@ -59,7 +59,7 @@ void print_python_float(PyObject *p)
 	}
 
 	value = ((PyFloatObject *)p)->ob_fval;
-	printf("  value: %f\n", value);
+	printf("  value: %g\n", value);
 }
 
 /**
