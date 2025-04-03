@@ -62,7 +62,7 @@ void print_python_float(PyObject *p)
 	snprintf(buf, sizeof(buf), "%.15g", value);
 	if (strchr(buf, '.') == NULL)
 		strcat(buf, ".0");
-	printf("  value: %#s\n", value);
+	printf("  value: %s\n", value);
 }
 
 /**
