@@ -64,7 +64,7 @@ void print_python_list(PyObject *p)
 		return;
 	}
 
-	/* can't use PyList_Size or PyList_GetItem */
+	/* can't use PyList_ Size or PyList_ GetItem */
 	size = ((PyVarObject *)p)->ob_size;
 	list = (PyListObject *)p;
 
