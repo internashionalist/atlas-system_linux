@@ -4,8 +4,8 @@
 
 
 /**
- * print_python_bytes -     prints basic info about Python bytes objects
- * @p:                      PyObject pointer (expected to be a bytes object)
+ * print_python_bytes - prints basic info about Python bytes objects
+ * @p: PyObject pointer (expected to be a bytes object)
  *
  * Description: This function prints the size of the bytes object, the
  *              string representation, and first 10 bytes (in hex format.)
@@ -24,8 +24,9 @@ void print_python_bytes(PyObject *p)
 		return;
 	}
 
-	size = PyBytes_Size(p);					/* get size of object */
-	str = PyBytes_AsString(p);				/* get string content */
+	/* can't use PyBytes_Size or PyBytes_AsString */
+	size = ((PyVarObject *)p)->ob_size;
+	str = ((PyBytesObject *)p)->ob_sval;
 
 	printf("  size: %ld\n", size);			/* print size */
 	printf("  trying string: %s\n", str);	/* try to print string */
@@ -63,13 +64,15 @@ void print_python_list(PyObject *p)
 		return;
 	}
 
-	size = PyList_Size(p);				/* get list size & allocation */
+	/* can't use PyList_Size or PyList_GetItem */
+	size = ((PyVarObject *)p)->ob_size;
 	list = (PyListObject *)p;
+
 	printf("[*] Size of the Python List = %ld\n", size);
 	printf("[*] Allocated = %ld\n", list->allocated);
 	for (i = 0; i < size; i++)
 	{
-		PyObject *item = PyList_GetItem(p, i);
+		PyObject *item = list->ob_item[i];		/* get item at i */
 
 		printf("Element %ld: %s\n", i, item->ob_type->tp_name);
 		if (strcmp(item->ob_type->tp_name, "bytes") == 0)	/* if bytes */
