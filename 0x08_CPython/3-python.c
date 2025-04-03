@@ -49,6 +49,7 @@ void print_python_bytes(PyObject *p)
 void print_python_float(PyObject *p)
 {
 	double value;				/* value of the float object */
+	char buff[128];				/* stores str rep of float */
 
 	setbuf(stdout, NULL);		/* set stdout buffer to NULL */
 	printf("[.] float object info\n");
@@ -59,10 +60,10 @@ void print_python_float(PyObject *p)
 	}
 
 	value = ((PyFloatObject *)p)->ob_fval;
-	snprintf(buf, sizeof(buf), "%.15g", value);
-	if (strchr(buf, '.') == NULL)
-		strcat(buf, ".0");
-	printf("  value: %s\n", value);
+	snprintf(buff, sizeof(buff), "%.15g", value);
+	if (strchr(buff, '.') == NULL)
+		strcat(buff, ".0");
+	printf("  value: %s\n", buff);
 }
 
 /**
