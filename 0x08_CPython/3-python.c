@@ -41,6 +41,28 @@ void print_python_bytes(PyObject *p)
 }
 
 /**
+ * print_python_float -		prints basic info about Python float objects
+ * @p:						PyObject pointer (expected to be a float)
+ *
+ * Description: This function prints the value of the float object.
+ */
+void print_python_float(PyObject *p)
+{
+	double value;				/* value of the float object */
+
+	setbuf(stdout, NULL);		/* set stdout buffer to NULL */
+	printf("[.] float object info\n");
+	if (!PyFloat_Check(p))
+	{
+		printf("  [ERROR] Invalid Float Object\n");
+		return;
+	}
+
+	value = ((PyFloatObject *)p)->ob_fval;
+	printf("  value: %f\n", value);
+}
+
+/**
  * print_python_list -		prints basic info about Python lists
  * @p:						PyObject pointer (expected to be a list)
  *
@@ -74,31 +96,9 @@ void print_python_list(PyObject *p)
 
 		printf("Element %ld: %s\n", i, item->ob_type->tp_name);
 
-		if (PyBytes_Check(item))		/* if item is a bytes object */
+		if (PyBytes_Check(item)) /* if item is a bytes object */
 			print_python_bytes(item);
-		else if (PyFloat_Check(item))	/* if item is a float object */
+		else if (PyFloat_Check(item)) /* if item is a float object */
 			print_python_float(item);
 	}
-}
-
-/**
- * print_python_float -		prints basic info about Python float objects
- * @p:						PyObject pointer (expected to be a float)
- *
- * Description: This function prints the value of the float object.
- */
-void print_python_float(PyObject *p)
-{
-	double value;				/* value of the float object */
-
-	setbuf(stdout, NULL);		/* set stdout buffer to NULL */
-	printf("[.] float object info\n");
-	if (!PyFloat_Check(p))
-	{
-		printf("  [ERROR] Invalid Float Object\n");
-		return;
-	}
-
-	value = ((PyFloatObject *)p)->ob_fval;
-	printf("  value: %f\n", value);
 }
