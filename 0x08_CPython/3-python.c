@@ -15,8 +15,9 @@ void print_python_bytes(PyObject *p)
 	Py_ssize_t size, i, bytes_to_print;
 	char *str;
 
-	setbuf(stdout, NULL);
+	setbuf(stdout, NULL);						/* set stdout buffer to NULL */
 	printf("[.] bytes object info\n");
+
 	if (!PyBytes_Check(p))
 	{
 		printf("  [ERROR] Invalid Bytes Object\n");
@@ -73,8 +74,10 @@ void print_python_list(PyObject *p)
 
 		printf("Element %ld: %s\n", i, item->ob_type->tp_name);
 
-		if (PyBytes_Check(item))	/* if item is a bytes object */
+		if (PyBytes_Check(item))		/* if item is a bytes object */
 			print_python_bytes(item);
+		else if (PyFloat_Check(item))	/* if item is a float object */
+			print_python_float(item);
 	}
 }
 
