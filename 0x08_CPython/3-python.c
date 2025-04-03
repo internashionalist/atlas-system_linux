@@ -59,7 +59,10 @@ void print_python_float(PyObject *p)
 	}
 
 	value = ((PyFloatObject *)p)->ob_fval;
-	printf("  value: %#.16g\n", value);
+	snprintf(buf, sizeof(buf), "%.15g", value);
+	if (strchr(buf, '.') == NULL)
+		strcat(buf, ".0");
+	printf("  value: %#s\n", value);
 }
 
 /**
