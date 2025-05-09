@@ -61,16 +61,12 @@ int parent_process(pid_t child)
             return (1);
         }
 
-        entry = !entry;
-        if (entry)
+        if (!entry)
         {
             if (regs.orig_rax < SYSCALL_MAX)
-                fprintf(stderr, "%s", syscalls_64_g[regs.orig_rax].name);
+                fprintf(stderr, "%s\n", syscalls_64_g[regs.orig_rax].name);
             else
-                fprintf(stderr, "unknown");
-
-            if (regs.orig_rax != 1)
-                fprintf(stderr, "\n");
+                fprintf(stderr, "unknown\n");
         }
 
         if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1)
@@ -78,6 +74,7 @@ int parent_process(pid_t child)
             perror("ptrace SYSCALL");
             return (1);
         }
+        entry = !entry;
         fflush(NULL);
     }
 
