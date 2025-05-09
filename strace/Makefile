@@ -8,7 +8,7 @@ INCLUDES = -Iinclude
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(INCLUDES)
+	$(CC) $(CFLAGS) -static -o $(NAME) $(OBJ) $(INCLUDES)
 
 src/%.o: src/%.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
