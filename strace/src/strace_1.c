@@ -6,6 +6,7 @@
 #include <sys/user.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/syscall.h>
 #include "strace.h"
 #include "syscalls.h"
 
@@ -61,12 +62,21 @@ int parent_process(pid_t child)
             return (1);
         }
 
-        if (!entry)
+        if (entry)
         {
             if (regs.orig_rax < SYSCALL_MAX)
-                fprintf(stderr, "%s\n", syscalls_64_g[regs.orig_rax].name);
+            {
+                if (regs.orig_rax == SYS_write)
+                    fprintf(stderr, "write");
+                else
+                    fprintf(stderr, "%s\n", syscalls_64_g[regs.orig_rax].name);
+            }
             else
+            {
                 fprintf(stderr, "unknown\n");
+            }
+            if (regs.orig_rax == SYS_write)
+                fflush(stderr);
         }
 
         if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1)
