@@ -74,12 +74,27 @@ int main(int argc, char **argv, char **env)
 
             if (in_syscall && strcmp(syscall_name, "write") == 0)
             {
-                char output[4096];
-                ssize_t len = read(STDIN_FILENO, output, sizeof(output) - 1);
-                if (len > 0)
+                unsigned long addr = regs.rsi;
+                unsigned long len = regs.rdx;
+                char output[4097] = {0};
+
+                if (len > 0 && len < sizeof(output))
                 {
-                    output[len] = '\0';
-                    printf("write%s\n", output);
+                    if (ptrace(PTRACE_PEEKDATA, child, addr, NULL) != -1)
+                    {
+                        for (unsigned long i = 0; i < len && i < sizeof(output) - 1; i++)
+                        {
+                            long data = ptrace(PTRACE_PEEKDATA, child, addr + i, NULL);
+                            if (data == -1)
+                                break;
+                            output[i] = (char)(data & 0xff);
+                        }
+                        printf("write%s\n", output);
+                    }
+                    else
+                    {
+                        printf("write\n");
+                    }
                 }
                 else
                 {
