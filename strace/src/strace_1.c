@@ -1,115 +1,89 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/ptrace.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/user.h>
+#include <unistd.h>
 #include <string.h>
 #include "strace.h"
+#include "syscalls.h"
 
+int parent_process(pid_t child);
 
 int main(int argc, char **argv, char **env)
 {
-    if (argc < 2) 
+    if (argc < 2)
     {
         fprintf(stderr, "Usage: %s command [args...]\n", argv[0]);
         return (1);
     }
 
     pid_t child = fork();
-
     if (child == -1)
     {
-        perror("you forked up");
+        perror("fork");
         return (1);
     }
 
     if (child == 0)
     {
         ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-        fflush(stdout);
-        fflush(NULL);
         execve(argv[1], &argv[1], env);
         perror("execve");
         exit(EXIT_FAILURE);
     }
     else
     {
-        int status;
-        struct user_regs_struct regs;
-        int in_syscall = 0;
-        const char *syscall_name = NULL;
+        return parent_process(child);
+    }
+}
 
-        while (1)
+int parent_process(pid_t child)
+{
+    int status, entry = 0;
+    struct user_regs_struct regs;
+    syscall_t const *callinfo;
+
+    while (1)
+    {
+        if (waitpid(child, &status, 0) == -1)
         {
-            if (waitpid(child, &status, 0) == -1)
-            {
-                perror("waitpid");
-                return (1);
-            }
-
-            if (WIFEXITED(status)) {
-                printf("exit_group\n");
-                break;
-            }
-
-            if (ptrace(PTRACE_GETREGS, child, NULL, &regs) == -1)
-            {
-                perror("ptrace GETREGS");
-                return (1);
-            }
-
-            if (!in_syscall)
-            {
-#if defined(__x86_64__)
-                unsigned long syscall_num = regs.orig_rax;
-#elif defined(__i386__)
-                unsigned long syscall_num = regs.orig_eax;
-#else
-#error "Unsupported architecture"
-#endif
-
-                syscall_name = (
-                    syscall_num < SYSCALL_MAX && syscalls_64_g[syscall_num].name) ?
-                    syscalls_64_g[syscall_num].name : "unknown";
-                fflush(stdout);
-                if (strcmp(syscall_name, "write") != 0 && strcmp(syscall_name, "exit_group") != 0)
-                    printf("%s\n", syscall_name);
-                fflush(stderr);
-            }
-
-            if (in_syscall && strcmp(syscall_name, "write") == 0)
-            {
-                unsigned long addr = regs.rsi;
-                unsigned long len = regs.rdx;
-                char output[4097] = {0};
-
-                if (len > 0 && len < sizeof(output))
-                {
-                    if (ptrace(PTRACE_PEEKDATA, child, addr, NULL) != -1)
-                    {
-                        for (unsigned long i = 0; i < len && i < sizeof(output) - 1; i++)
-                        {
-                            long data = ptrace(PTRACE_PEEKDATA, child, addr + i, NULL);
-                            if (data == -1)
-                                break;
-                            output[i] = (char)(data & 0xff);
-                        }
-                        printf("write%s\n", output);
-                    }
-                    else
-                    {
-                        printf("write\n");
-                    }
-                }
-                else
-                {
-                    printf("write\n");
-                }
-            }
-
-            in_syscall = 1 - in_syscall;
-
-            if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1)
-            {
-                perror("ptrace SYSCALL");
-                return (1);
-            }
+            perror("waitpid");
+            return (1);
         }
+
+        if (WIFEXITED(status))
+            break;
+
+        if (ptrace(PTRACE_GETREGS, child, NULL, &regs) == -1)
+        {
+            perror("ptrace GETREGS");
+            return (1);
+        }
+
+		if (entry == 0 || entry % 2 != 0)
+		{
+			if (regs.orig_rax < SYSCALL_MAX)
+			{
+				callinfo = &syscalls_64_g[regs.orig_rax];
+				fprintf(stderr, "%s", callinfo->name);
+			}
+			else
+				fprintf(stderr, "unknown");
+
+			if (regs.orig_rax != 1)
+				fprintf(stderr, "\n");
+		}
+
+		entry = 1 - entry;
+
+        if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1)
+        {
+            perror("ptrace SYSCALL");
+            return (1);
+        }
+		fflush(NULL);
     }
 
     return (0);
