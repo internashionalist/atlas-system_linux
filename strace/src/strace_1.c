@@ -21,6 +21,7 @@ int main(int argc, char **argv, char **env)
     if (child == 0)
     {
         ptrace(PTRACE_TRACEME, 0, NULL, NULL);
+        fflush(NULL);
         execve(argv[1], &argv[1], env);
         perror("execve");
         exit(EXIT_FAILURE);
@@ -61,6 +62,7 @@ int main(int argc, char **argv, char **env)
                 const char *syscall_name = (
                     syscall_num < SYSCALL_MAX && syscalls_64_g[syscall_num].name) ?
                     syscalls_64_g[syscall_num].name : "unknown";
+                fflush(stdout);
                 printf("%s\n", syscall_name);
             }
 
