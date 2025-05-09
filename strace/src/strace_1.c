@@ -43,7 +43,6 @@ int parent_process(pid_t child)
 {
     int status, entry = 0;
     struct user_regs_struct regs;
-    syscall_t const *callinfo;
 
     while (1)
     {
@@ -62,28 +61,25 @@ int parent_process(pid_t child)
             return (1);
         }
 
-		if (entry == 0 || entry % 2 != 0)
-		{
-			if (regs.orig_rax < SYSCALL_MAX)
-			{
-				callinfo = &syscalls_64_g[regs.orig_rax];
-				fprintf(stderr, "%s", callinfo->name);
-			}
-			else
-				fprintf(stderr, "unknown");
+        if (entry == 0 || entry % 2 != 0)
+        {
+            if (regs.orig_rax < SYSCALL_MAX)
+                fprintf(stderr, "%s", syscalls_64_g[regs.orig_rax].name);
+            else
+                fprintf(stderr, "unknown");
 
-			if (regs.orig_rax != 1)
-				fprintf(stderr, "\n");
-		}
+            if (regs.orig_rax != 1)
+                fprintf(stderr, "\n");
+        }
 
-		entry = 1 - entry;
+        entry = 1 - entry;
 
         if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1)
         {
             perror("ptrace SYSCALL");
             return (1);
         }
-		fflush(NULL);
+        fflush(NULL);
     }
 
     return (0);
