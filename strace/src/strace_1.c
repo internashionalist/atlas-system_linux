@@ -68,9 +68,16 @@ int main(int argc, char **argv, char **env)
                 fflush(stdout);
                 if (strcmp(syscall_name, "write") == 0)
                     printf("write");
+                else if (strcmp(syscall_name, "exit_group") == 0)
+                    ;  // Defer to WIFEXITED handling for final print
                 else
                     printf("%s\n", syscall_name);
                 fflush(stderr);
+
+                if (in_syscall && strcmp(syscall_name, "write") == 0) {
+                    /* flush after output, write syscall likely printed output already */
+                    printf("\n");
+                }
             }
 
             in_syscall = 1 - in_syscall;
