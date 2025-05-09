@@ -83,7 +83,7 @@ int main(int argc, char **argv, char **env)
                 if (len > 0)
                 {
                     output[len] = '\0';
-                    printf("%s\n", output);
+                    printf("write%s\n", output);
                 }
             }
 
