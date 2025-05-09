@@ -61,21 +61,20 @@ int parent_proc(pid_t child)
  */
 int main(int argc, char **argv, char **env)
 {
-	if (argc < 2)
+	if (argc < 2) /* arg check */
 	{
 		perror("construct additional pylons!");
 		return (1);
 	}
 
-	pid_t child = fork();
+	pid_t child = fork(); /* fork child */
 	if (child == 0)
 	{
-		ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-		execve(argv[1], &argv[1], env);
-	}
+		ptrace(PTRACE_TRACEME, 0, NULL, NULL); /* trace child */
+		execve(argv[1], &argv[1], env); /* execute child */
 	else
 	{
-		parent_proc(child);
+		parent_proc(child); /* parent process */
 	}
 	return (0);
 }
