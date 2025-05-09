@@ -42,27 +42,52 @@ int main(int argc, char **argv, char **env)
 
 int parent_process(pid_t child)
 {
-    int status, entry = 0;
+    int status;
     struct user_regs_struct regs;
+
+    if (waitpid(child, &status, 0) == -1) /* wait for initial syscall entry */
+    {
+        perror("waitpid");
+        return (1);
+    }
+
+    if (ptrace(PTRACE_GETREGS, child, NULL, &regs) == -1)
+    {
+        perror("ptrace GETREGS");
+        return (1);
+    }
+
+    if (regs.orig_rax < SYSCALL_MAX) /* execve printing */
+        fprintf(stderr, "%s\n", syscalls_64_g[regs.orig_rax].name);
+    else
+        fprintf(stderr, "unknown\n");
+
+    if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1)
+    {
+        perror("ptrace SYSCALL");
+        return (1);
+    }
+
+    int entry = 0;
 
     while (1)
     {
-        if (waitpid(child, &status, 0) == -1)
+        if (waitpid(child, &status, 0) == -1) /* wait for syscall */
         {
             perror("waitpid");
             return (1);
         }
 
-        if (WIFEXITED(status))
+        if (WIFEXITED(status)) /* child exited */
             break;
 
-        if (ptrace(PTRACE_GETREGS, child, NULL, &regs) == -1)
+        if (ptrace(PTRACE_GETREGS, child, NULL, &regs) == -1) /* get registers */
         {
             perror("ptrace GETREGS");
             return (1);
         }
 
-        if (entry)
+        if (!entry) /* on syscall exit */
         {
             if (regs.orig_rax < SYSCALL_MAX)
             {
@@ -79,12 +104,12 @@ int parent_process(pid_t child)
                 fflush(stderr);
         }
 
-        if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1)
+        if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1) /* continue tracing */
         {
             perror("ptrace SYSCALL");
             return (1);
         }
-        entry = !entry;
+        entry = !entry; /* toggle entry flag */
         fflush(NULL);
     }
 
