@@ -68,7 +68,10 @@ int main(int argc, char **argv, char **env)
                     syscalls_64_g[syscall_num].name : "unknown";
                 fflush(stdout);
                 if (strcmp(syscall_name, "write") == 0)
+                {
                     printf("write");
+                    fflush(stdout);
+                }
                 else if (strcmp(syscall_name, "exit_group") == 0)
                     ;  // Defer to WIFEXITED handling for final print
                 else
@@ -83,8 +86,9 @@ int main(int argc, char **argv, char **env)
                 if (len > 0)
                 {
                     output[len] = '\0';
-                    printf("write%s\n", output);
+                    printf("%s", output); // Print only the output after "write" already printed
                 }
+                printf("\n");
             }
 
             in_syscall = 1 - in_syscall;
