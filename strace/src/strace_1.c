@@ -63,7 +63,7 @@ int main(int argc, char **argv, char **env)
                     syscall_num < SYSCALL_MAX && syscalls_64_g[syscall_num].name) ?
                     syscalls_64_g[syscall_num].name : "unknown";
                 fflush(stdout);
-                dprintf(STDERR_FILENO, "%s\n", syscall_name);
+                fprintf(stderr, "%s\n", syscall_name);
             }
 
             in_syscall = 1 - in_syscall;
@@ -74,6 +74,7 @@ int main(int argc, char **argv, char **env)
                 return (1);
             }
         }
+        fprintf(stderr, "exit_group\n");
     }
 
     return (0);
