@@ -112,6 +112,7 @@ int parent_process(pid_t child)
         entry = !entry; /* toggle entry flag */
         fflush(NULL);
     }
+    fprintf(stderr, "\n");
 
     return (0);
 }
