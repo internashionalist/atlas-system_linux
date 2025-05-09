@@ -962,3 +962,6 @@ static syscall_t const syscalls_32_g[] = {
 };
 
 #endif /* !_SYSCALLS_H_ */
+
+/* number of syscalls in table */
+#define SYSCALL_MAX (sizeof(syscalls_64_g) / sizeof(syscall_t))

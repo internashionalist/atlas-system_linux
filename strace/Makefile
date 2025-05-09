@@ -1,24 +1,23 @@
+# Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -pedantic -g
-NAME = strace_0
-SRC = src/strace_0.c
-OBJ = $(SRC:.c=.o)
+CFLAGS = -Wall -Wextra -Werror -pedantic -g3
 INCLUDES = -Iinclude
 
-all: $(NAME)
+# Source and target definitions
+SRCDIR = src
+TARGETS = strace_0 strace_1 strace_2 strace_3
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -static -o $(NAME) $(OBJ) $(INCLUDES)
+all: $(TARGETS)
 
-src/%.o: src/%.c
-	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
+$(TARGETS): %: $(SRCDIR)/%.c
+	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $<
 
 clean:
-	rm -f $(OBJ)
+	rm -f *.o
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(TARGETS)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re $(TARGETS)

@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "syscalls.h"
 
 int parent_proc(pid_t child);
 

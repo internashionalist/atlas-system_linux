@@ -72,6 +72,7 @@ int main(int argc, char **argv, char **env)
 	{
 		ptrace(PTRACE_TRACEME, 0, NULL, NULL); /* trace child */
 		execve(argv[1], &argv[1], env); /* execute child */
+	}
 	else
 	{
 		parent_proc(child); /* parent process */
