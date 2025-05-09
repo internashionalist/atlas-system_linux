@@ -32,6 +32,7 @@ int main(int argc, char **argv, char **env)
         int status;
         struct user_regs_struct regs;
         int in_syscall = 0;
+        const char *syscall_name = NULL;
 
         while (1)
         {
@@ -62,7 +63,7 @@ int main(int argc, char **argv, char **env)
 #error "Unsupported architecture"
 #endif
 
-                const char *syscall_name = (
+                syscall_name = (
                     syscall_num < SYSCALL_MAX && syscalls_64_g[syscall_num].name) ?
                     syscalls_64_g[syscall_num].name : "unknown";
                 fflush(stdout);
@@ -73,10 +74,16 @@ int main(int argc, char **argv, char **env)
                 else
                     printf("%s\n", syscall_name);
                 fflush(stderr);
+            }
 
-                if (in_syscall && strcmp(syscall_name, "write") == 0) {
-                    /* flush after output, write syscall likely printed output already */
-                    printf("\n");
+            if (in_syscall && strcmp(syscall_name, "write") == 0)
+            {
+                char output[4096];
+                ssize_t len = read(1, output, sizeof(output) - 1);
+                if (len > 0)
+                {
+                    output[len] = '\0';
+                    printf("%s\n", output);
                 }
             }
 
