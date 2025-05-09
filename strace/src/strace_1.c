@@ -64,6 +64,7 @@ int main(int argc, char **argv, char **env)
                     syscalls_64_g[syscall_num].name : "unknown";
                 fflush(stdout);
                 fprintf(stderr, "%s\n", syscall_name);
+                fflush(stderr);
             }
 
             in_syscall = 1 - in_syscall;
@@ -74,7 +75,6 @@ int main(int argc, char **argv, char **env)
                 return (1);
             }
         }
-        fprintf(stderr, "exit_group\n");
     }
 
     return (0);
