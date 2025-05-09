@@ -87,21 +87,20 @@ int parent_process(pid_t child)
             return (1);
         }
 
-        if (!entry) /* on syscall exit */
+        if (!entry)
         {
             if (regs.orig_rax < SYSCALL_MAX)
             {
+                const char *name = syscalls_64_g[regs.orig_rax].name;
                 if (regs.orig_rax == SYS_write)
                     fprintf(stderr, "write");
                 else
-                    fprintf(stderr, "%s\n", syscalls_64_g[regs.orig_rax].name);
+                    fprintf(stderr, "%s\n", name);
             }
             else
             {
                 fprintf(stderr, "unknown\n");
             }
-            if (regs.orig_rax == SYS_write)
-                fflush(stderr);
         }
 
         if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1) /* continue tracing */
