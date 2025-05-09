@@ -41,8 +41,10 @@ int main(int argc, char **argv, char **env)
                 return (1);
             }
 
-            if (WIFEXITED(status))
+            if (WIFEXITED(status)) {
+                printf("exit_group\n");
                 break;
+            }
 
             if (ptrace(PTRACE_GETREGS, child, NULL, &regs) == -1)
             {
@@ -64,7 +66,10 @@ int main(int argc, char **argv, char **env)
                     syscall_num < SYSCALL_MAX && syscalls_64_g[syscall_num].name) ?
                     syscalls_64_g[syscall_num].name : "unknown";
                 fflush(stdout);
-                printf("%s\n", syscall_name);
+                if (strcmp(syscall_name, "write") == 0)
+                    printf("write");
+                else
+                    printf("%s\n", syscall_name);
                 fflush(stderr);
             }
 
