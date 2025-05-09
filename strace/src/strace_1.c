@@ -29,6 +29,7 @@ int main(int argc, char **argv, char **env)
     {
         int status;
         struct user_regs_struct regs;
+        int in_syscall = 0;
 
         while (1)
         {
@@ -47,18 +48,23 @@ int main(int argc, char **argv, char **env)
                 return (1);
             }
 
+            if (!in_syscall)
+            {
 #if defined(__x86_64__)
-            unsigned long syscall_num = regs.orig_rax;
+                unsigned long syscall_num = regs.orig_rax;
 #elif defined(__i386__)
-            unsigned long syscall_num = regs.orig_eax;
+                unsigned long syscall_num = regs.orig_eax;
 #else
 #error "Unsupported architecture"
 #endif
 
-            const char *syscall_name = (
-				syscall_num < SYSCALL_MAX) ? syscalls_64_g[
-				syscall_num].name : "unknown";
-            printf("%s\n", syscall_name);
+                const char *syscall_name = (
+                    syscall_num < SYSCALL_MAX && syscalls_64_g[syscall_num].name) ?
+                    syscalls_64_g[syscall_num].name : "unknown";
+                printf("%s\n", syscall_name);
+            }
+
+            in_syscall = 1 - in_syscall;
 
             if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1)
             {
