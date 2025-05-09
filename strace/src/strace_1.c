@@ -67,14 +67,7 @@ int main(int argc, char **argv, char **env)
                     syscall_num < SYSCALL_MAX && syscalls_64_g[syscall_num].name) ?
                     syscalls_64_g[syscall_num].name : "unknown";
                 fflush(stdout);
-                if (strcmp(syscall_name, "write") == 0)
-                {
-                    printf("write");
-                    fflush(stdout);
-                }
-                else if (strcmp(syscall_name, "exit_group") == 0)
-                    ;  // Defer to WIFEXITED handling for final print
-                else
+                if (strcmp(syscall_name, "write") != 0 && strcmp(syscall_name, "exit_group") != 0)
                     printf("%s\n", syscall_name);
                 fflush(stderr);
             }
@@ -82,13 +75,16 @@ int main(int argc, char **argv, char **env)
             if (in_syscall && strcmp(syscall_name, "write") == 0)
             {
                 char output[4096];
-                ssize_t len = read(1, output, sizeof(output) - 1);
+                ssize_t len = read(STDIN_FILENO, output, sizeof(output) - 1);
                 if (len > 0)
                 {
                     output[len] = '\0';
-                    printf("%s", output); // Print only the output after "write" already printed
+                    printf("write%s\n", output);
                 }
-                printf("\n");
+                else
+                {
+                    printf("write\n");
+                }
             }
 
             in_syscall = 1 - in_syscall;
