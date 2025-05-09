@@ -5,7 +5,7 @@ INCLUDES = -Iinclude
 
 # Source and target definitions
 SRCDIR = src
-TARGETS = strace_0 strace_1 strace_2 strace_3
+TARGETS = strace_0 strace_1
 
 all: $(TARGETS)
 
