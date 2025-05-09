@@ -61,7 +61,7 @@ int parent_process(pid_t child)
             return (1);
         }
 
-        if (entry == 0 || entry % 2 != 0)
+        if (entry == 0)
         {
             if (regs.orig_rax < SYSCALL_MAX)
                 fprintf(stderr, "%s", syscalls_64_g[regs.orig_rax].name);
@@ -72,7 +72,7 @@ int parent_process(pid_t child)
                 fprintf(stderr, "\n");
         }
 
-        entry = 1 - entry;
+        entry = !entry;
 
         if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1)
         {
