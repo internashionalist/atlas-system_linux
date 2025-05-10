@@ -1,3 +1,4 @@
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/ptrace.h>
@@ -11,6 +12,32 @@
 #include "syscalls.h"
 
 #define MAX_ADDRESSES 256
+
+/**
+ * write_output - safely prints string from traced memory
+ * @child: PID of the child process
+ * @addr: address in memory to read from
+ * @len: number of bytes to read
+ */
+void write_output(pid_t child, unsigned long addr, size_t len)
+{
+	unsigned long word;
+	size_t bytes_read = 0;
+
+	while (bytes_read < len)
+	{
+		word = ptrace(PTRACE_PEEKDATA, child, addr + bytes_read, NULL);
+		if ((long)word == -1 && errno != 0)
+			break;
+
+		for (size_t i = 0; i < sizeof(word) && bytes_read < len; i++, bytes_read++)
+		{
+			char c = (word >> (i * 8)) & 0xff;
+			fprintf(stdout, "%c", c);
+		}
+	}
+}
+
 
 /**
  * main -	entry point to function
@@ -47,9 +74,6 @@ int main(int argc, char **argv, char **env)
 	unsigned long syscall_num;
 	long return_val;
 
-	/* address remapping */
-	unsigned long seen_addrs[MAX_ADDRESSES] = {0};
-	int addr_count = 0;
 
 	while (1)
 	{
@@ -58,6 +82,8 @@ int main(int argc, char **argv, char **env)
 			perror("waitpid");
 			return (1);
 		}
+
+		in_syscall = !in_syscall;
 
 		if (WIFEXITED(status))
 			break;
@@ -72,42 +98,26 @@ int main(int argc, char **argv, char **env)
 
 		if (in_syscall)
 		{
-			return_val = regs.rax;
-			const char *name = (syscall_num < SYSCALL_MAX) ? syscalls_64_g[syscall_num].name : "unknown";
+			return_val = (long)regs.rax;
+			const char *name = (syscall_num < SYSCALL_MAX) ? syscalls_64_g[
+				syscall_num].name : "unknown";
 
 			if (strcmp(name, "write") == 0)
 			{
-				/* print syscall name without newline */
-				fprintf(stderr, "write");
+				printf("write");
+				write_output(child, regs.rsi, (size_t)regs.rdx);
 			}
 			else
 			{
-				fprintf(stderr, "%s = ", name);
+				printf("%s", name);
 			}
 
-			if (return_val >= 0x1000)
-			{
-				int found = 0;
-				for (int i = 0; i < addr_count; i++)
-				{
-					if (seen_addrs[i] == (unsigned long)return_val)
-					{
-						fprintf(stderr, "ADDR%d\n", i);
-						found = 1;
-						break;
-					}
-				}
-				if (!found && addr_count < MAX_ADDRESSES)
-				{
-					seen_addrs[addr_count] = (unsigned long)return_val;
-					fprintf(stderr, "ADDR%d\n", addr_count);
-					addr_count++;
-				}
-			}
+			if (return_val == -1 && errno != 0)
+				printf(" = -1\n");
+			else if (return_val >= 0 && return_val < 0x1000)
+				printf(" = ADDR%lu\n", (unsigned long)return_val);
 			else
-			{
-				fprintf(stderr, "%#lx\n", return_val);
-			}
+				printf(" = %ld\n", return_val);
 		}
 
 		if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1)
@@ -115,10 +125,8 @@ int main(int argc, char **argv, char **env)
 			perror("ptrace SYSCALL");
 			return (1);
 		}
-
-		in_syscall = !in_syscall;
 	}
 
-	fprintf(stderr, "exit_group = ?\n"); /* print exit_group syscall */
+	printf("exit_group = ?\n"); /* print exit_group syscall */
 	return (0);
 }
