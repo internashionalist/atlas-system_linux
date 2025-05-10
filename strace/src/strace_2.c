@@ -77,12 +77,10 @@ int main(int argc, char **argv, char **env)
 		else						/* not in syscall */
 		{
 			if (syscall_num < SYSCALL_MAX)
-				fprintf(stderr, "%s", syscalls_64_g[syscall_num].name);
+				fprintf(stderr, "%s = ", syscalls_64_g[syscall_num].name);
 			else
-				fprintf(stderr, "unknown");
-
-			if (syscall_num == SYS_write)
-				fflush(stderr);
+				fprintf(stderr, "unknown = ");
+			fflush(stderr);
 		}
 
 		if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1)
