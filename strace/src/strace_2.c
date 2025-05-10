@@ -68,18 +68,14 @@ int main(int argc, char **argv, char **env)
 		if (in_syscall) 
 		{
 			return_val = regs.rax;
-			if (syscall_num < SYSCALL_MAX)
-				fprintf(stderr, "%s = %#lx\n",
-					syscalls_64_g[syscall_num].name, return_val);
-			else
-				fprintf(stderr, "unknown = %#lx\n", return_val);
+			fprintf(stderr, " = %#lx\n", return_val);
 		}
 		else						/* not in syscall */
 		{
 			if (syscall_num < SYSCALL_MAX)
-				fprintf(stderr, "%s = ", syscalls_64_g[syscall_num].name);
+				fprintf(stderr, "%s", syscalls_64_g[syscall_num].name);
 			else
-				fprintf(stderr, "unknown = ");
+				fprintf(stderr, "unknown");
 			fflush(stderr);
 		}
 
