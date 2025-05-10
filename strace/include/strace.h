@@ -10,6 +10,6 @@
 #include <unistd.h>
 #include "syscalls.h"
 
-int parent_proc(pid_t child);
+int parent_process(pid_t child);
 
 #endif

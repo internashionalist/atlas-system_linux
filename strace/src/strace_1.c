@@ -10,7 +10,6 @@
 #include "strace.h"
 #include "syscalls.h"
 
-int parent_process(pid_t child);
 
 int main(int argc, char **argv, char **env)
 {

@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -Werror -pedantic -g3
 INCLUDES = -Iinclude
 
 SRCDIR = src
-TARGETS = strace_0 strace_1
+TARGETS = strace_0 strace_1 strace_2
 
 all: $(TARGETS)
 
