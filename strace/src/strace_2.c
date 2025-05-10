@@ -10,6 +10,8 @@
 #include "strace.h"
 #include "syscalls.h"
 
+#define MAX_ADDRESSES 256
+
 /**
  * main -	entry point to function
  * @argc:	number of arguments
@@ -17,7 +19,6 @@
  *
  * Return:	0 on success, 1 on failure
  */
-
 int main(int argc, char **argv, char **env)
 {
 	if (argc < 2)					/* check for args */
@@ -46,6 +47,10 @@ int main(int argc, char **argv, char **env)
 	unsigned long syscall_num;
 	long return_val;
 
+	/* address remapping */
+	unsigned long seen_addrs[MAX_ADDRESSES] = {0};
+	int addr_count = 0;
+
 	while (1)
 	{
 		if (waitpid(child, &status, 0) == -1)
@@ -68,10 +73,41 @@ int main(int argc, char **argv, char **env)
 		if (in_syscall)
 		{
 			return_val = regs.rax;
-			if (syscall_num < SYSCALL_MAX)
-				fprintf(stderr, "%s = %#lx\n", syscalls_64_g[syscall_num].name, return_val);
+			const char *name = (syscall_num < SYSCALL_MAX) ? syscalls_64_g[syscall_num].name : "unknown";
+
+			if (strcmp(name, "write") == 0)
+			{
+				/* print syscall name without newline */
+				fprintf(stderr, "write");
+			}
 			else
-				fprintf(stderr, "unknown = %#lx\n", return_val);
+			{
+				fprintf(stderr, "%s = ", name);
+			}
+
+			if (return_val >= 0x1000)
+			{
+				int found = 0;
+				for (int i = 0; i < addr_count; i++)
+				{
+					if (seen_addrs[i] == (unsigned long)return_val)
+					{
+						fprintf(stderr, "ADDR%d\n", i);
+						found = 1;
+						break;
+					}
+				}
+				if (!found && addr_count < MAX_ADDRESSES)
+				{
+					seen_addrs[addr_count] = (unsigned long)return_val;
+					fprintf(stderr, "ADDR%d\n", addr_count);
+					addr_count++;
+				}
+			}
+			else
+			{
+				fprintf(stderr, "%#lx\n", return_val);
+			}
 		}
 
 		if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1)
