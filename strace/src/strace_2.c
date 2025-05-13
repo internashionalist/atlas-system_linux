@@ -7,6 +7,31 @@
 #include <string.h>
 #include <fcntl.h>
 
+#define DUMP_MAX 4096  /* cap bytes we copy from child for write */
+
+static void dump_write_buffer(pid_t pid, unsigned long addr, size_t len)
+{
+	size_t i, j;
+	union {
+		long val;
+		char bytes[sizeof(long)];
+	} word;
+
+	if (len > DUMP_MAX)
+		len = DUMP_MAX;
+
+	for (i = 0; i < len; i += sizeof(long))
+	{
+		errno = 0;
+		word.val = ptrace(PTRACE_PEEKDATA, pid, addr + i, NULL);
+		if (errno)
+			break;
+
+		for (j = 0; j < sizeof(long) && i + j < len; j++)
+			putchar(word.bytes[j]);
+	}
+}
+
 extern char **environ;
 
 /**
@@ -87,10 +112,21 @@ int parent_process(pid_t child)
 				long long sret = (long long)regs.rax;
 				unsigned long long uret = (unsigned long long)regs.rax;
 
-				if (sret == 0)
-					printf("%s = 0\n", name);
+				if (syscall_nr == 1) /* write */
+				{
+					/* print 'write' + buffer, then result */
+					printf("write");
+					dump_write_buffer(child, (unsigned long)regs.rsi,
+					                  (size_t)regs.rax);
+					printf(" = 0x%llx\n", uret);
+				}
 				else
-					printf("%s = 0x%llx\n", name, uret);
+				{
+					if (sret == 0)
+						printf("%s = 0\n", name);
+					else
+						printf("%s = 0x%llx\n", name, uret);
+				}
 				if (syscall_nr == 59)
 					seen_execve = 1;
 			}
@@ -136,6 +172,9 @@ int main(int argc, char *argv[])
 		int devnull_fd = open("/dev/null", O_WRONLY);
 		if (devnull_fd != -1)
 			dup2(devnull_fd, STDOUT_FILENO);
+
+		/* Stop the child so the parent attaches before execve */
+		raise(SIGSTOP);
 
 		/* execute the requested command */
 		execve(argv[1], &argv[1], environ);
