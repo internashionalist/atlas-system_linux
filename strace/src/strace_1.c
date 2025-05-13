@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/syscall.h>
+#include <errno.h>
 #include "strace.h"
 #include "syscalls.h"
 
