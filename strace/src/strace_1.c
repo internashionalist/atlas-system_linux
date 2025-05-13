@@ -57,8 +57,14 @@ int parent_process(pid_t child)
         return (1);
     }
 
-    if (regs.orig_rax < SYSCALL_MAX) /* execve printing */
-        fprintf(stderr, "%s\n", syscalls_64_g[regs.orig_rax].name);
+    if (regs.orig_rax < SYSCALL_MAX) /* execve printing (suppress newline for write) */
+    {
+        const char *n = syscalls_64_g[regs.orig_rax].name;
+        if (strcmp(n, "write") == 0)
+            fprintf(stderr, "%s", n);
+        else
+            fprintf(stderr, "%s\n", n);
+    }
     else
         fprintf(stderr, "seccomp\n");
 
@@ -92,7 +98,10 @@ int parent_process(pid_t child)
             if (regs.orig_rax < SYSCALL_MAX)
             {
                 const char *name = syscalls_64_g[regs.orig_rax].name;
-                fprintf(stderr, "%s\n", name);
+                if (strcmp(name, "write") == 0)
+                    fprintf(stderr, "%s", name);   /* no newline */
+                else
+                    fprintf(stderr, "%s\n", name);
             }
             else
             {
