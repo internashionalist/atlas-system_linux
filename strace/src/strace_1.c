@@ -60,10 +60,7 @@ int parent_process(pid_t child)
     if (regs.orig_rax < SYSCALL_MAX) /* execve printing (suppress newline for write) */
     {
         const char *n = syscalls_64_g[regs.orig_rax].name;
-        if (strcmp(n, "write") == 0)
-            fprintf(stderr, "%s", n);
-        else
-            fprintf(stderr, "%s\n", n);
+        fprintf(stderr, "%s\n", n);
     }
     else
         fprintf(stderr, "seccomp\n");
@@ -98,10 +95,7 @@ int parent_process(pid_t child)
             if (regs.orig_rax < SYSCALL_MAX)
             {
                 const char *name = syscalls_64_g[regs.orig_rax].name;
-                if (strcmp(name, "write") == 0)
-                    fprintf(stderr, "%s", name);   /* no newline */
-                else
-                    fprintf(stderr, "%s\n", name);
+                fprintf(stderr, "%s\n", name);
             }
             else
             {
@@ -118,7 +112,5 @@ int parent_process(pid_t child)
         fflush(NULL);
     }
 
-    /* Ensure output ends with a newline (checker expects it) */
-    fprintf(stderr, "\n");
     return (0);
 }
