@@ -108,6 +108,13 @@ int parent_process(pid_t child)
 		{
 			if (seen_execve || syscall_nr == 59)
 			{
+				/* ignore ioctl */
+				if (syscall_nr == 16)
+				{
+					in_syscall = 0;
+					continue;
+				}
+
 				const char *name = get_syscall_name(syscall_nr);
 				long long sret = (long long)regs.rax;
 				unsigned long long uret = (unsigned long long)regs.rax;
@@ -138,7 +145,7 @@ int parent_process(pid_t child)
 }
 
 /**
- * main - entry point. Fork, trace the child, and exec the given command
+ * main - entry point. fork, trace the child, and exec the given command
  * @argc: argument count
  * @argv: argument vector
  *
@@ -173,7 +180,7 @@ int main(int argc, char *argv[])
 		if (devnull_fd != -1)
 			dup2(devnull_fd, STDOUT_FILENO);
 
-		/* Stop the child so the parent attaches before execve */
+		/* stop the child so the parent attaches before execve */
 		raise(SIGSTOP);
 
 		/* execute the requested command */
