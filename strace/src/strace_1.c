@@ -59,7 +59,7 @@ int parent_process(pid_t child)
     if (regs.orig_rax < SYSCALL_MAX) /* execve printing */
         fprintf(stderr, "%s\n", syscalls_64_g[regs.orig_rax].name);
     else
-        fprintf(stderr, "unknown\n");
+        fprintf(stderr, "seccomp\n");
 
     if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1)
     {
@@ -91,14 +91,11 @@ int parent_process(pid_t child)
             if (regs.orig_rax < SYSCALL_MAX)
             {
                 const char *name = syscalls_64_g[regs.orig_rax].name;
-                if (regs.orig_rax == SYS_write)
-                    fprintf(stderr, "write");
-                else
-                    fprintf(stderr, "%s\n", name);
+                fprintf(stderr, "%s\n", name);
             }
             else
             {
-                fprintf(stderr, "unknown\n");
+                fprintf(stderr, "seccomp\n");
             }
         }
 
@@ -110,7 +107,6 @@ int parent_process(pid_t child)
         entry = !entry; /* toggle entry flag */
         fflush(NULL);
     }
-    fprintf(stderr, "\n");
 
     return (0);
 }
