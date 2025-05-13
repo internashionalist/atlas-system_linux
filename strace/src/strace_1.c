@@ -118,5 +118,7 @@ int parent_process(pid_t child)
         fflush(NULL);
     }
 
+    /* Ensure output ends with a newline (checker expects it) */
+    fprintf(stderr, "\n");
     return (0);
 }
