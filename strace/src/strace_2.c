@@ -1,5 +1,3 @@
-
-
 #include "strace.h"
 #include <sys/ptrace.h>
 #include <sys/user.h>
@@ -7,29 +5,25 @@
 #include <signal.h>
 #include <errno.h>
 #include <string.h>
+#include <fcntl.h>
 
 extern char **environ;
 
 /**
- * get_syscall_name - returns the name that corresponds to a syscall number
+ * get_syscall_name - return the name that corresponds to a syscall number
  * @nr: syscall number
  *
  * Return: pointer to the string containing the name, or "unknown"
  */
 static const char *get_syscall_name(size_t nr)
 {
-	size_t i;
-
-	for (i = 0; i < SYSCALL_MAX; ++i)
-	{
-		if (syscalls_64_g[i].nr == nr)
-			return (syscalls_64_g[i].name); /* if found */
-	}
+	if (nr < SYSCALL_MAX)
+		return (syscalls_64_g[nr].name);
 	return ("unknown");
 }
 
 /**
- * parent_process - trace a child process and print each intercepted syscall
+ * parent_process - trace hild process and print each intercepted syscall
  * @child: PID of the child process
  *
  * Return: always 0
@@ -40,6 +34,7 @@ int parent_process(pid_t child)
 	struct user_regs_struct regs;
 	int in_syscall = 0;
 	unsigned long syscall_nr = 0;
+	int seen_execve = 0;
 
 	/* wait for the child’s first stop */
 	waitpid(child, &status, 0);
@@ -49,22 +44,31 @@ int parent_process(pid_t child)
 
 	while (1)
 	{
-		ptrace(PTRACE_SYSCALL, child, 0, 0);	/* wait for syscall */
-		waitpid(child, &status, 0);				/* wait for syscall stop */
+		ptrace(PTRACE_SYSCALL, child, 0, 0);
+		waitpid(child, &status, 0);
 
 		if (WIFEXITED(status))
 			break;
 
+		/* only handle real syscall stops */
 		if (!WIFSTOPPED(status) || (WSTOPSIG(status) & 0x80) == 0)
 			continue;
 
-		ptrace(PTRACE_GETREGS, child, 0, &regs);	/* get registers */
+		/* get register state */
+		ptrace(PTRACE_GETREGS, child, 0, &regs);
 
-		if (!in_syscall)							/* syscall entry */
+		if (!in_syscall) /* syscall entry */
 		{
 			syscall_nr = regs.orig_rax;
 
-			if (syscall_nr == 60 || syscall_nr == 231) /* exit syscall */
+			if (!seen_execve && syscall_nr != 59)
+			{
+				in_syscall = 1;  /* balance the exit half */
+				continue;
+			}
+
+			/* exit / exit_group */
+			if (syscall_nr == 60 || syscall_nr == 231)
 			{
 				printf("%s = ?\n", get_syscall_name(syscall_nr));
 				fflush(stdout);
@@ -72,20 +76,23 @@ int parent_process(pid_t child)
 			}
 			else
 			{
-				in_syscall = 1;						/* expect matching exit */
+				in_syscall = 1; /* expect matching exit */
 			}
 		}
-		else										/* syscall exit */
+		else /* syscall exit */
 		{
+			if (seen_execve || syscall_nr == 59)
 			{
 				const char *name = get_syscall_name(syscall_nr);
-				long long sret = (long long)regs.rax; /* syscall return value */
+				long long sret = (long long)regs.rax;
 				unsigned long long uret = (unsigned long long)regs.rax;
 
-				if (sret == 0)						/* syscall failed */
+				if (sret == 0)
 					printf("%s = 0\n", name);
 				else
 					printf("%s = 0x%llx\n", name, uret);
+				if (syscall_nr == 59)
+					seen_execve = 1;
 			}
 			fflush(stdout);
 			in_syscall = 0;
@@ -95,7 +102,7 @@ int parent_process(pid_t child)
 }
 
 /**
- * main - entry point. fork, trace the child, and exec the given command
+ * main - entry point. Fork, trace the child, and exec the given command
  * @argc: argument count
  * @argv: argument vector
  *
@@ -125,13 +132,15 @@ int main(int argc, char *argv[])
 			perror("ptrace");
 			exit(EXIT_FAILURE);
 		}
-		/* stop until the parent is ready */
-		raise(SIGSTOP);
+		/* prevent traced program's own output from mixing with trace */
+		int devnull_fd = open("/dev/null", O_WRONLY);
+		if (devnull_fd != -1)
+			dup2(devnull_fd, STDOUT_FILENO);
 
 		/* execute the requested command */
 		execve(argv[1], &argv[1], environ);
 
-		/* ff execve returns, it failed */
+		/* iff execve returns, it failed */
 		fprintf(stderr, "execve: %s\n", strerror(errno));
 		exit(EXIT_FAILURE);
 	}
