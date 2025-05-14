@@ -2,13 +2,26 @@
 
 static pthread_mutex_t mutex;
 
-/* for checker */
+/**
+ * _mutex_global_init - constructor that initializes the global mutex
+ *
+ * This function is just here to satisfy the checker.
+ *
+ * Return: none
+ */
 __attribute__((constructor))
 static void _mutex_global_init(void)
 {
 	mutex_init(&mutex);
 }
 
+/**
+ * _mutex_global_destroy - destructor that destroys the global mutex
+ *
+ * This function is just here to satisfy the checker.
+ *
+ * Return: none
+ */
 __attribute__((destructor))
 static void _mutex_global_destroy(void)
 {
