@@ -3,6 +3,9 @@
 #include "multithreading.h"
 #include "list.h"
 
+static int g_task_idx = 0;
+static pthread_mutex_t g_idx_mutex = PTHREAD_MUTEX_INITIALIZER;
+
 /**
  * create_task -	create and initialize a new task structure
  * @entry:			pointer to the entry function to execute
@@ -119,7 +122,14 @@ void *exec_tasks(list_t const *tasks)
 			/* if this point reached, there's a task to execute! */
 			work_done = 1;
 
-			tprintf("[%02lu] Started\n", pthread_self() % 100);
+			int my_idx;
+
+			/* get task index */
+			pthread_mutex_lock(&g_idx_mutex);
+			my_idx = g_task_idx++;
+			pthread_mutex_unlock(&g_idx_mutex);
+
+			tprintf("[%02d] Started\n", my_idx);
 
 			/* execute the task */
 			void *res = task->entry(task->param);
@@ -130,7 +140,7 @@ void *exec_tasks(list_t const *tasks)
 			task->status = SUCCESS;
 			pthread_mutex_unlock(&task->lock);
 
-			tprintf("[%02lu] Success\n", pthread_self() % 100);
+			tprintf("[%02d] Success\n", my_idx);
 		}
 	} while (work_done); /* repeat until no more tasks to execute */
 
