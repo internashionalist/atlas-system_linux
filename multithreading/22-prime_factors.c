@@ -105,6 +105,7 @@ static int claim_task(task_t *task)
 void *exec_tasks(list_t const *tasks)
 {
 	int work_done; /* flag to track if work was done, just like it says */
+	size_t id_counter = 0; /* assigns a unique index to each claimed task */
 
 	if (!tasks) /* NULL/empty check */
 		return (NULL);
@@ -126,7 +127,9 @@ void *exec_tasks(list_t const *tasks)
 			/* if this point reached, there's a task to execute! */
 			work_done = 1;
 
-			tprintf("Started\n");
+			size_t thread_id = id_counter++;  /* grab next index for this task */
+
+			tprintf("[%02zu] Started\n", thread_id);
 
 			/* execute the task */
 			void *res = task->entry(task->param);
@@ -137,7 +140,7 @@ void *exec_tasks(list_t const *tasks)
 			task->status = SUCCESS;
 			pthread_mutex_unlock(&task->lock);
 
-			tprintf("Success\n");
+			tprintf("[%02zu] Success\n", thread_id);
 		}
 	} while (work_done); /* repeat until no more tasks to execute */
 
