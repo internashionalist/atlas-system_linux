@@ -1,5 +1,15 @@
+#ifndef MULTITHREADING_H
+#define MULTITHREADING_H
+
+#include <pthread.h>
+#include <stdarg.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include "list.h"
 
 /**
  * struct pixel_s - RGB pixel
@@ -62,3 +72,14 @@ typedef struct blur_portion_s
     size_t h;
     kernel_t const *kernel;
 } blur_portion_t;
+
+/* PROTOTYPES */
+
+void *thread_entry(void *arg);
+int tprintf(char const *format, ...);
+list_t *prime_factors(char const *s);
+/* task_t *create_task(task_entry_t entry, void *param);
+void destroy_task(task_t *task);
+void *exec_tasks(list_t const *tasks); */
+
+#endif /* MULTITHREADING_H */
