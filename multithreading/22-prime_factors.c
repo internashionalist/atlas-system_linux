@@ -1,7 +1,11 @@
-#include <stdlib.h>
 #include <pthread.h>
+#include <stdlib.h>
 #include "multithreading.h"
 #include "list.h"
+
+/* global task sequence counter for unique indices across all threads */
+static pthread_mutex_t idx_mutex = PTHREAD_MUTEX_INITIALIZER;
+static size_t g_task_idx;
 
 /**
  * create_task -	create and initialize a new task structure
@@ -105,7 +109,6 @@ static int claim_task(task_t *task)
 void *exec_tasks(list_t const *tasks)
 {
 	int work_done; /* flag to track if work was done, just like it says */
-	size_t id_counter = 0; /* assigns a unique index to each claimed task */
 
 	if (!tasks) /* NULL/empty check */
 		return (NULL);
@@ -127,9 +130,13 @@ void *exec_tasks(list_t const *tasks)
 			/* if this point reached, there's a task to execute! */
 			work_done = 1;
 
-			size_t thread_id = id_counter++;  /* grab next index for this task */
+			size_t task_id;
 
-			tprintf("[%02zu] Started\n", thread_id);
+			pthread_mutex_lock(&idx_mutex);
+			task_id = g_task_idx++;
+			pthread_mutex_unlock(&idx_mutex);
+
+			tprintf("[%02zu] Started\n", task_id);
 
 			/* execute the task */
 			void *res = task->entry(task->param);
@@ -140,7 +147,7 @@ void *exec_tasks(list_t const *tasks)
 			task->status = SUCCESS;
 			pthread_mutex_unlock(&task->lock);
 
-			tprintf("[%02zu] Success\n", thread_id);
+			tprintf("[%02zu] Success\n", task_id);
 		}
 	} while (work_done); /* repeat until no more tasks to execute */
 
