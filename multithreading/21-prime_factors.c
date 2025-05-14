@@ -19,11 +19,17 @@
 list_t *prime_factors(char const *s)
 {
 	unsigned long n, i; /* current factor */
+	char *endptr = NULL; /* end of string pointer */
 	list_t *factors; /* list of factors */
 
 	/* check for NULL or empty string */
 	if (!s)
 		return (NULL);
+	
+	/* convert string to unsigned long */
+	n = strtoul(s, &endptr, 10);
+	if (errno == ERANGE || *endptr != '\0' || n == ULONG_MAX)
+		return (NULL); /* invalid number or out of range */
 
 	/* allocate and initialize list */
 	factors = malloc(sizeof(*factors));
