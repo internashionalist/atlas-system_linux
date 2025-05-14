@@ -96,6 +96,51 @@ static int claim_task(task_t *task)
 }
 
 /**
+ * process_pending_tasks -	iterate through list and execute new tasks
+ * @tasks:					pointer to list containing task_t nodes
+ *
+ * This function scans the task list, finds a PENDING task, claims it,
+ * runs the entry function, stores the result, prints the Started/Success
+ * output, and returns.
+ *
+ * Return: 1 if a task was started, 0 otherwise
+ */
+static int process_pending_tasks(list_t const *tasks)
+{
+	int did_work = 0;
+
+	for (node_t *node = tasks->head; node; node = node->next)
+	{
+		task_t *task = node->content;
+		size_t task_id;
+
+		if (!task)
+			continue;
+		if (!claim_task(task))
+			continue;
+
+		/* claim succeeded */
+		pthread_mutex_lock(&idx_mutex);
+		task_id = g_task_idx++;
+		pthread_mutex_unlock(&idx_mutex);
+
+		tprintf("[%02zu] Started\n", task_id);
+
+		void *res = task->entry(task->param);
+
+		pthread_mutex_lock(&task->lock);
+		task->result = res;
+		task->status = SUCCESS;
+		pthread_mutex_unlock(&task->lock);
+
+		tprintf("[%02zu] Success\n", task_id);
+
+		did_work = 1;
+	}
+	return (did_work);
+}
+
+/**
  * exec_tasks -		thread entry that executes tasks in a shared list
  * @tasks:			pointer to list containing task_t* nodes
  *
@@ -108,48 +153,11 @@ static int claim_task(task_t *task)
  */
 void *exec_tasks(list_t const *tasks)
 {
-	int work_done; /* flag to track if work was done, just like it says */
-
-	if (!tasks) /* NULL/empty check */
+	if (!tasks)
 		return (NULL);
 
-	do {
-		work_done = 0;
+	while (process_pending_tasks(tasks))
+		; /* repeat until no task is left to run */
 
-		for (node_t *node = tasks->head; node; node = node->next)
-		{
-			task_t *task = node->content;
-
-			if (!task)
-				continue;
-
-			/* try claiming task */
-			if (!claim_task(task))
-				continue; /* if already started by another thread */
-
-			/* if this point reached, there's a task to execute! */
-			work_done = 1;
-
-			size_t task_id;
-
-			pthread_mutex_lock(&idx_mutex);
-			task_id = g_task_idx++;
-			pthread_mutex_unlock(&idx_mutex);
-
-			tprintf("[%02zu] Started\n", task_id);
-
-			/* execute the task */
-			void *res = task->entry(task->param);
-
-			/* update status & result */
-			pthread_mutex_lock(&task->lock);
-			task->result = res;
-			task->status = SUCCESS;
-			pthread_mutex_unlock(&task->lock);
-
-			tprintf("[%02zu] Success\n", task_id);
-		}
-	} while (work_done); /* repeat until no more tasks to execute */
-
-	return (NULL); /* NULL means complete */
+	return (NULL);
 }
