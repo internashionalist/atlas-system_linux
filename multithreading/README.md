@@ -3,7 +3,7 @@
 For this project, we expect you to look at this concept:
 - [EYNTK - Multithreading](https://intranet.atlasschool.com/concepts/941)
 ### Resources
-#### Read or watch:
+#### Read or Watch:
 - [pthread.h](https://pubs.opengroup.org/onlinepubs/7908799/xsh/pthread.h.html)
 - [Concurrency vs. Parallelism](https://howtodoinjava.com/java/multi-threading/concurrency-vs-parallelism/)
 ### Learning Objectives
