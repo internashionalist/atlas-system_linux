@@ -6,7 +6,7 @@
  *
  * This function is a wrapper around the printf function
  * that prints the formatted string to stdout.
- * 
+ *
  * Return: the number of characters printed
  */
 int tprintf(const char *format, ...)
