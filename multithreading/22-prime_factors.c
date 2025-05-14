@@ -119,7 +119,7 @@ void *exec_tasks(list_t const *tasks)
 			/* if this point reached, there's a task to execute! */
 			work_done = 1;
 
-			tprintf("Started\n");
+			tprintf("[%02lu] Started\n", pthread_self() % 100);
 
 			/* execute the task */
 			void *res = task->entry(task->param);
@@ -130,7 +130,7 @@ void *exec_tasks(list_t const *tasks)
 			task->status = SUCCESS;
 			pthread_mutex_unlock(&task->lock);
 
-			tprintf("Success\n");
+			tprintf("[%02lu] Success\n", pthread_self() % 100);
 		}
 	} while (work_done); /* repeat until no more tasks to execute */
 
