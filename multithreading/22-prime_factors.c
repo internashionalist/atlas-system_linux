@@ -98,7 +98,6 @@ static int claim_task(task_t *task)
 void *exec_tasks(list_t const *tasks)
 {
 	int work_done; /* flag to track if work was done, just like it says */
-	size_t id = 0; /* sequential task index */
 
 	if (!tasks) /* NULL/empty check */
 		return (NULL);
@@ -106,7 +105,7 @@ void *exec_tasks(list_t const *tasks)
 	do {
 		work_done = 0;
 
-		for (node_t *node = tasks->head; node; node = node->next, ++id)
+		for (node_t *node = tasks->head; node; node = node->next)
 		{
 			task_t *task = node->content;
 
@@ -120,7 +119,7 @@ void *exec_tasks(list_t const *tasks)
 			/* if this point reached, there's a task to execute! */
 			work_done = 1;
 
-			tprintf("[%02zu] Started\n", id);
+			printf("[00] Started\n");
 
 			/* execute the task */
 			void *res = task->entry(task->param);
@@ -131,7 +130,7 @@ void *exec_tasks(list_t const *tasks)
 			task->status = SUCCESS;
 			pthread_mutex_unlock(&task->lock);
 
-			tprintf("[%02zu] Success\n", id);
+			printf("[00] Success\n");
 		}
 	} while (work_done); /* repeat until no more tasks to execute */
 
