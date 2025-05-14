@@ -1,6 +1,19 @@
 #include "multithreading.h"
 
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t mutex;
+
+/* for checker */
+__attribute__((constructor))
+static void _mutex_global_init(void)
+{
+	mutex_init(&mutex);
+}
+
+__attribute__((destructor))
+static void _mutex_global_destroy(void)
+{
+	mutex_destroy(&mutex);
+}
 
 /**
  * mutex_init - initializes a mutex
