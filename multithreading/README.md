@@ -390,6 +390,7 @@ For this task, you will have to write 3 functions (all in the same file):
   - This function must go through the list of tasks and execute them, but there’s a challenge:
     - Multiple thread will be going through the list of tasks, and a task must only be executed once
   - You must use tprintf to print when a task is started, and completed
+
 Structures
 ```
 typedef void *(*task_entry_t)(void *);
@@ -428,6 +429,7 @@ typedef struct task_s
     pthread_mutex_t lock;
 } task_t;
 ```
+
 Example
 ```
 alex@~/multithreading$ cat 22-main.c
