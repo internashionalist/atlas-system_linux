@@ -28,7 +28,7 @@ list_t *prime_factors(char const *s)
 	
 	/* convert string to unsigned long */
 	n = strtoul(s, &endptr, 10);
-	if (errno == ERANGE || *endptr != '\0' || n == ULONG_MAX)
+	if (errno == ERANGE || *endptr != '\0')
 		return (NULL); /* invalid number or out of range */
 
 	/* allocate and initialize list */
@@ -49,7 +49,7 @@ list_t *prime_factors(char const *s)
 	}
 
 	/* factor out odds up to sqrt(n) */
-	for (i = 3; i * i <= n; i += 2)
+	for (i = 3; i <= n / i; i += 2)
 	{
 		while (n % i == 0)
 		{
