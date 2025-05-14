@@ -53,6 +53,13 @@ void destroy_task(task_t *task)
 	if (!task)
 		return;
 
+	/* free the list */
+	if (task->result)
+	{
+		list_destroy((list_t *)task->result, free);
+		free(task->result);
+	}
+
 	mutex_destroy(&task->lock);
 	free(task);
 }
