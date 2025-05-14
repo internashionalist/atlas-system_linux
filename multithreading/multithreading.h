@@ -78,8 +78,8 @@ typedef struct blur_portion_s
 
 void *thread_entry(void *arg);
 int tprintf(char const *format, ...);
-void mutex_init(pthread_mutex_t *mutex);
-void mutex_destroy(pthread_mutex_t *mutex);
+int mutex_init(pthread_mutex_t *mutex);
+int mutex_destroy(pthread_mutex_t *mutex);
 list_t *prime_factors(char const *s);
 /* task_t *create_task(task_entry_t entry, void *param);
 void destroy_task(task_t *task);
