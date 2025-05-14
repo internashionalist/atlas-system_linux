@@ -98,14 +98,14 @@ static int claim_task(task_t *task)
 void *exec_tasks(list_t const *tasks)
 {
 	int work_done; /* flag to track if work was done, just like it says */
-	size_t id = 0; /* task index within list */
+	size_t id = 0; /* sequential task index */
 
 	if (!tasks) /* NULL/empty check */
 		return (NULL);
 
 	do {
 		work_done = 0;
-		id = 0;
+
 		for (node_t *node = tasks->head; node; node = node->next, ++id)
 		{
 			task_t *task = node->content;
