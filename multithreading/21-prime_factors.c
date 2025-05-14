@@ -19,7 +19,6 @@
 list_t *prime_factors(char const *s)
 {
 	unsigned long n, i; /* current factor */
-	char *endptr = NULL; /* end of string pointer */
 	list_t *factors; /* list of factors */
 
 	/* check for NULL or empty string */
