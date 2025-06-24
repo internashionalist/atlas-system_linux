@@ -9,6 +9,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 
 #define PORT 12345		/* default listening port */
 #define BACKLOG 10		/* number of pending connections allowed */
@@ -24,5 +25,7 @@
  *
  * This structure is used to specify an endpoint address for IPv4 sockets.
  */
+
+int setup_server_socket(void);
 
 #endif /* SOCKETS_H */
