@@ -116,7 +116,11 @@ static void handle_client(int client_fd)
  */
 int main(void)
 {
-	int server_fd = setup_server_socket_8080();
+	int server_fd;
+
+	setvbuf(stdout, NULL, _IONBF, 0); /* disable buffering - flush */
+
+	server_fd = setup_server_socket_8080();
 
 	if (server_fd == -1)
 		return (EXIT_FAILURE);
