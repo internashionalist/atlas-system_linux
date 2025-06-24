@@ -23,19 +23,17 @@ static int setup_server_socket(void)
 	}
 
 	/* allow address reuse */
-	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR,
-				   &opt, sizeof(opt)) == -1)
+	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) == -1)
 	{
 		perror("setsockopt");
 		close(sockfd);
 		return (-1);
 	}
 
-	/* bind to 0.0.0.0:PORT */
-	memset(&addr, 0, sizeof(addr));
-	addr.sin_family = AF_INET;
-	addr.sin_addr.s_addr = htonl(INADDR_ANY);
-	addr.sin_port = htons(PORT);
+	memset(&addr, 0, sizeof(addr));				/* clear address struct */
+	addr.sin_family = AF_INET;					/* set addr family to IPv4 */
+	addr.sin_addr.s_addr = htonl(INADDR_ANY);	/* bind to any address */
+	addr.sin_port = htons(PORT);				/* set port number */
 
 	if (bind(sockfd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
 	{
@@ -44,8 +42,7 @@ static int setup_server_socket(void)
 		return (-1);
 	}
 
-	/* start listening */
-	if (listen(sockfd, BACKLOG) == -1)
+	if (listen(sockfd, BACKLOG) == -1)			/* set socket to listen */
 	{
 		perror("listen");
 		close(sockfd);
