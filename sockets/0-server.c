@@ -7,16 +7,16 @@
  * @sin_addr:			IPv4 address
  * @sin_zero:			padding (unused)
  *
- * Description:			For Betty
+ * For Betty
  */
 
 /**
- * setup_server_socket -	helper to create and configure a server socket
+ * setup_server_socket - Create, bind and listen on a TCP socket.
  *
- * Description: This function creates a TCP socket, binds it to the specified
- * port, allows address reuse, and sets it to listen for incoming connections.
+ * This helper creates an IPv4/TCP socket, enables address reuse,
+ * binds it to 0.0.0.0:PORT and starts listening with BACKLOG.
  *
- * Return:					file descriptor on success, -1 on failure
+ * Return: File descriptor of the listening socket on success, -1 on failure.
  */
 static int setup_server_socket(void)
 {
@@ -63,9 +63,9 @@ static int setup_server_socket(void)
 }
 
 /**
- * main - entry point for the server program
+ * main - Entry point.
  *
- * Return: EXIT_SUCCESS on success, EXIT_FAILURE on error
+ * Return: EXIT_SUCCESS on success, EXIT_FAILURE on error.
  */
 int main(void)
 {
