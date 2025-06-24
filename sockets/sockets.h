@@ -20,7 +20,7 @@
  * @sin_addr:			IPv4 address
  * @sin_zero:			padding (unused)
  *
- * For Betty
+ * Description: For Betty
  */
 
 #endif /* SOCKETS_H */
