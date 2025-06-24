@@ -27,6 +27,8 @@
  * This structure is used to specify an endpoint address for IPv4 sockets.
  */
 
+typedef struct sockaddr_in sockaddr_in_t;
+
 int setup_server_socket(void);
 unsigned short parse_port(const char *str);
 int connect_to_host(const char *host, unsigned short port);
