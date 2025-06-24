@@ -13,6 +13,9 @@
 /**
  * setup_server_socket - Create, bind and listen on a TCP socket.
  *
+ * This helper encapsulates all steps needed to open a listening
+ * IPv4/TCP socket bound to PORT on every interface.
+ *
  * Return: File descriptor of the listening socket on success, -1 on failure.
  */
 static int setup_server_socket(void)
@@ -61,6 +64,9 @@ static int setup_server_socket(void)
 
 /**
  * main - Entry point for the server program.
+ *
+ * This function starts the server and then blocks indefinitely
+ * until the process receives a termination signal.
  *
  * Return: EXIT_SUCCESS on success, EXIT_FAILURE on error.
  */
