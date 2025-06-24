@@ -1,5 +1,8 @@
 #include "sockets.h"
 #include "util.c"
+
+#define PORT 12345 /* default listening port */
+
 /**
  * main - Entry point for the server program.
  *

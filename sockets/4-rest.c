@@ -1,6 +1,7 @@
 #include "sockets.h"
 #include "util.c"
 
+#define PORT 8080
 #define BUFFER_SIZE 4096 /* large enough for a simple HTTP request */
 
 /**

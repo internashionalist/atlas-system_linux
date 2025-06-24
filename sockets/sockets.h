@@ -12,7 +12,6 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#define PORT 12345		/* default listening port */
 #define BACKLOG 10		/* number of pending connections allowed */
 
 /**
