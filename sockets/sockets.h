@@ -13,4 +13,14 @@
 #define PORT 12345		/* default listening port */
 #define BACKLOG 10		/* number of pending connections allowed */
 
+/**
+ * struct sockaddr_in - IPv4 socket address structure
+ * @sin_family:			address family (must be AF_INET)
+ * @sin_port:			port number in network byte order
+ * @sin_addr:			IPv4 address
+ * @sin_zero:			padding (unused)
+ *
+ * For Betty
+ */
+
 #endif /* SOCKETS_H */
