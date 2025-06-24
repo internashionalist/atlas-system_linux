@@ -4,6 +4,10 @@
 /**
  * main - Entry point for the server program.
  *
+ * Description: This function sets up a TCP server socket, accepts a client
+ * connection, and prints the client's IP address. It uses the helper function
+ * `setup_server_socket` to create and bind the socket.
+ *
  * Return: EXIT_SUCCESS on success, EXIT_FAILURE on error.
  */
 int main(void)
