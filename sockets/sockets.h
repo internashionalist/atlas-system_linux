@@ -6,6 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+#include <netdb.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -27,5 +28,7 @@
  */
 
 int setup_server_socket(void);
+unsigned short parse_port(const char *str);
+int connect_to_host(const char *host, unsigned short port);
 
 #endif /* SOCKETS_H */
