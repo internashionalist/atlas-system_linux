@@ -1,6 +1,16 @@
 #include "sockets.h"
 
 /**
+ * struct sockaddr_in - IPv4 socket address structure
+ * @sin_family:			address family (must be AF_INET)
+ * @sin_port:			port number in network byte order
+ * @sin_addr:			IPv4 address
+ * @sin_zero:			padding (unused)
+ *
+ * Description:			For Betty
+ */
+
+/**
  * setup_server_socket -	helper to create and configure a server socket
  *
  * Description: This function creates a TCP socket, binds it to the specified
