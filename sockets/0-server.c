@@ -1,66 +1,79 @@
 #include "sockets.h"
 
 /**
- * main -	entry point for the server program
+ * setup_server_socket -	helper to create and configure a server socket
  *
- * Description: This program creates a TCP server that listens on port 12345,
- *			accepts incoming connections, and allows address reuse. It runs
- *			indefinitely until terminated by a signal.
+ * Description: This function creates a TCP socket, binds it to the specified
+ * port, allows address reuse, and sets it to listen for incoming connections.
  *
- * Return:	EXIT_SUCCESS on success, EXIT_FAILURE on error
+ * Return:					file descriptor on success, -1 on failure
+ */
+static int setup_server_socket(void)
+{
+    int sockfd;					/* server socket file descriptor */
+    struct sockaddr_in addr;	/* server address struct */
+    int opt = 1;				/* option for setsockopt */
+
+    /* IPv4/TCP socket creation */
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd == -1)
+    {
+        perror("socket");
+        return (-1);
+    }
+
+    /* allow address reuse */
+    if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR,
+                   &opt, sizeof(opt)) == -1)
+    {
+        perror("setsockopt");
+        close(sockfd);
+        return (-1);
+    }
+
+    /* bind to 0.0.0.0:PORT */
+    memset(&addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    addr.sin_port = htons(PORT);
+
+    if (bind(sockfd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
+    {
+        perror("bind");
+        close(sockfd);
+        return (-1);
+    }
+
+    /* start listening */
+    if (listen(sockfd, BACKLOG) == -1)
+    {
+        perror("listen");
+        close(sockfd);
+        return (-1);
+    }
+
+    return (sockfd);
+}
+
+/**
+ * main - entry point for the server program
+ *
+ * Return: EXIT_SUCCESS on success, EXIT_FAILURE on error
  */
 int main(void)
 {
-	int sockfd = -1;				/* socket file descriptor */
-	struct sockaddr_in addr;		/* socket address structure */
+    int sockfd;						/* server socket file descriptor */
 
-	/* IPv4/TCP socket creation, error check */
-	sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sockfd == -1)
-	{
-		perror("socket");
-		return (EXIT_FAILURE);
-	}
+    sockfd = setup_server_socket();	/* call helper function */
+    if (sockfd == -1)
+        return (EXIT_FAILURE);
 
-	/* allow address reuse, error check */
-	int opt = 1;
-	if (setsockopt(
-		sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) == -1)
-	{
-		perror("setsockopt");
-		close(sockfd);
-		return (EXIT_FAILURE);
-	}
+    printf("Server listening on port %d\n", PORT);
+    fflush(stdout);
 
-	/* bind to 0.0.0.0:12345 */
-	memset(&addr, 0, sizeof(addr));
-	addr.sin_family = AF_INET;
-	addr.sin_addr.s_addr = htonl(INADDR_ANY);
-	addr.sin_port = htons(PORT);
+    for (;;)						/* infinite loop to accept connections */
+        pause();
 
-	/* bind socket, error check */
-	if (bind(sockfd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
-	{
-		perror("bind");
-		close(sockfd);
-		return (EXIT_FAILURE);
-	}
-
-	/* start listening for connections, error check */
-	if (listen(sockfd, BACKLOG) == -1)
-	{
-		perror("listen");
-		close(sockfd);
-		return (EXIT_FAILURE);
-	}
-
-	printf("Server listening on port %d\n", PORT);
-	fflush(stdout);
-
-	/* main loop - until killed */
-	for (;;)
-		pause();
-
-	/* keep -Werror happy */
-	return (EXIT_SUCCESS);
+    /* keep -Werror happy */
+    return (EXIT_SUCCESS);
 }
