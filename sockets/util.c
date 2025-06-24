@@ -1,4 +1,5 @@
 #include "sockets.h"
+#define PORT 12345
 
 /**
  * setup_server_socket - Create, bind and listen on a TCP socket.

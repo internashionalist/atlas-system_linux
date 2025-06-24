@@ -1,8 +1,52 @@
 #include "sockets.h"
-#include "util.c"
 
-#define PORT 8080
 #define BUFFER_SIZE 4096 /* large enough for a simple HTTP request */
+
+/**
+ * setup_server_socket_8080 - create, bind, and listen on TCP port 8080.
+ * Return: listening socket fd on success, -1 on failure.
+ */
+static int setup_server_socket_8080(void)
+{
+    int sockfd, opt = 1;
+    struct sockaddr_in addr;
+
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd == -1)
+    {
+        perror("socket");
+        return (-1);
+    }
+
+    if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt,
+                   sizeof(opt)) == -1)
+    {
+        perror("setsockopt");
+        close(sockfd);
+        return (-1);
+    }
+
+    memset(&addr, 0, sizeof(addr));
+    addr.sin_family      = AF_INET;
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    addr.sin_port        = htons(8080);
+
+    if (bind(sockfd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
+    {
+        perror("bind");
+        close(sockfd);
+        return (-1);
+    }
+
+    if (listen(sockfd, BACKLOG) == -1)
+    {
+        perror("listen");
+        close(sockfd);
+        return (-1);
+    }
+
+    return (sockfd);
+}
 
 /**
  * trim_cr - remove a trailing CR character (if found).
@@ -72,7 +116,7 @@ static void handle_client(int client_fd)
  */
 int main(void)
 {
-	int server_fd = setup_server_socket(); /* helper from util.c */
+	int server_fd = setup_server_socket_8080();
 
 	if (server_fd == -1)
 		return (EXIT_FAILURE);
