@@ -9,7 +9,7 @@
 int main(void)
 {
 	int server_fd, client_fd;		/* server & client socket file descriptors */
-	struct sockaddr_in client_addr; /* client address struct */
+	sockaddr_in_t client_addr;		/* client address struct */
 	socklen_t addr_len = sizeof(client_addr); /* size of client addr struct */
 	char ip_str[INET_ADDRSTRLEN];	/* buffer for client IP address */
 	char buf[1024];					/* buffer for received message */
