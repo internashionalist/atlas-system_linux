@@ -22,6 +22,7 @@
  *
  * Description: For Betty
  *
+ * This structure is used to specify an endpoint address for IPv4 sockets.
  */
 
 #endif /* SOCKETS_H */
