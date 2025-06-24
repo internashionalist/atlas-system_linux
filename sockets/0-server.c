@@ -13,9 +13,6 @@
 /**
  * setup_server_socket - Create, bind and listen on a TCP socket.
  *
- * This helper creates an IPv4/TCP socket, enables address reuse,
- * binds it to 0.0.0.0:PORT and starts listening with BACKLOG.
- *
  * Return: File descriptor of the listening socket on success, -1 on failure.
  */
 static int setup_server_socket(void)
@@ -63,7 +60,7 @@ static int setup_server_socket(void)
 }
 
 /**
- * main - Entry point.
+ * main - Entry point for the server program.
  *
  * Return: EXIT_SUCCESS on success, EXIT_FAILURE on error.
  */
