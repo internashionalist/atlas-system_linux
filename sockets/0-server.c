@@ -11,6 +11,17 @@
 static int setup_server_socket(void)
 {
 	int sockfd;					/* server socket file descriptor */
+
+	/**
+	 * struct sockaddr_in - IPv4 socket address structure
+	 * @sin_family:			address family (must be AF_INET)
+	 * @sin_port:			port number in network byte order
+	 * @sin_addr:			IPv4 address
+	 * @sin_zero:			padding (unused)
+	 *
+	 * Description: For Betty
+	 */
+
 	struct sockaddr_in addr;	/* server address struct */
 	int opt = 1;				/* option for setsockopt */
 
